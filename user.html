@@ -379,54 +379,130 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
     </div>
   </div>
 
-  <!-- ===================== 캠페인 탐색 ===================== -->
+  <!-- ===================== 탐색 ===================== -->
   <div class="screen" id="screen-explore">
     <div class="topbar">
-      <div class="topbar-title">캠페인 탐색</div>
+      <div class="topbar-title">탐색</div>
     </div>
-    <div style="padding:0 20px 12px;flex-shrink:0">
-      <div class="search-bar">
-        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input placeholder="브랜드명 · 상품명 검색" />
-      </div>
+
+    <!-- 최상위 타입 탭 -->
+    <div class="tab-row" style="padding:0 20px">
+      <div class="tab on" id="explore-tab-sponsor" onclick="switchExploreTab('sponsor')">협찬</div>
+      <div class="tab" id="explore-tab-gb" onclick="switchExploreTab('gb')">공동구매</div>
     </div>
-    <div class="scroll-cats">
-      <div class="scroll-cat on">전체</div>
-      <div class="scroll-cat">뷰티</div>
-      <div class="scroll-cat">푸드</div>
-      <div class="scroll-cat">라이프</div>
-      <div class="scroll-cat">패션</div>
-      <div class="scroll-cat">반려동물</div>
-    </div>
-    <div class="scroll-area" style="padding:0 20px 20px;display:flex;flex-direction:column;gap:10px">
-      <div class="camp-card" onclick="goScreen('screen-detail')">
-        <div class="camp-thumb"></div>
-        <div class="camp-body">
-          <div class="camp-name">봄 신상 립밤 3종 세트</div>
-          <div class="camp-meta">바잇미 코스메틱 · 협찬가 ₩32,000 · 마감 4/25 · 10명 모집</div>
-          <div class="camp-tags"><span class="chip chip-teal">단순협찬</span><span class="chip chip-gray">뷰티</span><span class="chip chip-blue">3K+</span></div>
+
+    <!-- 협찬 탭 콘텐츠 -->
+    <div id="explore-sponsor" style="display:flex;flex-direction:column;flex:1;overflow:hidden">
+      <div style="padding:12px 20px;flex-shrink:0">
+        <div class="search-bar">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input placeholder="브랜드명 · 캠페인명 검색" />
         </div>
-        <div class="camp-footer"><span class="camp-footer-label">8/10명</span><span class="camp-footer-action">상세보기 →</span></div>
       </div>
-      <div class="camp-card" onclick="goScreen('screen-detail')">
-        <div class="camp-thumb green"></div>
-        <div class="camp-body">
-          <div class="camp-name">여름 선크림 신제품 체험단</div>
-          <div class="camp-meta">선케어랩 · 협찬가 ₩55,000 · 마감 5/1 · 5명 모집</div>
-          <div class="camp-tags"><span class="chip chip-amber">유가협찬</span><span class="chip chip-gray">뷰티</span><span class="chip chip-blue">10K+</span></div>
-        </div>
-        <div class="camp-footer"><span class="camp-footer-label">3/5명</span><span class="camp-footer-action">상세보기 →</span></div>
+      <div class="scroll-cats">
+        <div class="scroll-cat on">전체</div>
+        <div class="scroll-cat">뷰티</div>
+        <div class="scroll-cat">푸드</div>
+        <div class="scroll-cat">라이프</div>
+        <div class="scroll-cat">패션</div>
+        <div class="scroll-cat">반려동물</div>
       </div>
-      <div class="camp-card">
-        <div class="camp-thumb blue"></div>
-        <div class="camp-body">
-          <div class="camp-name">고메잇 강남 브런치 체험</div>
-          <div class="camp-meta">고메잇 · 협찬가 ₩80,000 · 마감 5/15 · 3명 모집</div>
-          <div class="camp-tags"><span class="chip chip-purple">시식체험</span><span class="chip chip-gray">푸드</span><span class="chip chip-blue">5K+</span></div>
+      <div class="scroll-area" style="padding:0 20px 20px;display:flex;flex-direction:column;gap:10px">
+        <div class="camp-card" onclick="goScreen('screen-detail')">
+          <div class="camp-thumb"></div>
+          <div class="camp-body">
+            <div class="camp-name">봄 신상 립밤 3종 세트</div>
+            <div class="camp-meta">바잇미 코스메틱 · 협찬가 ₩32,000 · 마감 4/25 · 10명 모집</div>
+            <div class="camp-tags"><span class="chip chip-teal">단순협찬</span><span class="chip chip-gray">뷰티</span><span class="chip chip-blue">3K+</span></div>
+          </div>
+          <div class="camp-footer"><span class="camp-footer-label">8/10명</span><span class="camp-footer-action">상세보기 →</span></div>
         </div>
-        <div class="camp-footer"><span class="camp-footer-label">1/3명</span><span class="camp-footer-action">상세보기 →</span></div>
+        <div class="camp-card" onclick="goScreen('screen-detail')">
+          <div class="camp-thumb green"></div>
+          <div class="camp-body">
+            <div class="camp-name">여름 선크림 신제품 체험단</div>
+            <div class="camp-meta">선케어랩 · 협찬가 ₩55,000 · 마감 5/1 · 5명 모집</div>
+            <div class="camp-tags"><span class="chip chip-amber">유가협찬</span><span class="chip chip-gray">뷰티</span><span class="chip chip-blue">10K+</span></div>
+          </div>
+          <div class="camp-footer"><span class="camp-footer-label">3/5명</span><span class="camp-footer-action">상세보기 →</span></div>
+        </div>
+        <div class="camp-card">
+          <div class="camp-thumb blue"></div>
+          <div class="camp-body">
+            <div class="camp-name">고메잇 강남 브런치 체험</div>
+            <div class="camp-meta">고메잇 · 협찬가 ₩80,000 · 마감 5/15 · 3명 모집</div>
+            <div class="camp-tags"><span class="chip chip-purple">시식체험</span><span class="chip chip-gray">푸드</span><span class="chip chip-blue">5K+</span></div>
+          </div>
+          <div class="camp-footer"><span class="camp-footer-label">1/3명</span><span class="camp-footer-action">상세보기 →</span></div>
+        </div>
       </div>
     </div>
+
+    <!-- 공동구매 탭 콘텐츠 -->
+    <div id="explore-gb" style="display:none;flex-direction:column;flex:1;overflow:hidden">
+      <div style="padding:12px 20px;flex-shrink:0">
+        <div class="search-bar">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input placeholder="상품명 · 브랜드 검색" />
+        </div>
+      </div>
+      <div class="scroll-cats">
+        <div class="scroll-cat on">전체</div>
+        <div class="scroll-cat">사료</div>
+        <div class="scroll-cat">간식</div>
+        <div class="scroll-cat">의류</div>
+        <div class="scroll-cat">용품</div>
+        <div class="scroll-cat">뷰티</div>
+      </div>
+      <div class="scroll-area" style="padding:0 20px 20px">
+        <div class="product-item" onclick="goScreen('screen-gb-step1')" style="cursor:pointer">
+          <div class="product-thumb" style="cursor:pointer"><div class="product-badge">NEW</div></div>
+          <div class="product-info">
+            <div class="product-name">BAS 칼취채 핑크에디션 / BAS 닭목라벨</div>
+            <div class="product-price">
+              <span class="product-discount">20%</span>
+              <span class="product-original">13,700원</span>
+              <span class="product-current">10,900원</span>
+            </div>
+            <div style="display:flex;gap:6px;margin-top:4px;flex-wrap:wrap">
+              <span class="chip chip-amber">선착순 특가</span>
+              <span class="chip chip-gray">사료</span>
+            </div>
+          </div>
+        </div>
+        <div class="product-item">
+          <div class="product-thumb" style="background:linear-gradient(135deg,#D6EAD6,#C2DCC2)"></div>
+          <div class="product-info">
+            <div class="product-name">고메잇 강남 브런치 세트 패키지</div>
+            <div class="product-price">
+              <span class="product-discount">15%</span>
+              <span class="product-original">48,000원</span>
+              <span class="product-current">40,800원</span>
+            </div>
+            <div style="display:flex;gap:6px;margin-top:4px;flex-wrap:wrap">
+              <span class="chip chip-purple">콜라보 기획전</span>
+              <span class="chip chip-gray">푸드</span>
+            </div>
+          </div>
+        </div>
+        <div class="product-item">
+          <div class="product-thumb" style="background:linear-gradient(135deg,#E6F1FB,#C0D8EC)"></div>
+          <div class="product-info">
+            <div class="product-name">봄 신상 립밤 3종 기획세트</div>
+            <div class="product-price">
+              <span class="product-discount">25%</span>
+              <span class="product-original">32,000원</span>
+              <span class="product-current">24,000원</span>
+            </div>
+            <div style="display:flex;gap:6px;margin-top:4px;flex-wrap:wrap">
+              <span class="chip chip-teal">무료배송</span>
+              <span class="chip chip-gray">뷰티</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="nav-bar">
       <div class="nav-item" onclick="goScreen('screen-home')">
         <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
@@ -523,108 +599,114 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
     </div>
   </div>
 
-  <!-- ===================== 내 협찬 현황 ===================== -->
+  <!-- ===================== 내 현황 ===================== -->
   <div class="screen" id="screen-status">
     <div class="topbar">
-      <div class="topbar-title">내 협찬 현황</div>
+      <div class="topbar-title">내 현황</div>
     </div>
-    <div class="tab-row">
-      <div class="tab on">진행중</div>
-      <div class="tab">완료</div>
-    </div>
-    <div class="scroll-area" style="padding:16px 20px;display:flex;flex-direction:column;gap:12px">
-      <div style="background:var(--bg2);border-radius:16px;overflow:hidden">
-        <div style="padding:14px 16px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between">
-          <div style="font-size:15px;font-weight:700;color:var(--text)">봄 스킨케어 세트</div>
-          <span class="chip chip-amber">제출 대기</span>
-        </div>
-        <div style="padding:14px 16px;display:flex;flex-direction:column;gap:0">
-          <div class="tracker-step">
-            <div class="tracker-dot dot-done">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
-            </div>
-            <div class="tracker-content">
-              <div class="tracker-title">협찬 신청</div>
-              <div class="tracker-sub">4월 10일</div>
-            </div>
-          </div>
-          <div class="tracker-step">
-            <div class="tracker-dot dot-done">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
-            </div>
-            <div class="tracker-content">
-              <div class="tracker-title">선정 승인</div>
-              <div class="tracker-sub">4월 12일 · 운영팀 승인 완료</div>
-            </div>
-          </div>
-          <div class="tracker-step">
-            <div class="tracker-dot dot-done">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
-            </div>
-            <div class="tracker-content">
-              <div class="tracker-title">상품 수령</div>
-              <div class="tracker-sub">4월 15일</div>
-            </div>
-          </div>
-          <div class="tracker-step">
-            <div class="tracker-dot dot-now">!</div>
-            <div class="tracker-content">
-              <div class="tracker-title">콘텐츠 제출</div>
-              <div class="tracker-sub" style="color:var(--red)">D-3 · 4월 20일까지</div>
-              <div class="tracker-action" onclick="goScreen('screen-submit')">지금 제출하기 →</div>
-            </div>
-          </div>
-          <div class="tracker-step">
-            <div class="tracker-dot dot-idle">5</div>
-            <div class="tracker-content">
-              <div class="tracker-title" style="color:var(--text3)">검수 · 승인</div>
-            </div>
-          </div>
-          <div class="tracker-step">
-            <div class="tracker-dot dot-idle">6</div>
-            <div class="tracker-content">
-              <div class="tracker-title" style="color:var(--text3)">리워드 지급</div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div style="background:var(--bg2);border-radius:16px;overflow:hidden">
-        <div style="padding:14px 16px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between">
-          <div style="font-size:15px;font-weight:700;color:var(--text)">여름 선크림 체험단</div>
-          <span class="chip chip-blue">모집중</span>
-        </div>
-        <div style="padding:14px 16px">
-          <div class="tracker-step" style="padding-top:0">
-            <div class="tracker-dot dot-done"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
-            <div class="tracker-content"><div class="tracker-title">협찬 신청</div><div class="tracker-sub">4월 18일</div></div>
-          </div>
-          <div class="tracker-step">
-            <div class="tracker-dot dot-now" style="font-size:10px;font-weight:600">대기</div>
-            <div class="tracker-content">
-              <div class="tracker-title">선정 승인 대기</div>
-              <div class="tracker-sub">모집 마감 후 운영팀 검토 · 알림톡 안내 예정</div>
+    <!-- 최상위 타입 탭 -->
+    <div class="tab-row" style="padding:0 20px">
+      <div class="tab on" id="status-tab-sponsor" onclick="switchStatusTab('sponsor')">협찬</div>
+      <div class="tab" id="status-tab-gb" onclick="switchStatusTab('gb')">공동구매</div>
+    </div>
+
+    <!-- 협찬 현황 -->
+    <div id="status-sponsor" style="display:flex;flex-direction:column;flex:1;overflow:hidden">
+      <!-- 진행중/완료 서브탭 -->
+      <div style="display:flex;padding:10px 20px 0;gap:8px;flex-shrink:0">
+        <div id="ssub-active" onclick="switchStatusSub('active')" style="padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;background:var(--text);color:#fff;cursor:pointer">진행중 2</div>
+        <div id="ssub-done" onclick="switchStatusSub('done')" style="padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;background:var(--bg2);color:var(--text2);cursor:pointer">완료</div>
+      </div>
+      <!-- 진행중 리스트 -->
+      <div id="ssub-active-content" class="scroll-area" style="padding:12px 20px 20px;display:flex;flex-direction:column;gap:12px">
+        <!-- 봄 스킨케어 - 협찬 진행중 -->
+        <div style="background:var(--bg2);border-radius:16px;overflow:hidden">
+          <div style="padding:14px 16px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+            <div>
+              <div style="font-size:15px;font-weight:700;color:var(--text)">봄 스킨케어 세트</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:2px">바잇미 코스메틱 · 단순협찬</div>
             </div>
+            <span class="chip chip-amber">제출 대기</span>
           </div>
-          <div class="tracker-step">
-            <div class="tracker-dot dot-idle">3</div>
-            <div class="tracker-content"><div class="tracker-title" style="color:var(--text3)">상품 수령</div></div>
+          <div style="padding:14px 16px;display:flex;flex-direction:column;gap:0">
+            <div class="tracker-step"><div class="tracker-dot dot-done"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div><div class="tracker-content"><div class="tracker-title">협찬 신청</div><div class="tracker-sub">4월 10일</div></div></div>
+            <div class="tracker-step"><div class="tracker-dot dot-done"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div><div class="tracker-content"><div class="tracker-title">선정 승인</div><div class="tracker-sub">4월 12일 · 운영팀 승인 완료</div></div></div>
+            <div class="tracker-step"><div class="tracker-dot dot-done"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div><div class="tracker-content"><div class="tracker-title">상품 수령</div><div class="tracker-sub">4월 15일</div></div></div>
+            <div class="tracker-step"><div class="tracker-dot dot-now">!</div><div class="tracker-content"><div class="tracker-title">콘텐츠 제출</div><div class="tracker-sub" style="color:var(--red)">D-3 · 4월 20일까지</div><div class="tracker-action" onclick="goScreen('screen-submit')">지금 제출하기 →</div></div></div>
+            <div class="tracker-step"><div class="tracker-dot dot-idle">5</div><div class="tracker-content"><div class="tracker-title" style="color:var(--text3)">검수 · 승인</div></div></div>
+            <div class="tracker-step"><div class="tracker-dot dot-idle">6</div><div class="tracker-content"><div class="tracker-title" style="color:var(--text3)">리워드 지급</div></div></div>
           </div>
-          <div class="tracker-step">
-            <div class="tracker-dot dot-idle">4</div>
-            <div class="tracker-content"><div class="tracker-title" style="color:var(--text3)">콘텐츠 제출</div></div>
+        </div>
+        <!-- 여름 선크림 - 협찬 승인 대기 -->
+        <div style="background:var(--bg2);border-radius:16px;overflow:hidden">
+          <div style="padding:14px 16px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+            <div>
+              <div style="font-size:15px;font-weight:700;color:var(--text)">여름 선크림 체험단</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:2px">선케어랩 · 유가협찬</div>
+            </div>
+            <span class="chip chip-blue">승인 대기</span>
           </div>
-          <div class="tracker-step">
-            <div class="tracker-dot dot-idle">5</div>
-            <div class="tracker-content"><div class="tracker-title" style="color:var(--text3)">검수 · 승인</div></div>
+          <div style="padding:14px 16px">
+            <div class="tracker-step" style="padding-top:0"><div class="tracker-dot dot-done"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div><div class="tracker-content"><div class="tracker-title">협찬 신청</div><div class="tracker-sub">4월 18일</div></div></div>
+            <div class="tracker-step"><div class="tracker-dot dot-now" style="font-size:10px;font-weight:600">대기</div><div class="tracker-content"><div class="tracker-title">선정 승인 대기</div><div class="tracker-sub">모집 마감 후 운영팀 검토 · 알림톡 안내 예정</div></div></div>
+            <div class="tracker-step"><div class="tracker-dot dot-idle">3</div><div class="tracker-content"><div class="tracker-title" style="color:var(--text3)">상품 수령</div></div></div>
+            <div class="tracker-step"><div class="tracker-dot dot-idle">4</div><div class="tracker-content"><div class="tracker-title" style="color:var(--text3)">콘텐츠 제출</div></div></div>
+            <div class="tracker-step"><div class="tracker-dot dot-idle">5</div><div class="tracker-content"><div class="tracker-title" style="color:var(--text3)">검수 · 승인</div></div></div>
+            <div class="tracker-step"><div class="tracker-dot dot-idle">6</div><div class="tracker-content"><div class="tracker-title" style="color:var(--text3)">리워드 지급</div></div></div>
           </div>
-          <div class="tracker-step">
-            <div class="tracker-dot dot-idle">6</div>
-            <div class="tracker-content"><div class="tracker-title" style="color:var(--text3)">리워드 지급</div></div>
+        </div>
+      </div>
+      <!-- 완료 리스트 -->
+      <div id="ssub-done-content" class="scroll-area" style="display:none;padding:12px 20px 20px;display:none;flex-direction:column;gap:12px">
+        <div style="background:var(--bg2);border-radius:16px;overflow:hidden">
+          <div style="padding:14px 16px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+            <div>
+              <div style="font-size:15px;font-weight:700;color:var(--text)">BAS 사료 겨울 기획전</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:2px">BAS펫푸드 · 단순협찬</div>
+            </div>
+            <span class="chip chip-gray">완료</span>
+          </div>
+          <div style="padding:12px 16px;display:flex;flex-direction:column;gap:3px">
+            <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text2)">리워드</span><span style="font-weight:700;color:var(--orange)">₩40,000</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--text3)">게시일</span><span style="color:var(--text2)">3월 22일</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--text3)">조회수</span><span style="color:var(--text2)">32,400</span></div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- 공동구매 현황 -->
+    <div id="status-gb" style="display:none;flex-direction:column;flex:1;overflow:hidden">
+      <div style="display:flex;padding:10px 20px 0;gap:8px;flex-shrink:0">
+        <div id="gbsub-active" onclick="switchGbSub('active')" style="padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;background:var(--text);color:#fff;cursor:pointer">진행중 1</div>
+        <div id="gbsub-done" onclick="switchGbSub('done')" style="padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;background:var(--bg2);color:var(--text2);cursor:pointer">완료</div>
+      </div>
+      <!-- 공구 진행중 -->
+      <div id="gbsub-active-content" class="scroll-area" style="padding:12px 20px 20px;display:flex;flex-direction:column;gap:12px">
+        <div style="background:var(--bg2);border-radius:16px;overflow:hidden">
+          <div style="padding:14px 16px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+            <div>
+              <div style="font-size:15px;font-weight:700;color:var(--text)">BAS 칼취채 핑크에디션</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:2px">BAS펫푸드 · 공동구매</div>
+            </div>
+            <span class="chip chip-amber">승인 대기</span>
+          </div>
+          <div style="padding:14px 16px;display:flex;flex-direction:column;gap:0">
+            <div class="tracker-step" style="padding-top:0"><div class="tracker-dot dot-done"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div><div class="tracker-content"><div class="tracker-title">공구 신청</div><div class="tracker-sub">4월 18일 · 5/13~16 일정</div></div></div>
+            <div class="tracker-step"><div class="tracker-dot dot-now" style="font-size:10px;font-weight:600">대기</div><div class="tracker-content"><div class="tracker-title">운영팀 승인 대기</div><div class="tracker-sub">승인 후 보증금 납부 안내 예정</div></div></div>
+            <div class="tracker-step"><div class="tracker-dot dot-idle">3</div><div class="tracker-content"><div class="tracker-title" style="color:var(--text3)">보증금 납부</div></div></div>
+            <div class="tracker-step"><div class="tracker-dot dot-idle">4</div><div class="tracker-content"><div class="tracker-title" style="color:var(--text3)">공구 진행</div></div></div>
+            <div class="tracker-step"><div class="tracker-dot dot-idle">5</div><div class="tracker-content"><div class="tracker-title" style="color:var(--text3)">정산 완료</div></div></div>
+          </div>
+        </div>
+      </div>
+      <!-- 공구 완료 -->
+      <div id="gbsub-done-content" class="scroll-area" style="display:none;padding:12px 20px 20px;flex-direction:column;gap:12px">
+        <div style="text-align:center;padding:40px 0;color:var(--text3);font-size:13px">완료된 공동구매가 없어요</div>
+      </div>
+    </div>
+
     <div class="nav-bar">
       <div class="nav-item" onclick="goScreen('screen-home')">
         <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
@@ -876,6 +958,50 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
 </div><!-- .device -->
 
 <script>
+function switchExploreTab(type) {
+  ['sponsor','gb'].forEach(t => {
+    document.getElementById('explore-tab-' + t).classList.toggle('on', t === type);
+    const el = document.getElementById('explore-' + t);
+    el.style.display = t === type ? 'flex' : 'none';
+  });
+}
+
+function switchStatusTab(type) {
+  ['sponsor','gb'].forEach(t => {
+    document.getElementById('status-tab-' + t).classList.toggle('on', t === type);
+    const el = document.getElementById('status-' + t);
+    el.style.display = t === type ? 'flex' : 'none';
+  });
+}
+
+function switchStatusSub(sub) {
+  const active = sub === 'active';
+  const btnA = document.getElementById('ssub-active');
+  const btnD = document.getElementById('ssub-done');
+  btnA.style.cssText = active
+    ? 'padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;background:var(--text);color:#fff;cursor:pointer'
+    : 'padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;background:var(--bg2);color:var(--text2);cursor:pointer';
+  btnD.style.cssText = !active
+    ? 'padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;background:var(--text);color:#fff;cursor:pointer'
+    : 'padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;background:var(--bg2);color:var(--text2);cursor:pointer';
+  document.getElementById('ssub-active-content').style.display = active ? 'flex' : 'none';
+  document.getElementById('ssub-done-content').style.display = !active ? 'flex' : 'none';
+}
+
+function switchGbSub(sub) {
+  const active = sub === 'active';
+  const btnA = document.getElementById('gbsub-active');
+  const btnD = document.getElementById('gbsub-done');
+  btnA.style.cssText = active
+    ? 'padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;background:var(--text);color:#fff;cursor:pointer'
+    : 'padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;background:var(--bg2);color:var(--text2);cursor:pointer';
+  btnD.style.cssText = !active
+    ? 'padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;background:var(--text);color:#fff;cursor:pointer'
+    : 'padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;background:var(--bg2);color:var(--text2);cursor:pointer';
+  document.getElementById('gbsub-active-content').style.display = active ? 'flex' : 'none';
+  document.getElementById('gbsub-done-content').style.display = !active ? 'flex' : 'none';
+}
+
 function openApplySheet() {
   const overlay = document.getElementById('apply-overlay');
   const sheet = document.getElementById('apply-sheet');
