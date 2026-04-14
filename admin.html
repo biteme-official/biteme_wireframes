@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>바잇미 — 어드민</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+:root{
+  --orange:#E85D24;--green:#1D9E75;--red:#A32D2D;--blue:#185FA5;
+  --bg:#fff;--bg2:#f5f5f3;--bg3:#eeece8;
+  --text:#1a1a18;--text2:#6b6b66;--text3:#9b9b96;
+  --border:rgba(0,0,0,.1);--border2:rgba(0,0,0,.18);
+  --sidebar:220px;
+}
+body{background:var(--bg3);color:var(--text);min-height:100vh;display:flex}
+
+/* 사이드바 */
+.sidebar{width:var(--sidebar);background:var(--bg);border-right:0.5px solid var(--border);position:fixed;top:0;left:0;bottom:0;display:flex;flex-direction:column;z-index:100}
+.sidebar-logo{padding:20px 18px 16px;border-bottom:0.5px solid var(--border)}
+.logo-mark{font-size:18px;font-weight:700;color:var(--text)}
+.logo-mark span{color:var(--orange)}
+.logo-sub{font-size:10px;color:var(--text3);margin-top:2px;letter-spacing:.02em}
+.sidebar-scroll{flex:1;overflow-y:auto;padding:10px 10px 16px}
+.sidebar-scroll::-webkit-scrollbar{display:none}
+.nav-section{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;padding:14px 8px 6px}
+.nav-section:first-child{padding-top:6px}
+.nav-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;font-size:13px;color:var(--text2);cursor:pointer;transition:all .12s;position:relative}
+.nav-item:hover{background:var(--bg2);color:var(--text)}
+.nav-item.on{background:var(--bg2);color:var(--text);font-weight:500}
+.nav-item.on::before{content:'';position:absolute;left:0;top:25%;bottom:25%;width:3px;background:var(--orange);border-radius:2px}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:var(--border2);flex-shrink:0}
+.nav-dot.on{background:var(--orange)}
+.nav-badge{margin-left:auto;background:#FAEEDA;color:#854F0B;font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px}
+.nav-badge.red{background:#FCEBEB;color:#A32D2D}
+.sidebar-footer{padding:14px 18px;border-top:0.5px solid var(--border)}
+.admin-avatar{display:flex;align-items:center;gap:10px}
+.avatar-circle{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#E85D24,#F0A080);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.avatar-name{font-size:13px;font-weight:500;color:var(--text)}
+.avatar-role{font-size:11px;color:var(--text3)}
+
+/* 메인 */
+.main{margin-left:var(--sidebar);flex:1;min-height:100vh;display:flex;flex-direction:column}
+.topbar{background:var(--bg);border-bottom:0.5px solid var(--border);padding:13px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.breadcrumb{font-size:13px;color:var(--text3)}
+.breadcrumb strong{color:var(--text)}
+.topbar-right{display:flex;gap:10px;align-items:center}
+.btn{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:500;border:none;cursor:pointer;transition:opacity .15s}
+.btn:active{opacity:.8}
+.btn-primary{background:var(--orange);color:#fff}
+.btn-secondary{background:var(--bg2);color:var(--text);border:0.5px solid var(--border2)}
+.btn-green{background:var(--green);color:#fff}
+.btn-red{background:var(--red);color:#fff}
+.btn-sm{padding:5px 12px;border-radius:6px;font-size:12px;font-weight:500;border:none;cursor:pointer}
+
+/* 콘텐츠 */
+.content{padding:24px 28px;flex:1}
+.page{display:none}
+.page.active{display:block}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.page-title{font-size:20px;font-weight:700;color:var(--text)}
+.page-sub{font-size:13px;color:var(--text3);margin-top:3px}
+
+/* 스탯 카드 */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.stat-card{background:var(--bg);border-radius:14px;padding:16px 18px;border:0.5px solid var(--border)}
+.stat-label{font-size:12px;color:var(--text3);margin-bottom:6px}
+.stat-value{font-size:26px;font-weight:700;color:var(--text)}
+.stat-sub{font-size:12px;color:var(--text2);margin-top:4px}
+.stat-badge{display:inline-block;font-size:11px;font-weight:500;padding:2px 8px;border-radius:6px;margin-top:6px}
+.up{background:#EAF3DE;color:#1D9E75}
+.down{background:#FCEBEB;color:#A32D2D}
+
+/* 테이블 */
+.table-wrap{background:var(--bg);border-radius:14px;border:0.5px solid var(--border);overflow:hidden;margin-bottom:24px}
+.table-header{padding:14px 18px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.table-title{font-size:14px;font-weight:600;color:var(--text)}
+table{width:100%;border-collapse:collapse}
+thead th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;color:var(--text3);border-bottom:0.5px solid var(--border);background:var(--bg2);letter-spacing:.03em}
+tbody td{padding:12px 14px;border-bottom:0.5px solid var(--border);font-size:13px;color:var(--text);vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:#fafaf8}
+.td-name{font-weight:500}
+.td-sub{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* 칩 */
+.chip{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;border:1px solid;white-space:nowrap}
+.chip-teal{background:#E1F5EE;color:#0F6E56;border-color:#5DCAA5}
+.chip-amber{background:#FAEEDA;color:#854F0B;border-color:#EF9F27}
+.chip-blue{background:#E6F1FB;color:#185FA5;border-color:#85B7EB}
+.chip-gray{background:#F1EFE8;color:#5F5E5A;border-color:#B4B2A9}
+.chip-green{background:#EAF3DE;color:#3B6D11;border-color:#97C459}
+.chip-red{background:#FCEBEB;color:#A32D2D;border-color:#F09595}
+.chip-purple{background:#EEEDFE;color:#534AB7;border-color:#AFA9EC}
+
+/* 프로그레스 바 */
+.prog-bar{background:var(--bg2);border-radius:4px;height:5px;width:80px}
+.prog-fill{height:5px;border-radius:4px;background:var(--orange)}
+.prog-fill.green{background:var(--green)}
+
+/* 패널 레이아웃 */
+.panel-layout{display:grid;grid-template-columns:1fr 300px;gap:20px}
+
+/* 폼 */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-label{font-size:12px;font-weight:500;color:var(--text2)}
+.form-input{padding:9px 12px;border-radius:8px;border:1px solid var(--border2);font-size:13px;color:var(--text);background:var(--bg);outline:none;transition:border-color .15s}
+.form-input:focus{border-color:var(--text)}
+textarea.form-input{resize:vertical;min-height:80px}
+.form-section{margin-top:20px;padding-top:20px;border-top:0.5px solid var(--border)}
+.form-section-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:14px}
+
+/* 스텝 헤더 */
+.step-bar{display:flex;align-items:center;padding:14px 18px;border-bottom:0.5px solid var(--border);background:var(--bg2)}
+.step-item{display:flex;align-items:center;gap:8px;flex:1}
+.step-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.step-lbl{font-size:12px;color:var(--text3)}
+.step-lbl.on{color:var(--text);font-weight:600}
+.step-line{flex:1;height:1px;background:var(--border);margin:0 8px}
+.step-line.done{background:var(--green)}
+
+/* 알림 */
+.alert{padding:12px 14px;border-radius:10px;font-size:13px;line-height:1.5}
+.alert-amber{background:#FAEEDA;color:#633806}
+.alert-green{background:#EAF3DE;color:#27500A}
+.alert-red{background:#FCEBEB;color:#791F1F}
+.alert-purple{background:#EEEDFE;color:#3D358A}
+
+/* 캘린더 */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-head{text-align:center;font-size:11px;color:var(--text3);padding:4px 0;font-weight:500}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:12px;border-radius:6px;color:var(--text2);cursor:pointer;transition:all .15s;position:relative}
+.cal-day:hover{background:var(--bg2)}
+.cal-taken{background:#FAEEDA;color:#854F0B}
+.cal-mine{background:var(--orange);color:#fff;font-weight:600}
+.cal-today{color:var(--orange);font-weight:700}
+.cal-dot{position:absolute;bottom:3px;width:4px;height:4px;border-radius:50%;background:var(--orange)}
+
+/* 검수 패널 */
+.review-item{background:var(--bg);border:0.5px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px;transition:box-shadow .15s}
+.review-item:hover{box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.review-header{padding:12px 16px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.review-body{padding:14px 16px;display:grid;grid-template-columns:1fr 200px;gap:14px}
+.review-check-list{display:flex;flex-direction:column;gap:6px}
+.check-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border:0.5px solid var(--border);border-radius:8px;font-size:12px;color:var(--text)}
+.ci-ok{width:18px;height:18px;border-radius:50%;background:#EAF3DE;color:var(--green);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;font-weight:700}
+.ci-fail{width:18px;height:18px;border-radius:50%;background:#FCEBEB;color:#A32D2D;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;font-weight:700}
+.ci-pending{width:18px;height:18px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* 선택 토글 */
+.toggle-group{display:flex;gap:6px}
+.toggle-opt{flex:1;padding:8px;border:1px solid var(--border2);border-radius:8px;font-size:12px;font-weight:500;text-align:center;cursor:pointer;transition:all .15s;color:var(--text2)}
+.toggle-opt.on{border-color:var(--text);background:var(--bg2);color:var(--text)}
+
+/* 알림 규칙 */
+.noti-rule{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg2);border-radius:8px;font-size:12px;color:var(--text)}
+.noti-dot{width:8px;height:8px;border-radius:50%;background:var(--orange);flex-shrink:0}
+.noti-auto{margin-left:auto;font-size:10px;color:var(--text3);background:var(--bg);border:0.5px solid var(--border);padding:2px 7px;border-radius:5px}
+
+/* AI 박스 */
+.ai-box{background:#EEEDFE;border:0.5px solid #AFA9EC;border-radius:10px;padding:12px 14px;display:flex;align-items:flex-start;gap:10px}
+.ai-icon{width:28px;height:28px;border-radius:8px;background:#534AB7;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:700;flex-shrink:0}
+
+/* 공구 일정 그리드 */
+.schedule-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:20px}
+.schedule-item{background:var(--bg);border:0.5px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;transition:box-shadow .15s}
+.schedule-item:hover{box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.schedule-date{font-size:11px;color:var(--text3);margin-bottom:4px}
+.schedule-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px}
+.schedule-seller{font-size:12px;color:var(--text2)}
+
+/* 인플루언서 행 */
+.inf-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:0.5px solid var(--border)}
+.inf-row:last-child{border-bottom:none}
+.inf-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#FBEAF0,#ED93B1);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#993556;flex-shrink:0}
+.inf-name{font-size:13px;font-weight:500;color:var(--text);flex:1}
+.inf-handle{font-size:11px;color:var(--text3)}
+
+/* 빈 상태 */
+.empty{text-align:center;padding:40px;color:var(--text3);font-size:13px}
+</style>
+</head>
+<body>
+
+<!-- 사이드바 -->
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">BITE <span>ME</span></div>
+    <div class="logo-sub">ADMIN DASHBOARD</div>
+  </div>
+  <div class="sidebar-scroll">
+    <div class="nav-section">캠페인 관리</div>
+    <div class="nav-item on" onclick="goPage('page-campaigns')">
+      <div class="nav-dot on"></div>
+      시딩 캠페인
+      <span class="nav-badge">24</span>
+    </div>
+    <div class="nav-item" onclick="goPage('page-campaign-new')">
+      <div class="nav-dot"></div>
+      캠페인 생성
+    </div>
+    <div class="nav-section">공동구매</div>
+    <div class="nav-item" onclick="goPage('page-schedule')">
+      <div class="nav-dot"></div>
+      공구 일정 관리
+    </div>
+    <div class="nav-section">콘텐츠</div>
+    <div class="nav-item" onclick="goPage('page-review')">
+      <div class="nav-dot"></div>
+      콘텐츠 검수
+      <span class="nav-badge red">7</span>
+    </div>
+    <div class="nav-section">인플루언서</div>
+    <div class="nav-item" onclick="goPage('page-influencers')">
+      <div class="nav-dot"></div>
+      인플루언서 목록
+    </div>
+    <div class="nav-section">설정</div>
+    <div class="nav-item">
+      <div class="nav-dot"></div>
+      알림 설정
+    </div>
+  </div>
+  <div class="sidebar-footer">
+    <div class="admin-avatar">
+      <div class="avatar-circle">관</div>
+      <div>
+        <div class="avatar-name">운영팀</div>
+        <div class="avatar-role">admin@biteme.co.kr</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 메인 -->
+<div class="main">
+  <div class="topbar">
+    <div class="breadcrumb" id="breadcrumb">캠페인 › <strong>시딩 캠페인</strong></div>
+    <div class="topbar-right">
+      <span style="font-size:13px;color:var(--text3)">2026.04.14</span>
+      <button class="btn btn-secondary" style="font-size:12px;padding:6px 12px">내보내기</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ===================== 캠페인 목록 ===================== -->
+    <div class="page active" id="page-campaigns">
+      <div class="page-header">
+        <div>
+          <div class="page-title">시딩 캠페인</div>
+          <div class="page-sub">전체 캠페인을 관리하고 인플루언서 현황을 확인하세요</div>
+        </div>
+        <button class="btn btn-primary" onclick="goPage('page-campaign-new')">+ 신규 캠페인</button>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-label">전체 캠페인</div>
+          <div class="stat-value">24</div>
+          <div class="stat-sub">이번달 5개 생성</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">진행중</div>
+          <div class="stat-value">8</div>
+          <span class="stat-badge up">↑ 2 증가</span>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">선정 인플루언서</div>
+          <div class="stat-value">142<span style="font-size:16px;font-weight:500;color:var(--text2)">명</span></div>
+          <div class="stat-sub">평균 17.8명/캠페인</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">평균 조회수</div>
+          <div class="stat-value">28.4K</div>
+          <span class="stat-badge up">↑ 12%</span>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-header">
+          <div class="table-title">캠페인 목록</div>
+          <div style="display:flex;gap:8px">
+            <input style="padding:7px 12px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);outline:none;width:200px" placeholder="캠페인명 검색...">
+            <select style="padding:7px 12px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);background:var(--bg);outline:none">
+              <option>전체 상태</option><option>진행중</option><option>모집중</option><option>완료</option>
+            </select>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>캠페인명</th>
+              <th>유형</th>
+              <th>모집 현황</th>
+              <th>게시 마감</th>
+              <th>콘텐츠 현황</th>
+              <th>상태</th>
+              <th>관리</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="td-name">봄 신상 스킨케어 세트</div>
+                <div class="td-sub">바잇미 코스메틱 · 뷰티</div>
+              </td>
+              <td><span class="chip chip-blue">단순협찬</span></td>
+              <td>
+                <div style="font-size:12px;margin-bottom:4px;font-weight:500">8 / 10명</div>
+                <div class="prog-bar"><div class="prog-fill" style="width:80%"></div></div>
+              </td>
+              <td>
+                <div style="font-size:13px">4월 20일</div>
+                <div style="font-size:11px;color:var(--red);font-weight:500">D-6</div>
+              </td>
+              <td>
+                <div style="font-size:12px">제출 5 · <span style="color:#854F0B;font-weight:500">대기 3</span></div>
+              </td>
+              <td><span class="chip chip-green">진행중</span></td>
+              <td>
+                <div style="display:flex;gap:5px">
+                  <button class="btn btn-secondary btn-sm" onclick="goPage('page-campaign-detail')">상세</button>
+                  <button class="btn btn-sm" style="background:#FCEBEB;color:#A32D2D;border:none">독촉</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="td-name">여름 선크림 체험단</div>
+                <div class="td-sub">선케어랩 · 뷰티</div>
+              </td>
+              <td><span class="chip chip-amber">유가협찬</span></td>
+              <td>
+                <div style="font-size:12px;margin-bottom:4px;font-weight:500">3 / 5명</div>
+                <div class="prog-bar"><div class="prog-fill" style="width:60%"></div></div>
+              </td>
+              <td>
+                <div style="font-size:13px">5월 1일</div>
+                <div style="font-size:11px;color:var(--text3)">D-17</div>
+              </td>
+              <td><div style="font-size:12px;color:var(--text3)">제출 0</div></td>
+              <td><span class="chip chip-blue">모집중</span></td>
+              <td>
+                <div style="display:flex;gap:5px">
+                  <button class="btn btn-secondary btn-sm">상세</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="td-name">고메잇 강남 브런치 체험</div>
+                <div class="td-sub">고메잇 · 푸드</div>
+              </td>
+              <td><span class="chip chip-purple">시식체험</span></td>
+              <td>
+                <div style="font-size:12px;margin-bottom:4px;font-weight:500">1 / 3명</div>
+                <div class="prog-bar"><div class="prog-fill" style="width:33%"></div></div>
+              </td>
+              <td>
+                <div style="font-size:13px">5월 15일</div>
+                <div style="font-size:11px;color:var(--text3)">D-31</div>
+              </td>
+              <td><div style="font-size:12px;color:var(--text3)">제출 0</div></td>
+              <td><span class="chip chip-blue">모집중</span></td>
+              <td>
+                <div style="display:flex;gap:5px">
+                  <button class="btn btn-secondary btn-sm">상세</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="td-name">BAS 사료 겨울 기획전</div>
+                <div class="td-sub">BAS펫푸드 · 반려동물</div>
+              </td>
+              <td><span class="chip chip-blue">단순협찬</span></td>
+              <td>
+                <div style="font-size:12px;margin-bottom:4px;font-weight:500">12 / 12명</div>
+                <div class="prog-bar"><div class="prog-fill green" style="width:100%"></div></div>
+              </td>
+              <td>
+                <div style="font-size:13px">3월 30일</div>
+                <div style="font-size:11px;color:var(--text3)">완료</div>
+              </td>
+              <td><div style="font-size:12px;color:var(--green);font-weight:500">전체 제출 완료</div></td>
+              <td><span class="chip chip-gray">완료</span></td>
+              <td>
+                <div style="display:flex;gap:5px">
+                  <button class="btn btn-secondary btn-sm">리포트</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===================== 캠페인 생성 ===================== -->
+    <div class="page" id="page-campaign-new">
+      <div class="page-header">
+        <div>
+          <div class="page-title">캠페인 신규 생성</div>
+          <div class="page-sub">4단계로 캠페인을 설정하세요</div>
+        </div>
+        <button class="btn btn-secondary" onclick="goPage('page-campaigns')">← 목록으로</button>
+      </div>
+
+      <div class="table-wrap" style="margin-bottom:0">
+        <div class="step-bar">
+          <div class="step-item"><div class="step-num" id="sn1" style="background:var(--text);color:#fff">1</div><div class="step-lbl on" id="sl1">기본 정보</div></div>
+          <div class="step-line" id="sl-1"></div>
+          <div class="step-item"><div class="step-num" id="sn2" style="background:var(--bg2);color:var(--text3);border:1px solid var(--border2)">2</div><div class="step-lbl" id="sl2">선정 조건</div></div>
+          <div class="step-line" id="sl-2"></div>
+          <div class="step-item"><div class="step-num" id="sn3" style="background:var(--bg2);color:var(--text3);border:1px solid var(--border2)">3</div><div class="step-lbl" id="sl3">가이드 작성</div></div>
+          <div class="step-line" id="sl-3"></div>
+          <div class="step-item"><div class="step-num" id="sn4" style="background:var(--bg2);color:var(--text3);border:1px solid var(--border2)">4</div><div class="step-lbl" id="sl4">최종 확인</div></div>
+        </div>
+
+        <!-- Step 1 -->
+        <div id="step-1" style="padding:24px">
+          <div class="form-grid">
+            <div class="form-group" style="grid-column:1/-1">
+              <label class="form-label">캠페인명</label>
+              <input class="form-input" value="봄 신상 스킨케어 세트 체험단">
+            </div>
+            <div class="form-group">
+              <label class="form-label">브랜드명</label>
+              <input class="form-input" value="바잇미 코스메틱">
+            </div>
+            <div class="form-group">
+              <label class="form-label">카테고리</label>
+              <select class="form-input"><option>뷰티</option><option>푸드</option><option>라이프</option><option>반려동물</option></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">협찬 유형</label>
+              <div class="toggle-group">
+                <div class="toggle-opt on">단순 협찬</div>
+                <div class="toggle-opt">유가 협찬</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">모집 인원</label>
+              <input class="form-input" type="number" value="10">
+            </div>
+            <div class="form-group">
+              <label class="form-label">협찬 상품가 (원)</label>
+              <input class="form-input" type="number" value="32000">
+            </div>
+            <div class="form-group">
+              <label class="form-label">신청 마감일</label>
+              <input class="form-input" type="date" value="2026-04-25">
+            </div>
+            <div class="form-group">
+              <label class="form-label">게시 마감일</label>
+              <input class="form-input" type="date" value="2026-05-10">
+            </div>
+            <div class="form-group" style="grid-column:1/-1">
+              <label class="form-label">캠페인 설명</label>
+              <textarea class="form-input" rows="3">봄 시즌 신제품 립밤 3종 세트를 체험하고 콘텐츠를 제작해주세요.</textarea>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;padding-top:20px;border-top:0.5px solid var(--border);margin-top:20px">
+            <button class="btn btn-primary" onclick="nextStep(2)">다음 단계 →</button>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div id="step-2" style="padding:24px;display:none">
+          <div style="display:flex;flex-direction:column;gap:18px">
+            <div>
+              <div class="form-section-title">선정 방식</div>
+              <div class="toggle-group">
+                <div class="toggle-opt on" style="padding:12px;text-align:left">
+                  <div style="font-weight:600;margin-bottom:2px">자동 선정</div>
+                  <div style="font-size:11px;color:var(--text3);font-weight:400">조건 충족 신청자 자동 선정</div>
+                </div>
+                <div class="toggle-opt" style="padding:12px;text-align:left">
+                  <div style="font-weight:600;margin-bottom:2px">수동 선정</div>
+                  <div style="font-size:11px;color:var(--text3);font-weight:400">운영팀이 직접 선정</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">최소 팔로워 수</label>
+                <input class="form-input" value="3,000">
+              </div>
+              <div class="form-group">
+                <label class="form-label">관심 카테고리</label>
+                <input class="form-input" value="뷰티, 라이프">
+              </div>
+              <div class="form-group">
+                <label class="form-label">자동 선정 기준</label>
+                <div class="toggle-group">
+                  <div class="toggle-opt on">선착순</div>
+                  <div class="toggle-opt">랜덤</div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="form-section-title">미제출 독촉 알림 (자동)</div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <div class="noti-rule"><div class="noti-dot"></div>D-7 자동 독촉 알림톡<span class="noti-auto">자동</span></div>
+                <div class="noti-rule"><div class="noti-dot"></div>D-3 자동 독촉 알림톡<span class="noti-auto">자동</span></div>
+                <div class="noti-rule"><div class="noti-dot"></div>D-day 최종 + 운영팀 알림<span class="noti-auto">자동</span></div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding-top:20px;border-top:0.5px solid var(--border);margin-top:20px">
+            <button class="btn btn-secondary" onclick="nextStep(1)">← 이전</button>
+            <button class="btn btn-primary" onclick="nextStep(3)">다음 단계 →</button>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div id="step-3" style="display:none">
+          <div style="display:grid;grid-template-columns:1fr 280px;gap:0">
+            <div style="padding:24px;border-right:0.5px solid var(--border);display:flex;flex-direction:column;gap:14px">
+              <div class="ai-box">
+                <div class="ai-icon">AI</div>
+                <div>
+                  <div style="font-size:13px;font-weight:600;color:#3D358A">AI 가이드 자동 생성</div>
+                  <div style="font-size:12px;color:#534AB7;margin-top:2px">캠페인 정보를 바탕으로 가이드를 자동 생성했어요. 직접 수정하실 수 있어요.</div>
+                </div>
+              </div>
+              <div style="border:0.5px solid var(--border);border-radius:10px;overflow:hidden">
+                <div style="padding:10px 14px;background:var(--bg2);border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+                  <span style="font-size:13px;font-weight:600;color:var(--text)">필수 해시태그</span>
+                  <button class="btn btn-secondary btn-sm">+ 추가</button>
+                </div>
+                <div style="padding:12px 14px;display:flex;gap:6px;flex-wrap:wrap">
+                  <span class="chip chip-gray">#바잇미</span>
+                  <span class="chip chip-gray">#립밤체험</span>
+                  <span class="chip chip-gray">#뷰티리뷰</span>
+                  <span class="chip chip-gray">#봄뷰티</span>
+                </div>
+              </div>
+              <div style="border:0.5px solid var(--border);border-radius:10px;overflow:hidden">
+                <div style="padding:10px 14px;background:var(--bg2);border-bottom:0.5px solid var(--border)">
+                  <span style="font-size:13px;font-weight:600;color:var(--text)">콘텐츠 가이드라인</span>
+                </div>
+                <div style="padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <div style="width:6px;height:6px;border-radius:50%;background:var(--orange);flex-shrink:0"></div>
+                    <input class="form-input" style="flex:1;padding:8px 10px" value="제품을 실제로 사용하는 장면을 포함해주세요">
+                  </div>
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <div style="width:6px;height:6px;border-radius:50%;background:var(--orange);flex-shrink:0"></div>
+                    <input class="form-input" style="flex:1;padding:8px 10px" value="협찬 사실을 명시해주세요 (#광고 또는 #협찬)">
+                  </div>
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <div style="width:6px;height:6px;border-radius:50%;background:var(--orange);flex-shrink:0"></div>
+                    <input class="form-input" style="flex:1;padding:8px 10px" value="릴스 또는 피드 1개 이상 게시">
+                  </div>
+                  <button class="btn btn-secondary btn-sm" style="align-self:flex-start;margin-top:4px">+ 항목 추가</button>
+                </div>
+              </div>
+              <div style="border:0.5px solid var(--border);border-radius:10px;overflow:hidden">
+                <div style="padding:10px 14px;background:var(--bg2);border-bottom:0.5px solid var(--border)">
+                  <span style="font-size:13px;font-weight:600;color:var(--text)">금지 사항</span>
+                </div>
+                <div style="padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <div style="width:6px;height:6px;border-radius:50%;background:var(--red);flex-shrink:0"></div>
+                    <input class="form-input" style="flex:1;padding:8px 10px" value="경쟁 브랜드 언급 금지">
+                  </div>
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <div style="width:6px;height:6px;border-radius:50%;background:var(--red);flex-shrink:0"></div>
+                    <input class="form-input" style="flex:1;padding:8px 10px" value="상품 훼손 또는 임의 수정 금지">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="padding:20px;display:flex;flex-direction:column;gap:12px">
+              <div style="font-size:13px;font-weight:600;color:var(--text3);letter-spacing:.04em">미리보기</div>
+              <div style="background:var(--bg2);border-radius:10px;padding:14px;font-size:12px;line-height:1.8;color:var(--text2)">
+                <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px">봄 신상 스킨케어 세트 체험단</div>
+                <div style="margin-bottom:6px"><strong>브랜드:</strong> 바잇미 코스메틱</div>
+                <div style="margin-bottom:6px"><strong>협찬가:</strong> ₩32,000</div>
+                <div style="margin-bottom:6px"><strong>게시 마감:</strong> 5월 10일</div>
+                <div style="margin-bottom:8px"><strong>조건:</strong> 팔로워 3K+ · 뷰티</div>
+                <div style="border-top:0.5px solid var(--border);padding-top:8px;font-size:11px;color:var(--text3)">
+                  #바잇미 #립밤체험 #뷰티리뷰 #봄뷰티
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:16px 24px;border-top:0.5px solid var(--border);background:var(--bg2)">
+            <button class="btn btn-secondary" onclick="nextStep(2)">← 이전</button>
+            <button class="btn btn-primary" onclick="nextStep(4)">최종 확인 →</button>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div id="step-4" style="padding:24px;display:none">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px">기본 정보</div>
+              <div style="background:var(--bg2);border-radius:10px;overflow:hidden">
+                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">캠페인명</span><span style="font-size:12px;font-weight:500;color:var(--text)">봄 신상 스킨케어 세트</span></div>
+                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">브랜드</span><span style="font-size:12px;font-weight:500;color:var(--text)">바잇미 코스메틱</span></div>
+                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">유형</span><span class="chip chip-blue" style="font-size:11px">단순협찬</span></div>
+                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">모집 인원</span><span style="font-size:12px;font-weight:500;color:var(--text)">10명</span></div>
+                <div style="display:flex;justify-content:space-between;padding:10px 14px"><span style="font-size:12px;color:var(--text3)">게시 마감</span><span style="font-size:12px;font-weight:500;color:var(--text)">5월 10일</span></div>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px">선정 조건</div>
+              <div style="background:var(--bg2);border-radius:10px;overflow:hidden">
+                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">선정 방식</span><span style="font-size:12px;font-weight:500;color:var(--text)">자동 선정 (선착순)</span></div>
+                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">최소 팔로워</span><span style="font-size:12px;font-weight:500;color:var(--text)">3,000명</span></div>
+                <div style="display:flex;justify-content:space-between;padding:10px 14px"><span style="font-size:12px;color:var(--text3)">독촉 알림</span><span style="font-size:12px;font-weight:500;color:var(--text)">D-7, D-3, D-day</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-green" style="margin-bottom:20px">모든 항목이 입력됐어요. 캠페인을 개설하면 인플루언서에게 노출됩니다.</div>
+          <div style="display:flex;justify-content:space-between">
+            <button class="btn btn-secondary" onclick="nextStep(3)">← 이전</button>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-secondary">임시 저장</button>
+              <button class="btn btn-primary" onclick="goPage('page-campaigns')">캠페인 개설하기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== 공구 일정 관리 ===================== -->
+    <div class="page" id="page-schedule">
+      <div class="page-header">
+        <div>
+          <div class="page-title">공구 일정 관리</div>
+          <div class="page-sub">셀러별 공동구매 일정을 확인하고 승인하세요</div>
+        </div>
+        <button class="btn btn-primary">+ 일정 추가</button>
+      </div>
+
+      <div class="panel-layout">
+        <div>
+          <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);overflow:hidden;margin-bottom:20px">
+            <div class="table-header">
+              <div class="table-title">2026년 4월</div>
+              <div style="display:flex;gap:8px">
+                <button class="btn btn-secondary btn-sm">‹</button>
+                <button class="btn btn-secondary btn-sm">›</button>
+              </div>
+            </div>
+            <div style="padding:16px">
+              <div class="cal-grid">
+                <div class="cal-head">일</div><div class="cal-head">월</div><div class="cal-head">화</div><div class="cal-head">수</div><div class="cal-head">목</div><div class="cal-head">금</div><div class="cal-head">토</div>
+                <div class="cal-day cal-empty"></div><div class="cal-day cal-empty"></div><div class="cal-day">1</div><div class="cal-day">2</div><div class="cal-day">3</div><div class="cal-day">4</div><div class="cal-day">5</div>
+                <div class="cal-day">6</div><div class="cal-day">7</div><div class="cal-day">8</div><div class="cal-day">9</div><div class="cal-day">10</div><div class="cal-day">11</div><div class="cal-day">12</div>
+                <div class="cal-day cal-taken">13</div><div class="cal-day cal-taken">14 <div class="cal-dot"></div></div><div class="cal-today">15</div><div class="cal-day cal-mine">16</div><div class="cal-day cal-mine">17</div><div class="cal-day cal-mine">18</div><div class="cal-day cal-mine">19</div>
+                <div class="cal-day">20</div><div class="cal-day">21</div><div class="cal-day cal-taken">22</div><div class="cal-day cal-taken">23</div><div class="cal-day cal-taken">24</div><div class="cal-day">25</div><div class="cal-day">26</div>
+                <div class="cal-day">27</div><div class="cal-day">28</div><div class="cal-day">29</div><div class="cal-day">30</div>
+              </div>
+              <div style="display:flex;gap:14px;margin-top:12px;padding-top:12px;border-top:0.5px solid var(--border)">
+                <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2)"><div style="width:10px;height:10px;border-radius:3px;background:#FAEEDA;border:1px solid #EF9F27"></div>타 셀러 예약</div>
+                <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2)"><div style="width:10px;height:10px;border-radius:3px;background:var(--orange)"></div>승인된 공구</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <div class="table-header">
+              <div class="table-title">신청 목록</div>
+              <select style="padding:6px 10px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);background:var(--bg);outline:none">
+                <option>전체 상태</option><option>승인 대기</option><option>승인됨</option><option>반려</option>
+              </select>
+            </div>
+            <table>
+              <thead>
+                <tr><th>셀러</th><th>상품</th><th>신청 일정</th><th>채널</th><th>수수료</th><th>상태</th><th>관리</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="td-name">@yui.beauty</div>
+                    <div class="td-sub">팔로워 12.4K</div>
+                  </td>
+                  <td><div class="td-name">BAS 칼취채 핑크</div></td>
+                  <td><div style="font-size:13px">5/13 ~ 5/16</div></td>
+                  <td><span class="chip chip-pink">인스타</span></td>
+                  <td><div style="font-size:13px;font-weight:500">15%</div></td>
+                  <td><span class="chip chip-amber">승인 대기</span></td>
+                  <td>
+                    <div style="display:flex;gap:5px">
+                      <button class="btn btn-green btn-sm">승인</button>
+                      <button class="btn btn-secondary btn-sm" style="color:var(--red)">반려</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="td-name">@beauty_miso</div>
+                    <div class="td-sub">팔로워 38.2K</div>
+                  </td>
+                  <td><div class="td-name">고메잇 브런치 세트</div></td>
+                  <td><div style="font-size:13px">5/20 ~ 5/22</div></td>
+                  <td><span class="chip chip-blue">유튜브</span></td>
+                  <td><div style="font-size:13px;font-weight:500">12%</div></td>
+                  <td><span class="chip chip-amber">승인 대기</span></td>
+                  <td>
+                    <div style="display:flex;gap:5px">
+                      <button class="btn btn-green btn-sm">승인</button>
+                      <button class="btn btn-secondary btn-sm" style="color:var(--red)">반려</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="td-name">@daily_jini</div>
+                    <div class="td-sub">팔로워 8.9K</div>
+                  </td>
+                  <td><div class="td-name">BAS 닭목라벨</div></td>
+                  <td><div style="font-size:13px">4/16 ~ 4/19</div></td>
+                  <td><span class="chip chip-pink">인스타</span></td>
+                  <td><div style="font-size:13px;font-weight:500">18%</div></td>
+                  <td><span class="chip chip-green">승인됨</span></td>
+                  <td><button class="btn btn-secondary btn-sm">상세</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:16px">
+            <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px">이번 주 공구 현황</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div class="schedule-item">
+                <div class="schedule-date">4월 16일 ~ 4월 19일</div>
+                <div class="schedule-name">BAS 닭목라벨</div>
+                <div class="schedule-seller" style="display:flex;align-items:center;justify-content:space-between">
+                  <span>@daily_jini</span>
+                  <span class="chip chip-green" style="font-size:10px">진행중</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:16px">
+            <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px">빠른 통계</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text2)">이번달 공구</span><span style="font-weight:600">12건</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text2)">총 매출</span><span style="font-weight:600;color:var(--orange)">₩8.4M</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text2)">보증금 수납</span><span style="font-weight:600">₩1.2M</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text2)">승인 대기</span><span style="font-weight:600;color:#854F0B">2건</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== 콘텐츠 검수 ===================== -->
+    <div class="page" id="page-review">
+      <div class="page-header">
+        <div>
+          <div class="page-title">콘텐츠 검수</div>
+          <div class="page-sub">제출된 콘텐츠를 검토하고 승인 또는 반려하세요</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <span class="chip chip-amber">검수 대기 7건</span>
+        </div>
+      </div>
+
+      <div class="panel-layout" style="grid-template-columns:1fr 260px">
+        <div>
+          <div class="review-item">
+            <div class="review-header">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div class="inf-avatar">유</div>
+                <div>
+                  <div style="font-size:14px;font-weight:600;color:var(--text)">@yui.beauty</div>
+                  <div style="font-size:12px;color:var(--text3)">봄 신상 스킨케어 세트 · 제출 4월 17일</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center">
+                <span class="chip chip-amber">검수 대기</span>
+                <button class="btn btn-green btn-sm">승인</button>
+                <button class="btn btn-secondary btn-sm" style="color:var(--red)">반려</button>
+              </div>
+            </div>
+            <div class="review-body">
+              <div>
+                <div style="font-size:12px;font-weight:600;color:var(--text3);margin-bottom:8px;letter-spacing:.03em">제출 내용</div>
+                <div style="background:var(--bg2);border-radius:8px;padding:10px 12px;margin-bottom:10px">
+                  <div style="font-size:12px;color:var(--text3);margin-bottom:3px">게시물 URL</div>
+                  <div style="font-size:13px;color:var(--blue)">https://instagram.com/p/abc123</div>
+                </div>
+                <div style="background:var(--bg2);border-radius:8px;padding:10px 12px">
+                  <div style="font-size:12px;color:var(--text3);margin-bottom:3px">첨부 파일</div>
+                  <div style="font-size:13px;color:var(--green);font-weight:500">spring_skin.mp4 · 148MB</div>
+                </div>
+              </div>
+              <div>
+                <div style="font-size:12px;font-weight:600;color:var(--text3);margin-bottom:8px;letter-spacing:.03em">자동 검수 결과</div>
+                <div class="review-check-list">
+                  <div class="check-item"><div class="ci-ok">✓</div>필수 해시태그 포함</div>
+                  <div class="check-item"><div class="ci-ok">✓</div>협찬 표시 (#광고)</div>
+                  <div class="check-item"><div class="ci-ok">✓</div>게시물 공개 상태</div>
+                  <div class="check-item"><div class="ci-fail">✕</div>제품 사용 장면 미확인</div>
+                  <div class="check-item"><div class="ci-pending"></div>경쟁 브랜드 언급 (수동 확인)</div>
+                </div>
+              </div>
+            </div>
+            <div style="padding:10px 16px;border-top:0.5px solid var(--border);background:var(--bg2)">
+              <textarea class="form-input" rows="2" placeholder="반려 사유 또는 피드백 메모..." style="font-size:12px;background:var(--bg)"></textarea>
+            </div>
+          </div>
+
+          <div class="review-item">
+            <div class="review-header">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div class="inf-avatar" style="background:linear-gradient(135deg,#E6F1FB,#85B7EB);color:var(--blue)">미</div>
+                <div>
+                  <div style="font-size:14px;font-weight:600;color:var(--text)">@beauty_miso</div>
+                  <div style="font-size:12px;color:var(--text3)">봄 신상 스킨케어 세트 · 제출 4월 16일</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center">
+                <span class="chip chip-amber">검수 대기</span>
+                <button class="btn btn-green btn-sm">승인</button>
+                <button class="btn btn-secondary btn-sm" style="color:var(--red)">반려</button>
+              </div>
+            </div>
+            <div class="review-body">
+              <div>
+                <div style="font-size:12px;font-weight:600;color:var(--text3);margin-bottom:8px;letter-spacing:.03em">제출 내용</div>
+                <div style="background:var(--bg2);border-radius:8px;padding:10px 12px;margin-bottom:10px">
+                  <div style="font-size:12px;color:var(--text3);margin-bottom:3px">게시물 URL</div>
+                  <div style="font-size:13px;color:var(--blue)">https://instagram.com/reel/xyz789</div>
+                </div>
+                <div style="background:var(--bg2);border-radius:8px;padding:10px 12px">
+                  <div style="font-size:12px;color:var(--text3);margin-bottom:3px">첨부 파일</div>
+                  <div style="font-size:13px;color:var(--green);font-weight:500">review_video.mp4 · 210MB</div>
+                </div>
+              </div>
+              <div>
+                <div style="font-size:12px;font-weight:600;color:var(--text3);margin-bottom:8px;letter-spacing:.03em">자동 검수 결과</div>
+                <div class="review-check-list">
+                  <div class="check-item"><div class="ci-ok">✓</div>필수 해시태그 포함</div>
+                  <div class="check-item"><div class="ci-ok">✓</div>협찬 표시 (#협찬)</div>
+                  <div class="check-item"><div class="ci-ok">✓</div>게시물 공개 상태</div>
+                  <div class="check-item"><div class="ci-ok">✓</div>제품 사용 장면 확인</div>
+                  <div class="check-item"><div class="ci-ok">✓</div>경쟁 브랜드 미언급</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:16px">
+            <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px">검수 현황</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text2)">검수 대기</span><span style="font-weight:700;color:#854F0B">7건</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text2)">오늘 승인</span><span style="font-weight:700;color:var(--green)">3건</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text2)">오늘 반려</span><span style="font-weight:700;color:var(--red)">1건</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text2)">이번달 승인율</span><span style="font-weight:700">87%</span></div>
+            </div>
+          </div>
+          <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:16px">
+            <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px">자주 쓰는 반려 사유</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="padding:8px 10px;background:var(--bg2);border-radius:8px;font-size:12px;color:var(--text2);cursor:pointer" onclick="this.style.background='#FCEBEB'">해시태그 누락</div>
+              <div style="padding:8px 10px;background:var(--bg2);border-radius:8px;font-size:12px;color:var(--text2);cursor:pointer">협찬 표시 누락</div>
+              <div style="padding:8px 10px;background:var(--bg2);border-radius:8px;font-size:12px;color:var(--text2);cursor:pointer">제품 사용 장면 없음</div>
+              <div style="padding:8px 10px;background:var(--bg2);border-radius:8px;font-size:12px;color:var(--text2);cursor:pointer">게시물 비공개</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== 인플루언서 목록 ===================== -->
+    <div class="page" id="page-influencers">
+      <div class="page-header">
+        <div>
+          <div class="page-title">인플루언서 목록</div>
+          <div class="page-sub">등록된 인플루언서 현황을 확인하세요</div>
+        </div>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-label">전체 인플루언서</div><div class="stat-value">318</div><span class="stat-badge up">↑ 12 이번달</span></div>
+        <div class="stat-card"><div class="stat-label">나노 (1K~10K)</div><div class="stat-value">142</div></div>
+        <div class="stat-card"><div class="stat-label">매크로 (10K~100K)</div><div class="stat-value">158</div></div>
+        <div class="stat-card"><div class="stat-label">메가 (100K+)</div><div class="stat-value">18</div></div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-header">
+          <div class="table-title">인플루언서</div>
+          <input style="padding:7px 12px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);outline:none;width:200px" placeholder="이름 · 계정 검색...">
+        </div>
+        <table>
+          <thead>
+            <tr><th>인플루언서</th><th>플랫폼</th><th>팔로워</th><th>등급</th><th>카테고리</th><th>누적 캠페인</th><th>상태</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <div class="inf-avatar">유</div>
+                  <div><div class="td-name">유이</div><div class="td-sub">yui_beauty</div></div>
+                </div>
+              </td>
+              <td><span class="chip chip-pink">인스타</span></td>
+              <td><div style="font-size:13px;font-weight:500">12.4K</div></td>
+              <td><span class="chip chip-purple">매크로</span></td>
+              <td><span class="chip chip-gray">뷰티</span></td>
+              <td><div style="font-size:13px">8건</div></td>
+              <td><span class="chip chip-green">활성</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <div class="inf-avatar" style="background:linear-gradient(135deg,#E6F1FB,#85B7EB);color:var(--blue)">미</div>
+                  <div><div class="td-name">미소</div><div class="td-sub">beauty_miso</div></div>
+                </div>
+              </td>
+              <td><span class="chip chip-pink">인스타</span></td>
+              <td><div style="font-size:13px;font-weight:500">38.2K</div></td>
+              <td><span class="chip chip-purple">매크로</span></td>
+              <td><span class="chip chip-gray">뷰티</span></td>
+              <td><div style="font-size:13px">14건</div></td>
+              <td><span class="chip chip-green">활성</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <div class="inf-avatar" style="background:linear-gradient(135deg,#EAF3DE,#97C459);color:#3B6D11">지</div>
+                  <div><div class="td-name">지니</div><div class="td-sub">daily_jini</div></div>
+                </div>
+              </td>
+              <td><span class="chip chip-pink">인스타</span></td>
+              <td><div style="font-size:13px;font-weight:500">8.9K</div></td>
+              <td><span class="chip chip-blue">나노</span></td>
+              <td><span class="chip chip-gray">라이프</span></td>
+              <td><div style="font-size:13px">5건</div></td>
+              <td><span class="chip chip-green">활성</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- .content -->
+</div><!-- .main -->
+
+<script>
+const breadcrumbs = {
+  'page-campaigns': '캠페인 › <strong>시딩 캠페인</strong>',
+  'page-campaign-new': '캠페인 › <strong>신규 생성</strong>',
+  'page-schedule': '공동구매 › <strong>공구 일정 관리</strong>',
+  'page-review': '콘텐츠 › <strong>검수</strong>',
+  'page-influencers': '인플루언서 › <strong>목록</strong>',
+  'page-campaign-detail': '캠페인 › <strong>상세 관리</strong>',
+};
+
+function goPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('on'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('breadcrumb').innerHTML = breadcrumbs[id] || '';
+  // nav 동기화
+  const navMap = {
+    'page-campaigns': 0, 'page-campaign-new': 1,
+    'page-schedule': 2, 'page-review': 3, 'page-influencers': 4
+  };
+  const navItems = document.querySelectorAll('.nav-item');
+  if (navMap[id] !== undefined) navItems[navMap[id]].classList.add('on');
+}
+
+let currentStep = 1;
+function nextStep(n) {
+  document.getElementById('step-' + currentStep).style.display = 'none';
+  document.getElementById('step-' + n).style.display = 'block';
+
+  // 스텝 바 업데이트
+  for (let i = 1; i <= 4; i++) {
+    const num = document.getElementById('sn' + i);
+    const lbl = document.getElementById('sl' + i);
+    if (i < n) {
+      num.style.background = '#1D9E75'; num.style.color = '#fff'; num.style.border = 'none';
+      num.innerHTML = '✓'; lbl.className = 'step-lbl';
+    } else if (i === n) {
+      num.style.background = 'var(--text)'; num.style.color = '#fff'; num.style.border = 'none';
+      num.innerHTML = i; lbl.className = 'step-lbl on';
+    } else {
+      num.style.background = 'var(--bg2)'; num.style.color = 'var(--text3)'; num.style.border = '1px solid var(--border2)';
+      num.innerHTML = i; lbl.className = 'step-lbl';
+    }
+    if (i < 4) {
+      document.getElementById('sl-' + i).className = i < n ? 'step-line done' : 'step-line';
+    }
+  }
+  currentStep = n;
+}
+
+// 토글 옵션
+document.querySelectorAll('.toggle-group').forEach(g => {
+  g.querySelectorAll('.toggle-opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      g.querySelectorAll('.toggle-opt').forEach(o => o.classList.remove('on'));
+      opt.classList.add('on');
+    });
+  });
+});
+</script>
+</body>
+</html>

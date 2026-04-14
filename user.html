@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>바잇미 — 인플루언서 포털</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --orange:#E85D24;--green:#1D9E75;--red:#A32D2D;--blue:#185FA5;
+  --bg:#fff;--bg2:#f5f5f3;--bg3:#eeece8;
+  --text:#1a1a18;--text2:#6b6b66;--text3:#9b9b96;
+  --border:rgba(0,0,0,.1);--border2:rgba(0,0,0,.2);
+}
+body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:20px 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+.device{width:390px;min-height:844px;background:var(--bg);border-radius:40px;box-shadow:0 30px 80px rgba(0,0,0,.2),0 0 0 1px rgba(0,0,0,.08);overflow:hidden;position:relative;display:flex;flex-direction:column}
+.status-bar{padding:14px 28px 8px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.status-bar .time{font-size:15px;font-weight:600;color:var(--text)}
+.status-bar .icons{display:flex;gap:6px;align-items:center}
+.status-bar .icons span{font-size:12px;color:var(--text)}
+
+/* 화면 시스템 */
+.screen{display:none;flex-direction:column;flex:1;overflow:hidden}
+.screen.active{display:flex}
+.scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.scroll-area::-webkit-scrollbar{display:none}
+
+/* 네비 바 */
+.nav-bar{display:flex;border-top:0.5px solid var(--border);padding:8px 0 20px;flex-shrink:0;background:var(--bg)}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:2px 0}
+.nav-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center}
+.nav-icon svg{width:22px;height:22px;stroke:var(--text3);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:stroke .15s}
+.nav-item.on .nav-icon svg{stroke:var(--orange)}
+.nav-label{font-size:10px;color:var(--text3);transition:color .15s}
+.nav-item.on .nav-label{color:var(--orange);font-weight:500}
+
+/* 탑바 */
+.topbar{padding:4px 20px 12px;display:flex;align-items:center;gap:12px;flex-shrink:0}
+.topbar-back{width:36px;height:36px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.topbar-back svg{width:18px;height:18px;stroke:var(--text);fill:none;stroke-width:2;stroke-linecap:round}
+.topbar-title{font-size:17px;font-weight:600;color:var(--text);flex:1}
+.topbar-action{font-size:14px;color:var(--orange);font-weight:500;cursor:pointer;flex-shrink:0}
+
+/* 탭 */
+.tab-row{display:flex;border-bottom:0.5px solid var(--border);flex-shrink:0;padding:0 20px;gap:4px}
+.tab{padding:10px 14px;font-size:14px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap}
+.tab.on{color:var(--text);border-bottom-color:var(--text)}
+
+/* 버튼 */
+.btn{width:100%;padding:14px;border-radius:14px;font-size:15px;font-weight:600;border:none;cursor:pointer;transition:opacity .15s}
+.btn:active{opacity:.8}
+.btn-dark{background:var(--text);color:#fff}
+.btn-orange{background:var(--orange);color:#fff}
+.btn-gray{background:var(--bg2);color:var(--text);border:0.5px solid var(--border2)}
+.btn-sm{padding:8px 14px;border-radius:10px;font-size:13px;font-weight:500;border:none;cursor:pointer}
+
+/* 인풋 */
+.input-wrap{display:flex;flex-direction:column;gap:6px}
+.input-label{font-size:13px;font-weight:500;color:var(--text2)}
+.input{width:100%;padding:13px 16px;border-radius:12px;border:1.5px solid var(--border2);font-size:15px;color:var(--text);background:var(--bg);outline:none;transition:border-color .15s}
+.input:focus{border-color:var(--text)}
+.input-hint{font-size:12px;color:var(--text3)}
+.input-ok{font-size:12px;color:var(--green)}
+.input-row{display:flex;gap:8px;align-items:flex-end}
+.input-row .input{flex:1}
+
+/* 칩 */
+.chip{display:inline-flex;align-items:center;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid}
+.chip-teal{background:#E1F5EE;color:#0F6E56;border-color:#5DCAA5}
+.chip-amber{background:#FAEEDA;color:#854F0B;border-color:#EF9F27}
+.chip-blue{background:#E6F1FB;color:#185FA5;border-color:#85B7EB}
+.chip-gray{background:#F1EFE8;color:#5F5E5A;border-color:#B4B2A9}
+.chip-purple{background:#EEEDFE;color:#534AB7;border-color:#AFA9EC}
+.chip-pink{background:#FBEAF0;color:#993556;border-color:#ED93B1}
+.chip-green{background:#EAF3DE;color:#3B6D11;border-color:#97C459}
+.chip-red{background:#FCEBEB;color:#A32D2D;border-color:#F09595}
+
+/* 알림 박스 */
+.alert{padding:12px 14px;border-radius:12px;font-size:13px;line-height:1.5}
+.alert-red{background:#FCEBEB;color:#791F1F}
+.alert-amber{background:#FAEEDA;color:#633806}
+.alert-green{background:#EAF3DE;color:#27500A}
+
+/* KPI 그리드 */
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kpi-card{background:var(--bg2);border-radius:14px;padding:14px 16px}
+.kpi-label{font-size:12px;color:var(--text3);margin-bottom:4px}
+.kpi-value{font-size:22px;font-weight:700;color:var(--text)}
+.kpi-sub{font-size:11px;color:var(--text2);margin-top:2px}
+
+/* 캠페인 카드 */
+.camp-card{border:0.5px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .1s}
+.camp-card:active{transform:scale(.98)}
+.camp-thumb{height:120px;background:linear-gradient(135deg,#F5E6D3,#E8D5C0)}
+.camp-thumb.green{background:linear-gradient(135deg,#D6EAD6,#C2DCC2)}
+.camp-thumb.blue{background:linear-gradient(135deg,#D6E8F5,#C0D8EC)}
+.camp-body{padding:14px 16px}
+.camp-name{font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px}
+.camp-meta{font-size:12px;color:var(--text3);line-height:1.5}
+.camp-tags{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.camp-footer{padding:10px 16px;border-top:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--bg2)}
+.camp-footer-label{font-size:12px;color:var(--text3)}
+.camp-footer-action{font-size:13px;color:var(--orange);font-weight:600}
+
+/* 상품 카드 (공동구매) */
+.product-item{display:flex;gap:14px;padding:16px 0;border-bottom:0.5px solid var(--border)}
+.product-item:last-child{border-bottom:none}
+.product-thumb{width:80px;height:80px;border-radius:12px;background:linear-gradient(135deg,#F5E6D3,#E8D5C0);flex-shrink:0;position:relative;overflow:hidden}
+.product-badge{position:absolute;top:6px;left:6px;background:var(--orange);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px}
+.product-info{flex:1;min-width:0}
+.product-name{font-size:14px;color:var(--text);line-height:1.4;margin-bottom:4px}
+.product-price{display:flex;align-items:baseline;gap:6px;margin-bottom:8px}
+.product-discount{font-size:13px;font-weight:700;color:var(--orange)}
+.product-original{font-size:12px;color:var(--text3);text-decoration:line-through}
+.product-current{font-size:16px;font-weight:700;color:var(--text)}
+.product-actions{display:flex;gap:6px}
+
+/* 트래커 */
+.tracker-step{display:flex;gap:12px;padding:12px 0;position:relative}
+.tracker-step::before{content:'';position:absolute;left:16px;top:40px;bottom:-12px;width:1px;background:var(--border)}
+.tracker-step:last-child::before{display:none}
+.tracker-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0;position:relative;z-index:1}
+.dot-done{background:#EAF3DE;color:var(--green)}
+.dot-now{background:var(--orange);color:#fff}
+.dot-idle{background:var(--bg2);color:var(--text3);border:1.5px solid var(--border2)}
+.tracker-content{flex:1;padding-top:4px}
+.tracker-title{font-size:14px;font-weight:500;color:var(--text)}
+.tracker-sub{font-size:12px;color:var(--text3);margin-top:2px}
+.tracker-action{font-size:13px;color:var(--orange);font-weight:600;margin-top:4px;cursor:pointer}
+
+/* 프로그레스 */
+.progress-row{display:flex;align-items:center;padding:12px 0;gap:0}
+.prog-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;z-index:1}
+.prog-line{flex:1;height:2px;background:var(--border)}
+.prog-line.done{background:var(--green)}
+
+/* SNS 선택 */
+.sns-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sns-option{display:flex;align-items:center;gap:10px;padding:12px;border:1.5px solid var(--border);border-radius:14px;cursor:pointer;transition:all .15s}
+.sns-option.on{border-color:var(--text);background:var(--bg2)}
+.sns-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.ig{background:#FBEAF0;color:#993556}
+.yt{background:#FCEBEB;color:#A32D2D}
+.tt{background:#2a2a28;color:#fff}
+.nv{background:#EAF3DE;color:#3B6D11}
+.sns-name{font-size:14px;font-weight:500;color:var(--text)}
+.check-circle{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border2);margin-left:auto;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.check-circle.on{background:var(--text);border-color:var(--text)}
+
+/* 카테고리 칩 */
+.cat-row{display:flex;gap:8px;flex-wrap:wrap}
+.cat-chip{padding:8px 16px;border-radius:20px;font-size:13px;font-weight:500;border:1.5px solid var(--border);background:var(--bg);color:var(--text2);cursor:pointer;transition:all .15s}
+.cat-chip.on{background:var(--text);color:#fff;border-color:var(--text)}
+.cat-chip.star{background:var(--orange);color:#fff;border-color:var(--orange)}
+
+/* 캘린더 */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-head{text-align:center;font-size:11px;color:var(--text3);padding:4px 0;font-weight:500}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:13px;border-radius:8px;color:var(--text2);cursor:pointer;transition:all .15s}
+.cal-day:hover{background:var(--bg2)}
+.cal-taken{background:#FAEEDA;color:#854F0B}
+.cal-mine{background:var(--text);color:#fff;font-weight:600}
+.cal-today{color:var(--orange);font-weight:600}
+.cal-empty{pointer-events:none}
+
+/* 요약 카드 */
+.summary-card{background:var(--bg2);border-radius:16px;overflow:hidden}
+.summary-row{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:0.5px solid var(--border)}
+.summary-row:last-child{border-bottom:none}
+.summary-label{font-size:13px;color:var(--text2)}
+.summary-value{font-size:13px;font-weight:600;color:var(--text)}
+
+/* 섹션 타이틀 */
+.section-title{font-size:13px;font-weight:600;color:var(--text3);letter-spacing:.04em;text-transform:uppercase;margin-bottom:10px}
+
+/* 스크롤 카테고리 */
+.scroll-cats{display:flex;gap:8px;overflow-x:auto;padding:0 20px 12px;flex-shrink:0;scrollbar-width:none}
+.scroll-cats::-webkit-scrollbar{display:none}
+.scroll-cat{padding:7px 16px;border-radius:20px;font-size:13px;font-weight:500;white-space:nowrap;cursor:pointer;border:1.5px solid var(--border);color:var(--text2);background:var(--bg);transition:all .15s;flex-shrink:0}
+.scroll-cat.on{background:var(--text);color:#fff;border-color:var(--text)}
+
+/* 업로드 박스 */
+.upload-box{border:2px dashed var(--border2);border-radius:14px;padding:24px;text-align:center;cursor:pointer;transition:all .15s}
+.upload-box:hover{background:var(--bg2)}
+.upload-box.done{border-color:var(--green);background:#EAF3DE}
+
+/* 프로필 아바타 */
+.avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#E85D24,#F0A080);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#fff;flex-shrink:0}
+
+/* 공구 배너 */
+.collab-banner{background:linear-gradient(135deg,#FFF3EE,#FAEEDA);border-radius:12px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
+
+/* 검색 */
+.search-bar{display:flex;align-items:center;gap:10px;background:var(--bg2);border-radius:12px;padding:11px 14px}
+.search-bar svg{width:18px;height:18px;stroke:var(--text3);fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0}
+.search-bar input{flex:1;border:none;background:none;font-size:14px;color:var(--text);outline:none}
+.search-bar input::placeholder{color:var(--text3)}
+</style>
+</head>
+<body>
+
+<div class="device">
+  <div class="status-bar">
+    <span class="time">9:41</span>
+    <div class="icons">
+      <span>●●●</span>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" style="color:var(--text)"><rect x="0" y="4" width="3" height="8" rx="1"/><rect x="4.5" y="2.5" width="3" height="9.5" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/><rect x="13.5" y="1" width="2.5" height="10" rx="1" fill="var(--border2)"/></svg>
+    </div>
+  </div>
+
+  <!-- ===================== 홈 화면 ===================== -->
+  <div class="screen active" id="screen-home">
+    <div style="padding:8px 20px 14px;flex-shrink:0">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-size:22px;font-weight:700;color:var(--text)">안녕하세요, 유이님 👋</div>
+          <div style="font-size:13px;color:var(--text3);margin-top:2px">오늘도 좋은 하루 되세요</div>
+        </div>
+        <div style="position:relative;cursor:pointer" onclick="goScreen('screen-home')">
+          <div class="avatar">유</div>
+          <div style="position:absolute;top:0;right:0;width:10px;height:10px;background:var(--orange);border-radius:50%;border:2px solid var(--bg)"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-row">
+      <div class="tab on" onclick="switchTab(this,'home-tab-sponsor','home-tab-gb')">협찬</div>
+      <div class="tab" onclick="switchTab(this,'home-tab-gb','home-tab-sponsor')">공동구매</div>
+    </div>
+
+    <!-- 협찬 탭 -->
+    <div id="home-tab-sponsor" class="scroll-area" style="padding:16px 20px;display:flex;flex-direction:column;gap:14px">
+      <div class="alert alert-red" style="display:flex;align-items:center;gap:10px;cursor:pointer" onclick="goScreen('screen-status')">
+        <span style="font-size:18px">⚠️</span>
+        <div>
+          <div style="font-weight:600">콘텐츠 미제출 마감 D-3</div>
+          <div style="font-size:12px;margin-top:1px;opacity:.8">봄 스킨케어 캠페인 · 4월 20일까지</div>
+        </div>
+        <svg style="margin-left:auto;flex-shrink:0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#791F1F" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">진행중 협찬</div>
+          <div class="kpi-value">2<span style="font-size:14px;font-weight:500;color:var(--text2)">건</span></div>
+          <div class="kpi-sub">제출 대기 1건</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">이번달 리워드</div>
+          <div class="kpi-value">₩120K</div>
+          <div class="kpi-sub">지난달 +18%</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">누적 조회수</div>
+          <div class="kpi-value">84.2K</div>
+          <div class="kpi-sub">평균 24.3K/건</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">신청 가능</div>
+          <div class="kpi-value">7<span style="font-size:14px;font-weight:500;color:var(--text2)">개</span></div>
+          <div class="kpi-sub">내 조건 매칭</div>
+        </div>
+      </div>
+
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <div style="font-size:16px;font-weight:700;color:var(--text)">지금 신청 가능한 캠페인</div>
+          <div style="font-size:13px;color:var(--orange);font-weight:600;cursor:pointer" onclick="goScreen('screen-explore')">전체보기</div>
+        </div>
+        <div class="camp-card" onclick="goScreen('screen-detail')">
+          <div class="camp-thumb"></div>
+          <div class="camp-body">
+            <div class="camp-name">봄 신상 립밤 3종 세트</div>
+            <div class="camp-meta">바잇미 코스메틱 · 협찬가 ₩32,000 · 마감 4월 25일</div>
+            <div class="camp-tags">
+              <span class="chip chip-teal">단순협찬</span>
+              <span class="chip chip-gray">뷰티</span>
+              <span class="chip chip-blue">3K+</span>
+            </div>
+          </div>
+          <div class="camp-footer">
+            <span class="camp-footer-label">8/10명 모집</span>
+            <span class="camp-footer-action">상세보기 →</span>
+          </div>
+        </div>
+        <div class="camp-card" style="margin-top:10px" onclick="goScreen('screen-detail')">
+          <div class="camp-thumb green"></div>
+          <div class="camp-body">
+            <div class="camp-name">여름 선크림 신제품 체험단</div>
+            <div class="camp-meta">선케어랩 · 협찬가 ₩55,000 · 마감 5월 1일</div>
+            <div class="camp-tags">
+              <span class="chip chip-amber">유가협찬</span>
+              <span class="chip chip-gray">뷰티</span>
+              <span class="chip chip-blue">10K+</span>
+            </div>
+          </div>
+          <div class="camp-footer">
+            <span class="camp-footer-label">3/5명 모집</span>
+            <span class="camp-footer-action">상세보기 →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 공동구매 탭 -->
+    <div id="home-tab-gb" class="scroll-area" style="padding:0;display:none;flex-direction:column">
+      <div style="display:flex;overflow-x:auto;border-bottom:0.5px solid var(--border);flex-shrink:0;scrollbar-width:none">
+        <style>.cat-scroll::-webkit-scrollbar{display:none}</style>
+        <div class="cat-scroll" style="display:flex;padding:0 20px">
+          <div style="flex-shrink:0;padding:11px 16px;font-size:14px;font-weight:600;color:var(--orange);border-bottom:2px solid var(--orange)">전체</div>
+          <div style="flex-shrink:0;padding:11px 16px;font-size:14px;color:var(--text3)">사료</div>
+          <div style="flex-shrink:0;padding:11px 16px;font-size:14px;color:var(--text3)">간식</div>
+          <div style="flex-shrink:0;padding:11px 16px;font-size:14px;color:var(--text3)">의류</div>
+          <div style="flex-shrink:0;padding:11px 16px;font-size:14px;color:var(--text3)">용품</div>
+        </div>
+      </div>
+      <div class="scroll-area" style="padding:0 20px;flex:1">
+        <div class="collab-banner" style="margin-top:14px">
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#412402">바잇미 X 산리오 콜라보</div>
+            <div style="font-size:12px;color:#633806;margin-top:2px">한정 특가 진행중</div>
+          </div>
+          <span style="background:var(--orange);color:#fff;font-size:12px;font-weight:700;padding:4px 10px;border-radius:10px">특가</span>
+        </div>
+        <div style="margin-top:4px">
+          <div class="product-item" onclick="goScreen('screen-gb-step1')">
+            <div class="product-thumb" style="cursor:pointer">
+              <div class="product-badge">NEW</div>
+            </div>
+            <div class="product-info">
+              <div class="product-name">BAS 칼취채 핑크에디션 / BAS 닭목라벨</div>
+              <div class="product-price">
+                <span class="product-discount">20%</span>
+                <span class="product-original">13,700원</span>
+                <span class="product-current">10,900원</span>
+              </div>
+              <div class="product-actions">
+                <button class="btn btn-orange btn-sm" style="flex:1" onclick="event.stopPropagation();goScreen('screen-gb-step1')">공동구매 신청</button>
+                <button class="btn-sm" style="width:34px;background:var(--bg2);border:0.5px solid var(--border2)">♡</button>
+              </div>
+            </div>
+          </div>
+          <div class="product-item">
+            <div class="product-thumb" style="background:linear-gradient(135deg,#D6EAD6,#C2DCC2)"></div>
+            <div class="product-info">
+              <div class="product-name">고메잇 강남 브런치 세트 패키지</div>
+              <div class="product-price">
+                <span class="product-discount">15%</span>
+                <span class="product-original">48,000원</span>
+                <span class="product-current">40,800원</span>
+              </div>
+              <div class="product-actions">
+                <button class="btn btn-orange btn-sm" style="flex:1">공동구매 신청</button>
+                <button class="btn-sm" style="width:34px;background:var(--bg2);border:0.5px solid var(--border2)">♡</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-bar">
+      <div class="nav-item on" onclick="goScreen('screen-home')">
+        <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <div class="nav-label">홈</div>
+      </div>
+      <div class="nav-item" onclick="goScreen('screen-explore')">
+        <div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        <div class="nav-label">탐색</div>
+      </div>
+      <div class="nav-item" onclick="goScreen('screen-status')">
+        <div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></div>
+        <div class="nav-label">내 현황</div>
+      </div>
+      <div class="nav-item" onclick="goScreen('screen-mypage')">
+        <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div class="nav-label">내 정보</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== 캠페인 탐색 ===================== -->
+  <div class="screen" id="screen-explore">
+    <div class="topbar">
+      <div class="topbar-title">캠페인 탐색</div>
+    </div>
+    <div style="padding:0 20px 12px;flex-shrink:0">
+      <div class="search-bar">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input placeholder="브랜드명 · 상품명 검색" />
+      </div>
+    </div>
+    <div class="scroll-cats">
+      <div class="scroll-cat on">전체</div>
+      <div class="scroll-cat">뷰티</div>
+      <div class="scroll-cat">푸드</div>
+      <div class="scroll-cat">라이프</div>
+      <div class="scroll-cat">패션</div>
+      <div class="scroll-cat">반려동물</div>
+    </div>
+    <div class="scroll-area" style="padding:0 20px 20px;display:flex;flex-direction:column;gap:10px">
+      <div class="camp-card" onclick="goScreen('screen-detail')">
+        <div class="camp-thumb"></div>
+        <div class="camp-body">
+          <div class="camp-name">봄 신상 립밤 3종 세트</div>
+          <div class="camp-meta">바잇미 코스메틱 · 협찬가 ₩32,000 · 마감 4/25 · 10명 모집</div>
+          <div class="camp-tags"><span class="chip chip-teal">단순협찬</span><span class="chip chip-gray">뷰티</span><span class="chip chip-blue">3K+</span></div>
+        </div>
+        <div class="camp-footer"><span class="camp-footer-label">8/10명</span><span class="camp-footer-action">상세보기 →</span></div>
+      </div>
+      <div class="camp-card" onclick="goScreen('screen-detail')">
+        <div class="camp-thumb green"></div>
+        <div class="camp-body">
+          <div class="camp-name">여름 선크림 신제품 체험단</div>
+          <div class="camp-meta">선케어랩 · 협찬가 ₩55,000 · 마감 5/1 · 5명 모집</div>
+          <div class="camp-tags"><span class="chip chip-amber">유가협찬</span><span class="chip chip-gray">뷰티</span><span class="chip chip-blue">10K+</span></div>
+        </div>
+        <div class="camp-footer"><span class="camp-footer-label">3/5명</span><span class="camp-footer-action">상세보기 →</span></div>
+      </div>
+      <div class="camp-card">
+        <div class="camp-thumb blue"></div>
+        <div class="camp-body">
+          <div class="camp-name">고메잇 강남 브런치 체험</div>
+          <div class="camp-meta">고메잇 · 협찬가 ₩80,000 · 마감 5/15 · 3명 모집</div>
+          <div class="camp-tags"><span class="chip chip-purple">시식체험</span><span class="chip chip-gray">푸드</span><span class="chip chip-blue">5K+</span></div>
+        </div>
+        <div class="camp-footer"><span class="camp-footer-label">1/3명</span><span class="camp-footer-action">상세보기 →</span></div>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <div class="nav-item" onclick="goScreen('screen-home')">
+        <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <div class="nav-label">홈</div>
+      </div>
+      <div class="nav-item on" onclick="goScreen('screen-explore')">
+        <div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        <div class="nav-label">탐색</div>
+      </div>
+      <div class="nav-item" onclick="goScreen('screen-status')">
+        <div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></div>
+        <div class="nav-label">내 현황</div>
+      </div>
+      <div class="nav-item" onclick="goScreen('screen-mypage')">
+        <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div class="nav-label">내 정보</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== 캠페인 상세 ===================== -->
+  <div class="screen" id="screen-detail">
+    <div class="topbar">
+      <div class="topbar-back" onclick="history.back();goScreen('screen-explore')">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </div>
+      <div class="topbar-title">캠페인 상세</div>
+    </div>
+    <div class="scroll-area" style="padding:0 0 20px">
+      <div style="height:200px;background:linear-gradient(135deg,#F5E6D3,#E8D5C0);position:relative">
+        <div style="position:absolute;bottom:14px;left:20px">
+          <div class="camp-tags"><span class="chip chip-teal">단순협찬</span><span class="chip chip-gray">뷰티</span></div>
+        </div>
+      </div>
+      <div style="padding:20px">
+        <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:16px">
+          <div style="width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,#F5E6D3,#E8D5C0);flex-shrink:0"></div>
+          <div>
+            <div style="font-size:18px;font-weight:700;color:var(--text)">봄 신상 립밤 3종 세트</div>
+            <div style="font-size:13px;color:var(--text3);margin-top:3px">바잇미 코스메틱</div>
+          </div>
+        </div>
+        <div class="summary-card" style="margin-bottom:14px">
+          <div class="summary-row"><span class="summary-label">협찬 상품가</span><span class="summary-value">₩32,000</span></div>
+          <div class="summary-row"><span class="summary-label">게시 마감</span><span class="summary-value">5월 10일</span></div>
+          <div class="summary-row"><span class="summary-label">모집 현황</span><span class="summary-value">8 / 10명</span></div>
+          <div class="summary-row"><span class="summary-label">조건</span><span class="summary-value">팔로워 3K+ · 뷰티</span></div>
+          <div class="summary-row"><span class="summary-label">플랫폼</span><span class="summary-value">인스타그램</span></div>
+        </div>
+        <div class="alert alert-green" style="margin-bottom:14px">
+          내 팔로워 <strong>12,400명</strong> — 조건 충족 ✓
+        </div>
+        <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px">캠페인 안내</div>
+        <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:20px">
+          봄 시즌 신제품 립밤 3종 세트를 체험하고 인스타그램 피드 또는 릴스로 콘텐츠를 제작해주세요.<br><br>
+          상품 수령 후 14일 이내 게시를 완료해야 하며, 게시 후 URL을 앱에서 제출해주시면 됩니다.
+        </div>
+        <button class="btn btn-dark" onclick="goScreen('screen-status')">신청하기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== 내 협찬 현황 ===================== -->
+  <div class="screen" id="screen-status">
+    <div class="topbar">
+      <div class="topbar-title">내 협찬 현황</div>
+    </div>
+    <div class="tab-row">
+      <div class="tab on">진행중</div>
+      <div class="tab">완료</div>
+    </div>
+    <div class="scroll-area" style="padding:16px 20px;display:flex;flex-direction:column;gap:12px">
+      <div style="background:var(--bg2);border-radius:16px;overflow:hidden">
+        <div style="padding:14px 16px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:15px;font-weight:700;color:var(--text)">봄 스킨케어 세트</div>
+          <span class="chip chip-amber">제출 대기</span>
+        </div>
+        <div style="padding:14px 16px;display:flex;flex-direction:column;gap:0">
+          <div class="tracker-step">
+            <div class="tracker-dot dot-done">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <div class="tracker-content">
+              <div class="tracker-title">선정 완료</div>
+              <div class="tracker-sub">4월 12일</div>
+            </div>
+          </div>
+          <div class="tracker-step">
+            <div class="tracker-dot dot-done">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <div class="tracker-content">
+              <div class="tracker-title">상품 수령</div>
+              <div class="tracker-sub">4월 15일</div>
+            </div>
+          </div>
+          <div class="tracker-step">
+            <div class="tracker-dot dot-now">!</div>
+            <div class="tracker-content">
+              <div class="tracker-title">콘텐츠 제출</div>
+              <div class="tracker-sub" style="color:var(--red)">D-3 · 4월 20일까지</div>
+              <div class="tracker-action" onclick="goScreen('screen-submit')">지금 제출하기 →</div>
+            </div>
+          </div>
+          <div class="tracker-step">
+            <div class="tracker-dot dot-idle">4</div>
+            <div class="tracker-content">
+              <div class="tracker-title" style="color:var(--text3)">검수 · 승인</div>
+            </div>
+          </div>
+          <div class="tracker-step">
+            <div class="tracker-dot dot-idle">5</div>
+            <div class="tracker-content">
+              <div class="tracker-title" style="color:var(--text3)">리워드 지급</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:var(--bg2);border-radius:16px;overflow:hidden">
+        <div style="padding:14px 16px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:15px;font-weight:700;color:var(--text)">여름 선크림 체험단</div>
+          <span class="chip chip-blue">모집중</span>
+        </div>
+        <div style="padding:14px 16px">
+          <div class="tracker-step" style="padding-top:0">
+            <div class="tracker-dot dot-done"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
+            <div class="tracker-content"><div class="tracker-title">신청 완료</div><div class="tracker-sub">4월 18일</div></div>
+          </div>
+          <div class="tracker-step">
+            <div class="tracker-dot dot-now" style="font-size:10px;font-weight:600">대기</div>
+            <div class="tracker-content"><div class="tracker-title">선정 대기중</div><div class="tracker-sub">마감 후 선정 안내</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <div class="nav-item" onclick="goScreen('screen-home')">
+        <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <div class="nav-label">홈</div>
+      </div>
+      <div class="nav-item" onclick="goScreen('screen-explore')">
+        <div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        <div class="nav-label">탐색</div>
+      </div>
+      <div class="nav-item on">
+        <div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></div>
+        <div class="nav-label">내 현황</div>
+      </div>
+      <div class="nav-item" onclick="goScreen('screen-mypage')">
+        <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div class="nav-label">내 정보</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== 콘텐츠 제출 ===================== -->
+  <div class="screen" id="screen-submit">
+    <div class="topbar">
+      <div class="topbar-back" onclick="goScreen('screen-status')">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </div>
+      <div class="topbar-title">콘텐츠 제출</div>
+    </div>
+    <div class="scroll-area" style="padding:16px 20px;display:flex;flex-direction:column;gap:16px">
+      <div style="background:var(--bg2);border-radius:14px;padding:14px 16px">
+        <div style="font-size:15px;font-weight:700;color:var(--text)">봄 스킨케어 세트</div>
+        <div style="font-size:13px;color:var(--red);margin-top:3px">제출 마감 · 4월 20일 (D-3)</div>
+      </div>
+      <div class="input-wrap">
+        <div class="input-label">게시물 URL</div>
+        <input class="input" value="https://instagram.com/p/abc123" />
+        <div class="input-ok">✓ URL 형식 확인됨</div>
+      </div>
+      <div class="input-wrap">
+        <div class="input-label">원본 소스 업로드</div>
+        <div class="upload-box done">
+          <div style="font-size:15px;color:var(--green);font-weight:600">spring_skin.mp4</div>
+          <div style="font-size:13px;color:var(--text3);margin-top:4px">148MB · 업로드 완료</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:14px;background:var(--bg2);border-radius:12px">
+        <div style="width:20px;height:20px;border-radius:6px;background:var(--text);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>
+        </div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.5">게시물이 캠페인 가이드 조건을 충족함을 확인했습니다</div>
+      </div>
+      <button class="btn btn-dark" onclick="goScreen('screen-submit-done')">제출하기</button>
+    </div>
+  </div>
+
+  <!-- ===================== 제출 완료 ===================== -->
+  <div class="screen" id="screen-submit-done">
+    <div class="scroll-area" style="padding:40px 28px;display:flex;flex-direction:column;align-items:center;gap:20px">
+      <div style="width:80px;height:80px;border-radius:50%;background:#EAF3DE;display:flex;align-items:center;justify-content:center">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:22px;font-weight:700;color:var(--text)">제출 완료!</div>
+        <div style="font-size:14px;color:var(--text3);margin-top:6px;line-height:1.6">검수 후 승인 결과를<br>알림톡으로 안내해드려요</div>
+      </div>
+      <div class="summary-card" style="width:100%">
+        <div class="summary-row"><span class="summary-label">캠페인</span><span class="summary-value">봄 스킨케어 세트</span></div>
+        <div class="summary-row"><span class="summary-label">제출일</span><span class="summary-value">4월 17일</span></div>
+        <div class="summary-row"><span class="summary-label">상태</span><span class="summary-value"><span class="chip chip-amber">검수중</span></span></div>
+      </div>
+      <button class="btn btn-dark" style="width:100%" onclick="goScreen('screen-home')">홈으로</button>
+    </div>
+  </div>
+
+  <!-- ===================== 마이페이지 ===================== -->
+  <div class="screen" id="screen-mypage">
+    <div class="topbar">
+      <div class="topbar-title">내 정보</div>
+      <div class="topbar-action">수정</div>
+    </div>
+    <div class="scroll-area" style="padding:0 20px 24px;display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;align-items:center;gap:14px;padding:4px 0">
+        <div class="avatar" style="width:64px;height:64px;font-size:22px">유</div>
+        <div>
+          <div style="font-size:18px;font-weight:700;color:var(--text)">유이</div>
+          <div style="font-size:13px;color:var(--text3);margin-top:2px">@yui.beauty</div>
+          <div style="display:flex;gap:6px;margin-top:6px">
+            <span class="chip chip-purple">인플루언서</span>
+            <span class="chip chip-pink">매크로</span>
+          </div>
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-row"><span class="summary-label">인스타그램</span><span class="summary-value">@yui.beauty · 12.4K</span></div>
+        <div class="summary-row"><span class="summary-label">등급</span><span class="summary-value">매크로 (10K~100K)</span></div>
+        <div class="summary-row"><span class="summary-label">평균 조회수</span><span class="summary-value">24,300</span></div>
+        <div class="summary-row"><span class="summary-label">주력 카테고리</span><span class="summary-value">👗 의류</span></div>
+        <div class="summary-row"><span class="summary-label">배송지</span><span class="summary-value">서울 강남구 ···</span></div>
+        <div class="summary-row"><span class="summary-label">누적 리워드</span><span class="summary-value" style="color:var(--orange)">₩840,000</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="btn btn-gray">정보 수정</button>
+        <button class="btn btn-gray">정산 계좌 관리</button>
+        <button class="btn btn-gray" style="color:var(--red)">로그아웃</button>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <div class="nav-item" onclick="goScreen('screen-home')">
+        <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <div class="nav-label">홈</div>
+      </div>
+      <div class="nav-item" onclick="goScreen('screen-explore')">
+        <div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        <div class="nav-label">탐색</div>
+      </div>
+      <div class="nav-item" onclick="goScreen('screen-status')">
+        <div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></div>
+        <div class="nav-label">내 현황</div>
+      </div>
+      <div class="nav-item on">
+        <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div class="nav-label">내 정보</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== 공동구매 신청 Step1 ===================== -->
+  <div class="screen" id="screen-gb-step1">
+    <div class="topbar">
+      <div class="topbar-back" onclick="goScreen('screen-home')">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </div>
+      <div class="topbar-title">공구 일정 선택</div>
+    </div>
+    <div class="scroll-area" style="padding:16px 20px;display:flex;flex-direction:column;gap:14px">
+      <div class="progress-row">
+        <div class="prog-dot" style="background:var(--green);color:#fff"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg></div>
+        <div class="prog-line done"></div>
+        <div class="prog-dot" style="background:var(--text);color:#fff;font-size:13px;font-weight:700">2</div>
+        <div class="prog-line"></div>
+        <div class="prog-dot" style="background:var(--bg2);color:var(--text3);border:1.5px solid var(--border2);font-size:13px">3</div>
+        <div class="prog-line"></div>
+        <div class="prog-dot" style="background:var(--bg2);color:var(--text3);border:1.5px solid var(--border2);font-size:13px">4</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text3);padding:0 2px">
+        <span style="color:var(--green);font-weight:500">상품 선택</span>
+        <span style="color:var(--text);font-weight:500">일정 선택</span>
+        <span>정보 입력</span>
+        <span>완료</span>
+      </div>
+
+      <div style="background:var(--bg2);border-radius:12px;padding:12px 16px;font-size:14px;font-weight:600;color:var(--text)">BAS 칼취채 핑크에디션</div>
+
+      <div style="display:flex;gap:12px">
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2)">
+          <div style="width:12px;height:12px;border-radius:3px;background:#FAEEDA;border:1px solid #EF9F27"></div>타 셀러 예약중
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2)">
+          <div style="width:12px;height:12px;border-radius:3px;background:var(--orange)"></div>내가 선택
+        </div>
+      </div>
+
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div style="width:32px;height:32px;border:0.5px solid var(--border2);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--text2)">‹</div>
+          <div style="font-size:16px;font-weight:700;color:var(--text)">2025년 5월</div>
+          <div style="width:32px;height:32px;border:0.5px solid var(--border2);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--text2)">›</div>
+        </div>
+        <div class="cal-grid">
+          <div class="cal-head">일</div><div class="cal-head">월</div><div class="cal-head">화</div><div class="cal-head">수</div><div class="cal-head">목</div><div class="cal-head">금</div><div class="cal-head">토</div>
+          <div class="cal-day cal-empty"></div><div class="cal-day cal-empty"></div><div class="cal-day cal-empty"></div><div class="cal-day">1</div><div class="cal-day">2</div><div class="cal-day">3</div><div class="cal-day">4</div>
+          <div class="cal-day">5</div><div class="cal-day">6</div><div class="cal-day">7</div><div class="cal-day cal-taken">8</div><div class="cal-day cal-taken">9</div><div class="cal-day cal-taken">10</div><div class="cal-day">11</div>
+          <div class="cal-day">12</div><div class="cal-day cal-mine">13</div><div class="cal-day cal-mine">14</div><div class="cal-day cal-mine">15</div><div class="cal-day cal-mine">16</div><div class="cal-day">17</div><div class="cal-day">18</div>
+          <div class="cal-day">19</div><div class="cal-day cal-taken">20</div><div class="cal-day cal-taken">21</div><div class="cal-day cal-taken">22</div><div class="cal-day">23</div><div class="cal-day">24</div><div class="cal-day">25</div>
+          <div class="cal-day">26</div><div class="cal-day">27</div><div class="cal-day">28</div><div class="cal-day">29</div><div class="cal-day">30</div><div class="cal-day">31</div>
+        </div>
+      </div>
+
+      <div class="alert alert-amber">타 셀러 일정과 겹치는 날짜가 포함돼 있어요. 운영팀이 검토 후 확정해드려요.</div>
+      <button class="btn btn-orange" onclick="goScreen('screen-gb-step2')">다음 · 정보 입력 →</button>
+    </div>
+  </div>
+
+  <!-- ===================== 공동구매 신청 Step2 ===================== -->
+  <div class="screen" id="screen-gb-step2">
+    <div class="topbar">
+      <div class="topbar-back" onclick="goScreen('screen-gb-step1')">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </div>
+      <div class="topbar-title">공구 정보 입력</div>
+    </div>
+    <div class="scroll-area" style="padding:16px 20px;display:flex;flex-direction:column;gap:14px">
+      <div class="progress-row">
+        <div class="prog-dot" style="background:var(--green);color:#fff"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg></div>
+        <div class="prog-line done"></div>
+        <div class="prog-dot" style="background:var(--green);color:#fff"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg></div>
+        <div class="prog-line done"></div>
+        <div class="prog-dot" style="background:var(--text);color:#fff;font-size:13px;font-weight:700">3</div>
+        <div class="prog-line"></div>
+        <div class="prog-dot" style="background:var(--bg2);color:var(--text3);border:1.5px solid var(--border2);font-size:13px">4</div>
+      </div>
+
+      <div style="background:var(--bg2);border-radius:12px;padding:12px 16px;display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--text3)">상품</span><span style="font-size:13px;font-weight:600;color:var(--text)">BAS 칼취채 핑크에디션</span></div>
+        <div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--text3)">일정</span><span style="font-size:13px;font-weight:600;color:var(--text)">5월 13일 ~ 5월 16일</span></div>
+      </div>
+
+      <div class="input-wrap">
+        <div class="input-label">판매 채널</div>
+        <div style="display:flex;gap:8px">
+          <div style="flex:1;padding:11px;border:2px solid var(--text);border-radius:10px;font-size:13px;font-weight:600;text-align:center;background:var(--bg2);cursor:pointer">인스타그램</div>
+          <div style="flex:1;padding:11px;border:1px solid var(--border);border-radius:10px;font-size:13px;text-align:center;color:var(--text2);cursor:pointer">유튜브</div>
+          <div style="flex:1;padding:11px;border:1px solid var(--border);border-radius:10px;font-size:13px;text-align:center;color:var(--text2);cursor:pointer">틱톡</div>
+        </div>
+      </div>
+
+      <div class="input-wrap">
+        <div class="input-label">수수료율 희망</div>
+        <input class="input" value="15%" />
+        <div class="input-hint">운영팀과 협의 후 최종 확정됩니다</div>
+      </div>
+
+      <div class="alert alert-amber">보증금 ₩100,000 · 승인 후 납부 · 노쇼 시 50% 몰취</div>
+      <button class="btn btn-dark" onclick="goScreen('screen-gb-done')">신청 완료</button>
+    </div>
+  </div>
+
+  <!-- ===================== 공동구매 신청 완료 ===================== -->
+  <div class="screen" id="screen-gb-done">
+    <div class="scroll-area" style="padding:40px 28px;display:flex;flex-direction:column;align-items:center;gap:20px">
+      <div style="width:80px;height:80px;border-radius:50%;background:#EAF3DE;display:flex;align-items:center;justify-content:center">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:22px;font-weight:700;color:var(--text)">신청이 접수됐어요!</div>
+        <div style="font-size:14px;color:var(--text3);margin-top:6px;line-height:1.6">운영팀 승인 후 보증금 납부 안내를<br>카카오 알림톡으로 보내드려요</div>
+      </div>
+      <div class="summary-card" style="width:100%">
+        <div class="summary-row"><span class="summary-label">상품</span><span class="summary-value">BAS 칼취채 핑크에디션</span></div>
+        <div class="summary-row"><span class="summary-label">일정</span><span class="summary-value">5/13 ~ 5/16</span></div>
+        <div class="summary-row"><span class="summary-label">채널</span><span class="summary-value">인스타그램</span></div>
+        <div class="summary-row"><span class="summary-label">수수료율</span><span class="summary-value">15%</span></div>
+        <div class="summary-row"><span class="summary-label">상태</span><span class="summary-value"><span class="chip chip-amber">승인 대기</span></span></div>
+      </div>
+      <button class="btn btn-dark" style="width:100%" onclick="goScreen('screen-home')">홈으로</button>
+    </div>
+  </div>
+
+</div><!-- .device -->
+
+<script>
+function goScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.remove('active');
+    s.style.display = 'none';
+  });
+  const target = document.getElementById(id);
+  if (target) {
+    target.style.display = 'flex';
+    target.classList.add('active');
+    target.querySelector('.scroll-area')?.scrollTo(0, 0);
+  }
+}
+
+function switchTab(el, showId, hideId) {
+  el.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+  const show = document.getElementById(showId);
+  const hide = document.getElementById(hideId);
+  if (show) show.style.display = 'flex';
+  if (hide) hide.style.display = 'none';
+}
+
+// 초기화
+document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+document.getElementById('screen-home').style.display = 'flex';
+document.getElementById('screen-home').classList.add('active');
+document.getElementById('home-tab-gb').style.display = 'none';
+</script>
+</body>
+</html>
