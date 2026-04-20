@@ -200,6 +200,11 @@ textarea.form-input{resize:vertical;min-height:80px}
       <div class="nav-dot"></div>
       캠페인 생성
     </div>
+    <div class="nav-item" onclick="goPage('page-applications')">
+      <div class="nav-dot"></div>
+      신청 관리
+      <span class="nav-badge red">5</span>
+    </div>
     <div class="nav-section">공동구매</div>
     <div class="nav-item" onclick="goPage('page-gb-new')">
       <div class="nav-dot"></div>
@@ -208,6 +213,10 @@ textarea.form-input{resize:vertical;min-height:80px}
     <div class="nav-item" onclick="goPage('page-schedule')">
       <div class="nav-dot"></div>
       공구 일정 관리
+    </div>
+    <div class="nav-item" onclick="goPage('page-sales')">
+      <div class="nav-dot"></div>
+      판매/정산 관리
     </div>
     <div class="nav-section">콘텐츠</div>
     <div class="nav-item" onclick="goPage('page-review')">
@@ -684,12 +693,12 @@ textarea.form-input{resize:vertical;min-height:80px}
             <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:16px">공구 일정</div>
             <div class="form-grid">
               <div class="form-group">
-                <label class="form-label">공구 시작일</label>
-                <input class="form-input" type="date">
+                <label class="form-label">공구 시작일 <span style="font-size:10px;color:var(--text3)">(시간 포함)</span></label>
+                <input class="form-input" type="datetime-local">
               </div>
               <div class="form-group">
-                <label class="form-label">공구 종료일</label>
-                <input class="form-input" type="date">
+                <label class="form-label">공구 종료일 <span style="font-size:10px;color:var(--text3)">(시간 포함)</span></label>
+                <input class="form-input" type="datetime-local">
               </div>
               <div class="form-group">
                 <label class="form-label">신청 마감일</label>
@@ -1201,6 +1210,284 @@ textarea.form-input{resize:vertical;min-height:80px}
       </div>
     </div>
 
+    <!-- ===================== 신청 관리 ===================== -->
+    <div class="page" id="page-applications">
+      <div class="page-header">
+        <div>
+          <div class="page-title">신청 관리</div>
+          <div class="page-sub">인플루언서의 협찬 신청을 검토하고 승인 또는 반려하세요</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="chip chip-red">승인 대기 5건</span>
+          <select style="padding:7px 12px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);background:var(--bg);outline:none">
+            <option>전체 캠페인</option><option>봄 신상 스킨케어</option><option>여름 선크림</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-label">승인 대기</div><div class="stat-value" style="color:#854F0B">5</div><div class="stat-sub">오늘 접수 2건 포함</div></div>
+        <div class="stat-card"><div class="stat-label">이번달 승인</div><div class="stat-value" style="color:var(--green)">38</div><span class="stat-badge up">↑ 승인율 87%</span></div>
+        <div class="stat-card"><div class="stat-label">이번달 반려</div><div class="stat-value" style="color:var(--red)">6</div><div class="stat-sub">주요 사유: 조건 미충족</div></div>
+        <div class="stat-card"><div class="stat-label">자동 선정</div><div class="stat-value">24</div><div class="stat-sub">수동 선정 20건</div></div>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-header">
+          <div class="table-title">신청 목록</div>
+          <div style="display:flex;gap:8px">
+            <input style="padding:7px 12px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);outline:none;width:180px" placeholder="인플루언서 검색...">
+            <select style="padding:7px 12px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);background:var(--bg);outline:none">
+              <option>전체 상태</option><option>승인 대기</option><option>승인됨</option><option>반려</option>
+            </select>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr><th>인플루언서</th><th>캠페인</th><th>신청일</th><th>팔로워</th><th>채널 조건</th><th>상태</th><th>관리</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div class="inf-avatar">유</div>
+                  <div><div class="td-name">유이</div><div class="td-sub">@yui.beauty</div></div>
+                </div>
+              </td>
+              <td><div class="td-name">봄 신상 스킨케어</div><div class="td-sub">단순협찬 · 뷰티</div></td>
+              <td><div style="font-size:13px">4월 18일</div></td>
+              <td>
+                <div style="font-size:13px;font-weight:500">12.4K</div>
+                <div style="font-size:11px;color:var(--green)">조건 충족 (3K+)</div>
+              </td>
+              <td><span class="chip chip-pink">인스타</span></td>
+              <td><span class="chip chip-amber">승인 대기</span></td>
+              <td>
+                <div style="display:flex;gap:5px">
+                  <button class="btn btn-green btn-sm" onclick="this.closest('tr').querySelector('.chip-amber').outerHTML='<span class=\'chip chip-green\'>승인됨</span>';this.closest('td').innerHTML='<button class=\'btn btn-secondary btn-sm\'>상세</button>'">승인</button>
+                  <button class="btn btn-secondary btn-sm" style="color:var(--red)">반려</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div class="inf-avatar" style="background:linear-gradient(135deg,#E6F1FB,#85B7EB);color:var(--blue)">미</div>
+                  <div><div class="td-name">미소</div><div class="td-sub">@beauty_miso</div></div>
+                </div>
+              </td>
+              <td><div class="td-name">여름 선크림 체험단</div><div class="td-sub">유가협찬 · 뷰티</div></td>
+              <td><div style="font-size:13px">4월 18일</div></td>
+              <td>
+                <div style="font-size:13px;font-weight:500">38.2K</div>
+                <div style="font-size:11px;color:var(--green)">조건 충족 (10K+)</div>
+              </td>
+              <td><span class="chip chip-pink">인스타</span></td>
+              <td><span class="chip chip-amber">승인 대기</span></td>
+              <td>
+                <div style="display:flex;gap:5px">
+                  <button class="btn btn-green btn-sm">승인</button>
+                  <button class="btn btn-secondary btn-sm" style="color:var(--red)">반려</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div class="inf-avatar" style="background:linear-gradient(135deg,#EAF3DE,#97C459);color:#3B6D11">지</div>
+                  <div><div class="td-name">지니</div><div class="td-sub">@daily_jini</div></div>
+                </div>
+              </td>
+              <td><div class="td-name">봄 신상 스킨케어</div><div class="td-sub">단순협찬 · 뷰티</div></td>
+              <td><div style="font-size:13px">4월 17일</div></td>
+              <td>
+                <div style="font-size:13px;font-weight:500">8.9K</div>
+                <div style="font-size:11px;color:var(--red)">조건 미충족 (3K+)</div>
+              </td>
+              <td><span class="chip chip-pink">인스타</span></td>
+              <td><span class="chip chip-red">반려</span></td>
+              <td><button class="btn btn-secondary btn-sm">상세</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div class="inf-avatar" style="background:linear-gradient(135deg,#EEEDFE,#AFA9EC);color:#534AB7">하</div>
+                  <div><div class="td-name">하루</div><div class="td-sub">@haru_daily</div></div>
+                </div>
+              </td>
+              <td><div class="td-name">여름 선크림 체험단</div><div class="td-sub">유가협찬 · 뷰티</div></td>
+              <td><div style="font-size:13px">4월 17일</div></td>
+              <td>
+                <div style="font-size:13px;font-weight:500">21.5K</div>
+                <div style="font-size:11px;color:var(--green)">조건 충족 (10K+)</div>
+              </td>
+              <td><span class="chip chip-blue">유튜브</span></td>
+              <td><span class="chip chip-green">승인됨</span></td>
+              <td><button class="btn btn-secondary btn-sm">상세</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:16px">
+        <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:12px">반려 사유 템플릿</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <div style="padding:8px 14px;background:var(--bg2);border-radius:8px;font-size:12px;color:var(--text2);cursor:pointer;border:0.5px solid var(--border)">팔로워 조건 미충족</div>
+          <div style="padding:8px 14px;background:var(--bg2);border-radius:8px;font-size:12px;color:var(--text2);cursor:pointer;border:0.5px solid var(--border)">카테고리 불일치</div>
+          <div style="padding:8px 14px;background:var(--bg2);border-radius:8px;font-size:12px;color:var(--text2);cursor:pointer;border:0.5px solid var(--border)">모집 인원 초과</div>
+          <div style="padding:8px 14px;background:var(--bg2);border-radius:8px;font-size:12px;color:var(--text2);cursor:pointer;border:0.5px solid var(--border)">계정 비공개</div>
+          <div style="padding:8px 14px;background:var(--bg2);border-radius:8px;font-size:12px;color:var(--text2);cursor:pointer;border:0.5px solid var(--border)">기타 (직접 입력)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== 판매/정산 관리 ===================== -->
+    <div class="page" id="page-sales">
+      <div class="page-header">
+        <div>
+          <div class="page-title">판매/정산 관리</div>
+          <div class="page-sub">공동구매 판매 데이터를 확인하고 정산을 처리하세요</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-secondary">이지어드민 연동</button>
+          <button class="btn btn-primary">+ 데이터 업로드</button>
+        </div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-label">이번달 총 매출</div><div class="stat-value">₩8.4M</div><span class="stat-badge up">↑ 23%</span></div>
+        <div class="stat-card"><div class="stat-label">총 주문 수</div><div class="stat-value">612건</div><div class="stat-sub">반품 18건 제외</div></div>
+        <div class="stat-card"><div class="stat-label">정산 대기</div><div class="stat-value" style="color:#854F0B">₩1.2M</div><div class="stat-sub">셀러 3명</div></div>
+        <div class="stat-card"><div class="stat-label">정산 완료</div><div class="stat-value" style="color:var(--green)">₩4.8M</div><div class="stat-sub">이번달 누적</div></div>
+      </div>
+
+      <div class="alert alert-purple" style="margin-bottom:20px;display:flex;align-items:center;gap:10px">
+        <div style="font-size:18px">🔗</div>
+        <div>
+          <div style="font-weight:600">이지어드민 연동 방법</div>
+          <div style="font-size:12px;margin-top:2px">이지어드민 → 주문관리 → 엑셀 다운로드 후 여기에 업로드하면 자동으로 데이터가 반영됩니다</div>
+        </div>
+      </div>
+
+      <div class="panel-layout">
+        <div>
+          <div class="table-wrap" style="margin-bottom:20px">
+            <div class="table-header">
+              <div class="table-title">셀러별 판매 현황</div>
+              <div style="display:flex;gap:8px">
+                <select style="padding:6px 10px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);background:var(--bg);outline:none">
+                  <option>전체 기간</option><option>4월</option><option>3월</option>
+                </select>
+                <select style="padding:6px 10px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);background:var(--bg);outline:none">
+                  <option>전체 상태</option><option>정산 대기</option><option>정산 완료</option>
+                </select>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr><th>셀러</th><th>상품</th><th>공구 기간</th><th>주문 수</th><th>매출</th><th>수수료율</th><th>정산액</th><th>상태</th><th>관리</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="td-name">@daily_jini</div>
+                    <div class="td-sub">팔로워 8.9K</div>
+                  </td>
+                  <td><div class="td-name">BAS 닭목라벨</div></td>
+                  <td><div style="font-size:12px">4/16 ~ 4/19</div></td>
+                  <td><div style="font-size:13px;font-weight:500">48건</div></td>
+                  <td><div style="font-size:13px;font-weight:600;color:var(--orange)">₩523K</div></td>
+                  <td><div style="font-size:13px">18%</div></td>
+                  <td><div style="font-size:13px;font-weight:700">₩94K</div></td>
+                  <td><span class="chip chip-amber">정산 대기</span></td>
+                  <td>
+                    <div style="display:flex;gap:5px">
+                      <button class="btn btn-green btn-sm">정산 처리</button>
+                      <button class="btn btn-secondary btn-sm">상세</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="td-name">@yui.beauty</div>
+                    <div class="td-sub">팔로워 12.4K</div>
+                  </td>
+                  <td><div class="td-name">BAS 칼취채 핑크</div></td>
+                  <td><div style="font-size:12px">5/13 ~ 5/16</div></td>
+                  <td><div style="font-size:12px;color:var(--text3)">공구 미시작</div></td>
+                  <td><div style="font-size:12px;color:var(--text3)">—</div></td>
+                  <td><div style="font-size:13px">15%</div></td>
+                  <td><div style="font-size:12px;color:var(--text3)">—</div></td>
+                  <td><span class="chip chip-blue">진행 예정</span></td>
+                  <td><button class="btn btn-secondary btn-sm">상세</button></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="td-name">@beauty_miso</div>
+                    <div class="td-sub">팔로워 38.2K</div>
+                  </td>
+                  <td><div class="td-name">봄 신상 립밤 3종</div></td>
+                  <td><div style="font-size:12px">3/20 ~ 3/23</div></td>
+                  <td><div style="font-size:13px;font-weight:500">127건</div></td>
+                  <td><div style="font-size:13px;font-weight:600;color:var(--orange)">₩1.52M</div></td>
+                  <td><div style="font-size:13px">12%</div></td>
+                  <td><div style="font-size:13px;font-weight:700">₩182K</div></td>
+                  <td><span class="chip chip-green">정산 완료</span></td>
+                  <td><button class="btn btn-secondary btn-sm">리포트</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-wrap">
+            <div class="table-header">
+              <div class="table-title">정산 신청 요청</div>
+              <span class="chip chip-amber">처리 대기 2건</span>
+            </div>
+            <table>
+              <thead>
+                <tr><th>셀러</th><th>신청일</th><th>정산액</th><th>계좌</th><th>관리</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><div class="td-name">@daily_jini</div></td>
+                  <td><div style="font-size:13px">4월 20일</div></td>
+                  <td><div style="font-size:14px;font-weight:700;color:var(--orange)">₩94,104</div></td>
+                  <td><div style="font-size:12px;color:var(--text2)">카카오뱅크 3333-****-1234</div></td>
+                  <td>
+                    <div style="display:flex;gap:5px">
+                      <button class="btn btn-green btn-sm">이체 완료</button>
+                      <button class="btn btn-secondary btn-sm">상세</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:16px">
+            <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px">데이터 업로드</div>
+            <div style="border:2px dashed var(--border2);border-radius:10px;padding:20px;text-align:center;cursor:pointer;margin-bottom:10px">
+              <div style="font-size:13px;color:var(--text2);font-weight:500">엑셀 파일 업로드</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px">.xlsx, .csv 지원</div>
+            </div>
+            <div style="font-size:12px;color:var(--text3)">마지막 업데이트: 4월 20일 09:30</div>
+          </div>
+          <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:16px">
+            <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px">정산 요약</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text2)">정산 대기</span><span style="font-weight:600;color:#854F0B">₩1.2M</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text2)">이번달 지급</span><span style="font-weight:600;color:var(--green)">₩4.8M</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text2)">평균 정산액</span><span style="font-weight:600">₩138K</span></div>
+            </div>
+            <button class="btn btn-primary" style="width:100%;margin-top:12px;padding:10px">일괄 정산 처리</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ===================== 인플루언서 목록 ===================== -->
     <div class="page" id="page-influencers">
       <div class="page-header">
@@ -1279,8 +1566,10 @@ textarea.form-input{resize:vertical;min-height:80px}
 const breadcrumbs = {
   'page-campaigns': '캠페인 › <strong>시딩 캠페인</strong>',
   'page-campaign-new': '캠페인 › <strong>신규 생성</strong>',
+  'page-applications': '캠페인 › <strong>신청 관리</strong>',
   'page-gb-new': '공동구매 › <strong>공구 캠페인 생성</strong>',
   'page-schedule': '공동구매 › <strong>공구 일정 관리</strong>',
+  'page-sales': '공동구매 › <strong>판매/정산 관리</strong>',
   'page-review': '콘텐츠 › <strong>검수</strong>',
   'page-influencers': '인플루언서 › <strong>목록</strong>',
   'page-campaign-detail': '캠페인 › <strong>상세 관리</strong>',
@@ -1293,8 +1582,8 @@ function goPage(id) {
   document.getElementById('breadcrumb').innerHTML = breadcrumbs[id] || '';
   // nav 동기화
   const navMap = {
-    'page-campaigns': 0, 'page-campaign-new': 1,
-    'page-gb-new': 2, 'page-schedule': 3, 'page-review': 4, 'page-influencers': 5
+    'page-campaigns': 0, 'page-campaign-new': 1, 'page-applications': 2,
+    'page-gb-new': 3, 'page-schedule': 4, 'page-sales': 5, 'page-review': 6, 'page-influencers': 7
   };
   const navItems = document.querySelectorAll('.nav-item');
   if (navMap[id] !== undefined) navItems[navMap[id]].classList.add('on');
