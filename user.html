@@ -214,44 +214,63 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
 
   <!-- ===================== 홈 화면 ===================== -->
   <div class="screen active" id="screen-home">
-    <div style="padding:10px 20px 8px;flex-shrink:0">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-        <div style="font-size:20px;font-weight:800;color:var(--text);letter-spacing:-.02em">BITE <span style="color:var(--orange)">ME</span></div>
-        <div style="display:flex;gap:10px;align-items:center">
-          <div style="cursor:pointer" onclick="goScreen('screen-explore')">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text2)" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          </div>
-          <div style="position:relative;cursor:pointer" onclick="goScreen('screen-mypage')">
-            <div class="avatar" style="width:34px;height:34px;font-size:14px">유</div>
-            <div style="position:absolute;top:0;right:0;width:8px;height:8px;background:var(--orange);border-radius:50%;border:2px solid var(--bg)"></div>
-          </div>
+    <!-- 헤더 -->
+    <div style="padding:12px 20px 10px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between">
+      <div style="font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.02em">BITE <span style="color:var(--orange)">ME</span></div>
+      <div style="display:flex;gap:14px;align-items:center">
+        <!-- 알림 -->
+        <div style="position:relative;cursor:pointer">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text2)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+          <div style="position:absolute;top:-1px;right:-1px;width:7px;height:7px;background:var(--orange);border-radius:50%;border:1.5px solid var(--bg)"></div>
         </div>
-      </div>
-      <div class="search-bar" onclick="goScreen('screen-explore')" style="cursor:pointer">
-        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input placeholder="캠페인 · 브랜드 검색" style="pointer-events:none" readonly />
+        <!-- 검색 -->
+        <div style="cursor:pointer" onclick="goScreen('screen-explore')">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text2)" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
       </div>
     </div>
 
+    <!-- 진행중 알림 띠 (D-3 경고) -->
+    <div style="margin:0 16px 10px;padding:10px 14px;background:#FCEBEB;border-radius:12px;display:flex;align-items:center;gap:10px;cursor:pointer;flex-shrink:0" onclick="goScreen('screen-status')">
+      <div style="width:6px;height:6px;border-radius:50%;background:var(--red);flex-shrink:0"></div>
+      <div style="font-size:13px;font-weight:600;color:#791F1F;flex:1">콘텐츠 미제출 마감 D-3 · 봄 스킨케어 캠페인</div>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#791F1F" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+    </div>
+
+    <!-- 협찬 / 공동구매 탭 -->
     <div class="tab-row">
       <div class="tab on" onclick="switchTab(this,'home-tab-sponsor','home-tab-gb')">협찬</div>
       <div class="tab" onclick="switchTab(this,'home-tab-gb','home-tab-sponsor')">공동구매</div>
     </div>
 
     <!-- 협찬 탭 -->
-    <div id="home-tab-sponsor" class="scroll-area" style="padding:12px 20px;display:flex;flex-direction:column;gap:14px">
-      <div class="alert alert-red" style="display:flex;align-items:center;gap:10px;cursor:pointer" onclick="goScreen('screen-status')">
-        <span style="font-size:18px">⚠️</span>
+    <div id="home-tab-sponsor" class="scroll-area" style="padding:14px 16px;display:flex;flex-direction:column;gap:14px">
+
+      <!-- 추천 배너 -->
+      <div style="background:linear-gradient(135deg,#FFF3EE,#FAEEDA);border-radius:16px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between">
         <div>
-          <div style="font-weight:600">콘텐츠 미제출 마감 D-3</div>
-          <div style="font-size:12px;margin-top:1px;opacity:.8">봄 스킨케어 캠페인 · 4월 20일까지</div>
+          <div style="font-size:11px;font-weight:600;color:var(--orange);letter-spacing:.06em;margin-bottom:4px">NEW CAMPAIGN</div>
+          <div style="font-size:15px;font-weight:700;color:var(--text);line-height:1.35">뷰티·라이프 인플루언서<br>맞춤 캠페인 오픈</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:6px">팔로워 3,000명+ 신청 가능</div>
         </div>
-        <svg style="margin-left:auto;flex-shrink:0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#791F1F" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+        <div style="width:60px;height:60px;border-radius:16px;background:linear-gradient(135deg,var(--orange),#F0A070);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
       </div>
 
+      <!-- 카테고리 칩 -->
+      <div style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;flex-shrink:0;padding-bottom:2px">
+        <div style="flex-shrink:0;padding:7px 16px;border-radius:20px;font-size:13px;font-weight:600;background:var(--text);color:#fff">전체</div>
+        <div style="flex-shrink:0;padding:7px 16px;border-radius:20px;font-size:13px;background:var(--bg2);color:var(--text2);border:0.5px solid var(--border2)">뷰티</div>
+        <div style="flex-shrink:0;padding:7px 16px;border-radius:20px;font-size:13px;background:var(--bg2);color:var(--text2);border:0.5px solid var(--border2)">라이프</div>
+        <div style="flex-shrink:0;padding:7px 16px;border-radius:20px;font-size:13px;background:var(--bg2);color:var(--text2);border:0.5px solid var(--border2)">푸드</div>
+        <div style="flex-shrink:0;padding:7px 16px;border-radius:20px;font-size:13px;background:var(--bg2);color:var(--text2);border:0.5px solid var(--border2)">반려동물</div>
+      </div>
+
+      <!-- 캠페인 목록 -->
       <div>
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-          <div style="font-size:16px;font-weight:700;color:var(--text)">지금 신청 가능한 캠페인</div>
+          <div style="font-size:15px;font-weight:700;color:var(--text)">지금 신청 가능한 캠페인</div>
           <div style="font-size:13px;color:var(--orange);font-weight:600;cursor:pointer" onclick="goScreen('screen-explore')">전체보기</div>
         </div>
         <div class="camp-card" onclick="goScreen('screen-detail')">
@@ -283,6 +302,22 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
           </div>
           <div class="camp-footer">
             <span class="camp-footer-label">3/5명 모집</span>
+            <span class="camp-footer-action">상세보기 →</span>
+          </div>
+        </div>
+        <div class="camp-card" style="margin-top:10px" onclick="goScreen('screen-detail')">
+          <div class="camp-thumb blue"></div>
+          <div class="camp-body">
+            <div class="camp-name">고메잇 강남 브런치 체험</div>
+            <div class="camp-meta">고메잇 · 시식체험 · 마감 5월 15일</div>
+            <div class="camp-tags">
+              <span class="chip chip-purple">시식체험</span>
+              <span class="chip chip-gray">푸드</span>
+              <span class="chip chip-blue">5,000명+</span>
+            </div>
+          </div>
+          <div class="camp-footer">
+            <span class="camp-footer-label">1/3명 모집</span>
             <span class="camp-footer-action">상세보기 →</span>
           </div>
         </div>
