@@ -262,7 +262,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
             <div class="camp-tags">
               <span class="chip chip-teal">단순협찬</span>
               <span class="chip chip-gray">뷰티</span>
-              <span class="chip chip-blue">3K+</span>
+              <span class="chip chip-blue">3,000명+</span>
             </div>
           </div>
           <div class="camp-footer">
@@ -278,7 +278,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
             <div class="camp-tags">
               <span class="chip chip-amber">유가협찬</span>
               <span class="chip chip-gray">뷰티</span>
-              <span class="chip chip-blue">10K+</span>
+              <span class="chip chip-blue">10,000명+</span>
             </div>
           </div>
           <div class="camp-footer">
@@ -310,7 +310,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
           <span style="background:var(--orange);color:#fff;font-size:12px;font-weight:700;padding:4px 10px;border-radius:10px">특가</span>
         </div>
         <div style="margin-top:4px">
-          <div class="product-item" onclick="goScreen('screen-gb-step1')">
+          <div class="product-item" onclick="goScreen('screen-gb-product')">
             <div class="product-thumb" style="cursor:pointer">
               <div class="product-badge">NEW</div>
             </div>
@@ -322,7 +322,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
                 <span class="product-current">10,900원</span>
               </div>
               <div class="product-actions">
-                <button class="btn btn-orange btn-sm" style="flex:1" onclick="event.stopPropagation();goScreen('screen-gb-step1')">공동구매 신청</button>
+                <button class="btn btn-orange btn-sm" style="flex:1" onclick="event.stopPropagation();goScreen('screen-gb-product')">공동구매 신청</button>
                 <button class="btn-sm" style="width:34px;background:var(--bg2);border:0.5px solid var(--border2)">♡</button>
               </div>
             </div>
@@ -403,7 +403,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
           <div class="camp-body">
             <div class="camp-name">봄 신상 립밤 3종 세트</div>
             <div class="camp-meta">바잇미 코스메틱 · 협찬가 ₩32,000 · 마감 4/25 · 10명 모집</div>
-            <div class="camp-tags"><span class="chip chip-teal">단순협찬</span><span class="chip chip-gray">뷰티</span><span class="chip chip-blue">3K+</span></div>
+            <div class="camp-tags"><span class="chip chip-teal">단순협찬</span><span class="chip chip-gray">뷰티</span><span class="chip chip-blue">3,000명+</span></div>
           </div>
           <div class="camp-footer"><span class="camp-footer-label">8/10명</span><span class="camp-footer-action">상세보기 →</span></div>
         </div>
@@ -412,7 +412,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
           <div class="camp-body">
             <div class="camp-name">여름 선크림 신제품 체험단</div>
             <div class="camp-meta">선케어랩 · 협찬가 ₩55,000 · 마감 5/1 · 5명 모집</div>
-            <div class="camp-tags"><span class="chip chip-amber">유가협찬</span><span class="chip chip-gray">뷰티</span><span class="chip chip-blue">10K+</span></div>
+            <div class="camp-tags"><span class="chip chip-amber">유가협찬</span><span class="chip chip-gray">뷰티</span><span class="chip chip-blue">10,000명+</span></div>
           </div>
           <div class="camp-footer"><span class="camp-footer-label">3/5명</span><span class="camp-footer-action">상세보기 →</span></div>
         </div>
@@ -421,7 +421,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
           <div class="camp-body">
             <div class="camp-name">고메잇 강남 브런치 체험</div>
             <div class="camp-meta">고메잇 · 협찬가 ₩80,000 · 마감 5/15 · 3명 모집</div>
-            <div class="camp-tags"><span class="chip chip-purple">시식체험</span><span class="chip chip-gray">푸드</span><span class="chip chip-blue">5K+</span></div>
+            <div class="camp-tags"><span class="chip chip-purple">시식체험</span><span class="chip chip-gray">푸드</span><span class="chip chip-blue">5,000명+</span></div>
           </div>
           <div class="camp-footer"><span class="camp-footer-label">1/3명</span><span class="camp-footer-action">상세보기 →</span></div>
         </div>
@@ -445,7 +445,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
         <div class="scroll-cat">뷰티</div>
       </div>
       <div class="scroll-area" style="padding:0 20px 20px">
-        <div class="product-item" onclick="goScreen('screen-gb-step1')" style="cursor:pointer">
+        <div class="product-item" onclick="goScreen('screen-gb-product')" style="cursor:pointer">
           <div class="product-thumb" style="cursor:pointer"><div class="product-badge">NEW</div></div>
           <div class="product-info">
             <div class="product-name">BAS 칼취채 핑크에디션 / BAS 닭목라벨</div>
@@ -540,11 +540,12 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
           <div class="summary-row"><span class="summary-label">협찬 상품가</span><span class="summary-value">₩32,000</span></div>
           <div class="summary-row"><span class="summary-label">게시 마감</span><span class="summary-value">5월 10일</span></div>
           <div class="summary-row"><span class="summary-label">모집 현황</span><span class="summary-value" id="detail-recruit">8 / 10명</span></div>
-          <div class="summary-row"><span class="summary-label">조건</span><span class="summary-value">팔로워 3K+ · 뷰티</span></div>
+          <div class="summary-row"><span class="summary-label">조건</span><span class="summary-value">팔로워 3,000명+ · 뷰티</span></div>
           <div class="summary-row"><span class="summary-label">플랫폼</span><span class="summary-value">인스타그램</span></div>
         </div>
         <div class="alert alert-green" style="margin-bottom:14px">
           내 팔로워 <strong>12,400명</strong> — 조건 충족 ✓
+          <div style="font-size:11px;margin-top:5px;opacity:.75">팔로워 수는 자동 동기화가 지원되지 않아 직접 입력된 값이에요. 실제 수치와 다를 수 있어요.</div>
         </div>
         <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px">캠페인 안내</div>
         <div style="font-size:14px;color:var(--text2);line-height:1.7">
@@ -583,6 +584,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
         <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text2)">캠페인</span><span style="font-weight:600;color:var(--text)">봄 신상 립밤 3종 세트</span></div>
         <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text2)">채널</span><span style="font-weight:600;color:var(--text)">@yui.beauty</span></div>
         <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text2)">배송지</span><span style="font-weight:600;color:var(--text)">서울 강남구 언주로 ···</span></div>
+        <div style="font-size:11px;color:var(--blue);margin-top:4px;cursor:pointer" onclick="closeApplySheet();goScreen('screen-mypage')">배송지 변경은 내 정보 → 배송지 수정에서 가능해요 →</div>
       </div>
       <button class="btn btn-dark" style="margin-bottom:10px" onclick="submitApply()">신청 완료</button>
       <button class="btn btn-gray" onclick="closeApplySheet()">취소</button>
@@ -683,12 +685,14 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
             <span class="chip chip-amber">승인 대기</span>
           </div>
           <div style="padding:14px 16px;display:flex;flex-direction:column;gap:0">
-            <div class="tracker-step" style="padding-top:0"><div class="tracker-dot dot-done"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div><div class="tracker-content"><div class="tracker-title">공구 신청</div><div class="tracker-sub">4월 18일 · 5/13~16 일정</div></div></div>
-            <div class="tracker-step"><div class="tracker-dot dot-done"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div><div class="tracker-content"><div class="tracker-title">운영팀 승인</div><div class="tracker-sub">4월 20일 · 보증금 납부 완료</div></div></div>
+            <div class="tracker-step" style="padding-top:0"><div class="tracker-dot dot-done"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div><div class="tracker-content"><div class="tracker-title">공구 신청</div><div class="tracker-sub">4월 18일 · 5/13~16 일정 (09:00~23:59)</div></div></div>
+            <div class="tracker-step"><div class="tracker-dot dot-done"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div><div class="tracker-content"><div class="tracker-title">선정 · 조건 협의</div><div class="tracker-sub">4월 20일 · 수수료 15% 확정 · 매칭 예약금 납부 완료</div></div></div>
             <div class="tracker-step"><div class="tracker-dot dot-now">!</div><div class="tracker-content"><div class="tracker-title">계약/가이드 확인</div><div class="tracker-sub">계약서 및 판매 가이드를 확인해주세요</div><div class="tracker-action" onclick="goScreen('screen-gb-guide')">계약/가이드 확인하기 →</div></div></div>
-            <div class="tracker-step"><div class="tracker-dot dot-idle">4</div><div class="tracker-content"><div class="tracker-title" style="color:var(--text3)">판매 링크 제출</div></div></div>
-            <div class="tracker-step"><div class="tracker-dot dot-idle">5</div><div class="tracker-content"><div class="tracker-title" style="color:var(--text3)">판매 데이터 확인</div></div></div>
-            <div class="tracker-step"><div class="tracker-dot dot-idle">6</div><div class="tracker-content"><div class="tracker-title" style="color:var(--text3)">정산 신청</div></div></div>
+            <div class="tracker-step"><div class="tracker-dot dot-idle">4</div><div class="tracker-content"><div class="tracker-title" style="color:var(--text3)">판매 링크 제출</div><div class="tracker-sub" style="color:var(--text3)">공구 시작 전 채널별 링크 등록</div></div></div>
+            <div class="tracker-step"><div class="tracker-dot dot-idle">5</div><div class="tracker-content"><div class="tracker-title" style="color:var(--text3)">공구 대기</div><div class="tracker-sub" style="color:var(--text3)">링크 발급 완료 · 오픈 대기중</div></div></div>
+            <div class="tracker-step"><div class="tracker-dot dot-idle">6</div><div class="tracker-content"><div class="tracker-title" style="color:var(--text3)">공구 오픈 · 콘텐츠 제출</div><div class="tracker-sub" style="color:var(--text3)">판매 개시 · 일간 성과는 D+1 15:00 공개</div></div></div>
+            <div class="tracker-step"><div class="tracker-dot dot-idle">7</div><div class="tracker-content"><div class="tracker-title" style="color:var(--text3)">공구 종료 · 당첨자 취합</div><div class="tracker-sub" style="color:var(--text3)">주문 마감 · 최종 정산 데이터 집계</div></div></div>
+            <div class="tracker-step"><div class="tracker-dot dot-idle">8</div><div class="tracker-content"><div class="tracker-title" style="color:var(--text3)">정산 신청</div><div class="tracker-sub" style="color:var(--text3)">매칭 예약금 환급 포함</div></div></div>
           </div>
         </div>
       </div>
@@ -824,13 +828,13 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
     </div>
   </div>
 
-  <!-- ===================== 공동구매 신청 Step1 ===================== -->
-  <div class="screen" id="screen-gb-step1">
+  <!-- ===================== 공동구매 신청 Step0: 상품 상세 ===================== -->
+  <div class="screen" id="screen-gb-product" style="position:relative">
     <div class="topbar">
       <div class="topbar-back" onclick="goScreen('screen-home')">
         <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
       </div>
-      <div class="topbar-title">공구 일정 선택</div>
+      <div class="topbar-title">상품 상세</div>
     </div>
     <div style="padding:10px 20px 8px;background:var(--bg);flex-shrink:0;border-bottom:0.5px solid var(--border)">
       <div class="progress-row" style="margin-bottom:4px">
@@ -841,9 +845,80 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
         <div class="prog-dot" style="background:var(--bg2);color:var(--text3);border:1.5px solid var(--border2);font-size:13px">3</div>
         <div class="prog-line"></div>
         <div class="prog-dot" style="background:var(--bg2);color:var(--text3);border:1.5px solid var(--border2);font-size:13px">4</div>
+        <div class="prog-line"></div>
+        <div class="prog-dot" style="background:var(--bg2);color:var(--text3);border:1.5px solid var(--border2);font-size:13px">5</div>
       </div>
       <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);padding:0 2px">
         <span style="color:var(--green);font-weight:500">상품 선택</span>
+        <span style="color:var(--text);font-weight:600">상품 상세</span>
+        <span>일정 선택</span>
+        <span>정보 입력</span>
+        <span>완료</span>
+      </div>
+    </div>
+    <div class="scroll-area" style="padding:0 0 100px">
+      <div style="height:220px;background:linear-gradient(135deg,#F5E6D3,#E8D5C0);display:flex;align-items:center;justify-content:center">
+        <div style="text-align:center">
+          <div style="font-size:48px">🐾</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:4px">BAS 펫푸드</div>
+        </div>
+      </div>
+      <div style="padding:20px">
+        <div style="display:flex;gap:8px;margin-bottom:8px">
+          <span class="chip chip-amber">선착순 특가</span>
+          <span class="chip chip-gray">사료</span>
+        </div>
+        <div style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px">BAS 칼취채 핑크에디션</div>
+        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:16px">
+          <span style="font-size:15px;font-weight:700;color:var(--orange)">20%</span>
+          <span style="font-size:13px;color:var(--text3);text-decoration:line-through">13,700원</span>
+          <span style="font-size:20px;font-weight:700;color:var(--text)">10,900원</span>
+        </div>
+        <div class="summary-card" style="margin-bottom:16px">
+          <div class="summary-row"><span class="summary-label">브랜드</span><span class="summary-value">BAS 펫푸드</span></div>
+          <div class="summary-row"><span class="summary-label">셀러 수수료율</span><span class="summary-value">최대 20%</span></div>
+          <div class="summary-row"><span class="summary-label">재고</span><span class="summary-value">500개 이상</span></div>
+          <div class="summary-row"><span class="summary-label">카테고리</span><span class="summary-value">반려동물 · 사료</span></div>
+          <div class="summary-row"><span class="summary-label">배송</span><span class="summary-value">무료배송</span></div>
+        </div>
+        <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px">상품 설명</div>
+        <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px">
+          BAS 칼취채 핑크에디션은 국내산 닭고기와 연어를 주원료로 한 프리미엄 반려견 사료입니다.<br><br>
+          칼슘과 오메가-3가 풍부하며, 유통기한이 길어 공동구매에 최적화된 상품입니다.
+        </div>
+        <div class="alert alert-amber">
+          공동구매 셀러 전용 상품입니다. 신청 후 운영팀이 일정을 검토하여 확정합니다.
+        </div>
+      </div>
+    </div>
+    <div style="position:absolute;bottom:0;left:0;right:0;padding:16px 20px 28px;background:var(--bg);border-top:0.5px solid var(--border)">
+      <button class="btn btn-orange" onclick="goScreen('screen-gb-step1')">다음 · 일정 선택 →</button>
+    </div>
+  </div>
+
+  <!-- ===================== 공동구매 신청 Step1 ===================== -->
+  <div class="screen" id="screen-gb-step1">
+    <div class="topbar">
+      <div class="topbar-back" onclick="goScreen('screen-gb-product')">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </div>
+      <div class="topbar-title">공구 일정 선택</div>
+    </div>
+    <div style="padding:10px 20px 8px;background:var(--bg);flex-shrink:0;border-bottom:0.5px solid var(--border)">
+      <div class="progress-row" style="margin-bottom:4px">
+        <div class="prog-dot" style="background:var(--green);color:#fff"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg></div>
+        <div class="prog-line done"></div>
+        <div class="prog-dot" style="background:var(--green);color:#fff"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg></div>
+        <div class="prog-line done"></div>
+        <div class="prog-dot" style="background:var(--text);color:#fff;font-size:13px;font-weight:700">3</div>
+        <div class="prog-line"></div>
+        <div class="prog-dot" style="background:var(--bg2);color:var(--text3);border:1.5px solid var(--border2);font-size:13px">4</div>
+        <div class="prog-line"></div>
+        <div class="prog-dot" style="background:var(--bg2);color:var(--text3);border:1.5px solid var(--border2);font-size:13px">5</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);padding:0 2px">
+        <span style="color:var(--green);font-weight:500">상품 선택</span>
+        <span style="color:var(--green);font-weight:500">상품 상세</span>
         <span style="color:var(--text);font-weight:600">일정 선택</span>
         <span>정보 입력</span>
         <span>완료</span>
@@ -878,6 +953,30 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
       </div>
 
       <div class="alert alert-amber">타 셀러 일정과 겹치는 날짜가 포함돼 있어요. 운영팀이 검토 후 확정해드려요.</div>
+
+      <div style="background:var(--bg2);border-radius:14px;padding:14px 16px">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px">공구 시간 설정</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="font-size:13px;font-weight:500;color:var(--text2);width:44px;flex-shrink:0">시작</div>
+            <div style="font-size:13px;font-weight:600;color:var(--text);flex:1">5월 13일</div>
+            <select class="input" style="width:100px;padding:8px 10px;font-size:13px">
+              <option>00:00</option><option>06:00</option><option selected>09:00</option>
+              <option>10:00</option><option>12:00</option><option>18:00</option>
+            </select>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="font-size:13px;font-weight:500;color:var(--text2);width:44px;flex-shrink:0">종료</div>
+            <div style="font-size:13px;font-weight:600;color:var(--text);flex:1">5월 16일</div>
+            <select class="input" style="width:100px;padding:8px 10px;font-size:13px">
+              <option>12:00</option><option>18:00</option><option>21:00</option>
+              <option selected>23:59</option>
+            </select>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--text3);margin-top:8px">시작·종료 시간은 운영팀 확인 후 최종 확정됩니다</div>
+      </div>
+
       <button class="btn btn-orange" onclick="goScreen('screen-gb-step2')">다음 · 정보 입력 →</button>
     </div>
   </div>
@@ -896,12 +995,15 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
         <div class="prog-line done"></div>
         <div class="prog-dot" style="background:var(--green);color:#fff"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg></div>
         <div class="prog-line done"></div>
-        <div class="prog-dot" style="background:var(--text);color:#fff;font-size:13px;font-weight:700">3</div>
+        <div class="prog-dot" style="background:var(--green);color:#fff"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg></div>
+        <div class="prog-line done"></div>
+        <div class="prog-dot" style="background:var(--text);color:#fff;font-size:13px;font-weight:700">4</div>
         <div class="prog-line"></div>
-        <div class="prog-dot" style="background:var(--bg2);color:var(--text3);border:1.5px solid var(--border2);font-size:13px">4</div>
+        <div class="prog-dot" style="background:var(--bg2);color:var(--text3);border:1.5px solid var(--border2);font-size:13px">5</div>
       </div>
       <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);padding:0 2px">
         <span style="color:var(--green);font-weight:500">상품 선택</span>
+        <span style="color:var(--green);font-weight:500">상품 상세</span>
         <span style="color:var(--green);font-weight:500">일정 선택</span>
         <span style="color:var(--text);font-weight:600">정보 입력</span>
         <span>완료</span>
@@ -911,6 +1013,28 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
       <div style="background:var(--bg2);border-radius:12px;padding:12px 16px;display:flex;flex-direction:column;gap:6px">
         <div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--text3)">상품</span><span style="font-size:13px;font-weight:600;color:var(--text)">BAS 칼취채 핑크에디션</span></div>
         <div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--text3)">일정</span><span style="font-size:13px;font-weight:600;color:var(--text)">5월 13일 ~ 5월 16일</span></div>
+      </div>
+
+      <div class="input-wrap">
+        <div class="input-label">상품 옵션 선택 <span style="font-size:11px;color:var(--text3);font-weight:400">(복수 선택 가능)</span></div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div>
+            <div style="font-size:12px;font-weight:500;color:var(--text2);margin-bottom:6px">용량</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <div class="ch-opt on" onclick="toggleChannel(this)" style="padding:8px 16px;border-radius:20px">100g</div>
+              <div class="ch-opt on" onclick="toggleChannel(this)" style="padding:8px 16px;border-radius:20px">200g</div>
+              <div class="ch-opt" onclick="toggleChannel(this)" style="padding:8px 16px;border-radius:20px">500g</div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:500;color:var(--text2);margin-bottom:6px">맛</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <div class="ch-opt on" onclick="toggleChannel(this)" style="padding:8px 16px;border-radius:20px">닭고기</div>
+              <div class="ch-opt" onclick="toggleChannel(this)" style="padding:8px 16px;border-radius:20px">소고기</div>
+              <div class="ch-opt" onclick="toggleChannel(this)" style="padding:8px 16px;border-radius:20px">연어</div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="input-wrap">
@@ -929,7 +1053,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
         <div class="input-hint">운영팀과 협의 후 최종 확정됩니다</div>
       </div>
 
-      <div class="alert alert-amber">보증금 ₩100,000 · 승인 후 납부 · 노쇼 시 50% 몰취</div>
+      <div class="alert alert-amber">매칭 예약금 ₩100,000 · 승인 후 납부 · 공구 종료 후 100% 환급 (노쇼 시 50% 몰취)</div>
       <button class="btn btn-dark" onclick="goScreen('screen-gb-done')">신청 완료</button>
     </div>
   </div>
@@ -949,6 +1073,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
         <div class="summary-row"><span class="summary-label">일정</span><span class="summary-value">5/13 ~ 5/16</span></div>
         <div class="summary-row"><span class="summary-label">채널</span><span class="summary-value">인스타그램</span></div>
         <div class="summary-row"><span class="summary-label">수수료율</span><span class="summary-value">15%</span></div>
+        <div class="summary-row"><span class="summary-label">매칭 예약금</span><span class="summary-value">₩100,000 <span style="font-size:11px;color:var(--green);font-weight:400">공구 종료 후 100% 환급</span></span></div>
         <div class="summary-row"><span class="summary-label">상태</span><span class="summary-value"><span class="chip chip-amber">승인 대기</span></span></div>
       </div>
       <button class="btn btn-dark" style="width:100%" onclick="goScreen('screen-home')">홈으로</button>
@@ -974,7 +1099,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
         <div style="padding:12px 16px;border-bottom:0.5px solid var(--border);font-size:14px;font-weight:700;color:var(--text)">BAS 칼취채 핑크에디션</div>
         <div class="summary-row"><span class="summary-label">공구 일정</span><span class="summary-value">5월 13일 ~ 5월 16일</span></div>
         <div class="summary-row"><span class="summary-label">수수료율</span><span class="summary-value">15%</span></div>
-        <div class="summary-row"><span class="summary-label">보증금</span><span class="summary-value">₩100,000 (납부 완료)</span></div>
+        <div class="summary-row"><span class="summary-label">매칭 예약금</span><span class="summary-value">₩100,000 <span style="font-size:11px;color:var(--green);font-weight:400">(납부 완료 · 공구 종료 후 환급 예정)</span></span></div>
       </div>
 
       <div style="border:0.5px solid var(--border);border-radius:14px;overflow:hidden">
@@ -1095,7 +1220,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
         </div>
         <div class="kpi-card">
           <div class="kpi-label">총 매출</div>
-          <div class="kpi-value" style="font-size:18px">₩523K</div>
+          <div class="kpi-value" style="font-size:18px">₩523,200</div>
           <div class="kpi-sub">순매출 기준</div>
         </div>
         <div class="kpi-card">
@@ -1105,7 +1230,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
         </div>
         <div class="kpi-card">
           <div class="kpi-label">예상 정산액</div>
-          <div class="kpi-value" style="font-size:18px;color:var(--orange)">₩78K</div>
+          <div class="kpi-value" style="font-size:18px;color:var(--orange)">₩78,078</div>
           <div class="kpi-sub">부가세 포함</div>
         </div>
       </div>
@@ -1153,6 +1278,215 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
         </div>
         <button class="btn btn-orange" onclick="goScreen('screen-gb-settlement-done')">정산 신청하기</button>
       </div>
+    </div>
+  </div>
+
+  <!-- ===================== 공동구매 · 선정 안내 ===================== -->
+  <div class="screen" id="screen-gb-selected">
+    <div class="topbar">
+      <div class="topbar-back" onclick="goScreen('screen-status')">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </div>
+      <div class="topbar-title">선정 안내</div>
+    </div>
+    <div style="padding:8px 20px 4px;flex-shrink:0;font-size:12px;color:var(--text3)">
+      내 현황 <span style="margin:0 4px">›</span> 공동구매 <span style="margin:0 4px">›</span> <span style="color:var(--text)">선정 안내</span>
+    </div>
+    <div class="scroll-area" style="padding:16px 20px 24px;display:flex;flex-direction:column;gap:16px">
+      <div style="text-align:center;padding:24px 0 8px">
+        <div style="width:72px;height:72px;border-radius:50%;background:#EAF3DE;display:flex;align-items:center;justify-content:center;margin:0 auto 12px">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+        </div>
+        <div style="font-size:20px;font-weight:700;color:var(--text)">선정됐어요!</div>
+        <div style="font-size:14px;color:var(--text3);margin-top:6px;line-height:1.6">조건 협의 후 계약서와 가이드를<br>확인하시면 공구 준비가 시작돼요</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-row"><span class="summary-label">상품</span><span class="summary-value">BAS 칼취채 핑크에디션</span></div>
+        <div class="summary-row"><span class="summary-label">공구 일정</span><span class="summary-value">5월 13일(09:00) ~ 5월 16일(23:59)</span></div>
+        <div class="summary-row"><span class="summary-label">확정 수수료율</span><span class="summary-value" style="color:var(--orange);font-weight:700">15%</span></div>
+        <div class="summary-row"><span class="summary-label">매칭 예약금</span><span class="summary-value">₩100,000 <span style="font-size:11px;color:var(--green)">종료 후 100% 환급</span></span></div>
+      </div>
+      <div class="alert alert-amber">
+        매칭 예약금 ₩100,000을 3일 이내에 납부해주세요. 미납 시 선정이 취소됩니다.
+      </div>
+      <button class="btn btn-orange" onclick="goScreen('screen-gb-guide')">계약/가이드 확인하기 →</button>
+      <button class="btn btn-gray" onclick="goScreen('screen-status')">나중에 하기</button>
+    </div>
+  </div>
+
+  <!-- ===================== 공동구매 · 공구 대기 ===================== -->
+  <div class="screen" id="screen-gb-waiting">
+    <div class="topbar">
+      <div class="topbar-back" onclick="goScreen('screen-status')">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </div>
+      <div class="topbar-title">공구 대기</div>
+    </div>
+    <div style="padding:8px 20px 4px;flex-shrink:0;font-size:12px;color:var(--text3)">
+      내 현황 <span style="margin:0 4px">›</span> 공동구매 <span style="margin:0 4px">›</span> <span style="color:var(--text)">공구 대기</span>
+    </div>
+    <div class="scroll-area" style="padding:16px 20px 24px;display:flex;flex-direction:column;gap:16px">
+      <div style="background:linear-gradient(135deg,#FFF3EE,#FAEEDA);border-radius:16px;padding:20px;text-align:center">
+        <div style="font-size:28px;font-weight:800;color:var(--orange);letter-spacing:-.02em">D-23</div>
+        <div style="font-size:14px;color:#633806;margin-top:4px">공구 시작까지</div>
+        <div style="font-size:12px;color:#854F0B;margin-top:6px">5월 13일 09:00 오픈 예정</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-row"><span class="summary-label">상품</span><span class="summary-value">BAS 칼취채 핑크에디션</span></div>
+        <div class="summary-row"><span class="summary-label">판매 링크</span><span class="summary-value" style="color:var(--green)">제출 완료 ✓</span></div>
+        <div class="summary-row"><span class="summary-label">수수료율</span><span class="summary-value">15%</span></div>
+        <div class="summary-row"><span class="summary-label">매칭 예약금</span><span class="summary-value">₩100,000 납부 완료</span></div>
+      </div>
+      <div class="alert alert-green">
+        판매 링크 제출이 완료됐어요. 공구 시작일 오전 9시에 상품 링크가 자동으로 오픈됩니다.
+      </div>
+      <div style="background:var(--bg2);border-radius:14px;padding:14px 16px">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:8px">공구 전 체크리스트</div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:18px;height:18px;border-radius:50%;background:#EAF3DE;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg></div>
+            <span style="color:var(--text2)">계약서 및 가이드라인 확인</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:18px;height:18px;border-radius:50%;background:#EAF3DE;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="3" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg></div>
+            <span style="color:var(--text2)">판매 링크 제출 완료</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:18px;height:18px;border-radius:50%;background:var(--bg3);border:1.5px solid var(--border2);flex-shrink:0"></div>
+            <span style="color:var(--text3)">콘텐츠 초안 운영팀 협의 (선택)</span>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-gray" onclick="goScreen('screen-messages')">운영팀과 협의하기</button>
+    </div>
+  </div>
+
+  <!-- ===================== 공동구매 · 공구 오픈 중 ===================== -->
+  <div class="screen" id="screen-gb-live">
+    <div class="topbar">
+      <div class="topbar-back" onclick="goScreen('screen-status')">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </div>
+      <div class="topbar-title">공구 오픈 중</div>
+      <div style="display:flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:#fff;background:var(--orange);padding:4px 10px;border-radius:20px">
+        <div style="width:6px;height:6px;border-radius:50%;background:#fff"></div>LIVE
+      </div>
+    </div>
+    <div style="padding:8px 20px 4px;flex-shrink:0;font-size:12px;color:var(--text3)">
+      내 현황 <span style="margin:0 4px">›</span> 공동구매 <span style="margin:0 4px">›</span> <span style="color:var(--text)">공구 오픈 중</span>
+    </div>
+    <div class="scroll-area" style="padding:12px 20px 24px;display:flex;flex-direction:column;gap:16px">
+      <div style="background:var(--bg2);border-radius:14px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-size:15px;font-weight:700;color:var(--text)">BAS 칼취채 핑크에디션</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:2px">5월 13일 09:00 ~ 5월 16일 23:59</div>
+        </div>
+        <span class="chip chip-teal">판매중</span>
+      </div>
+      <div class="alert alert-amber">
+        일간 판매 성과는 매일 D+1 오후 3시에 업데이트됩니다
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">오늘 주문 (5/14)</div>
+          <div class="kpi-value">12<span style="font-size:14px;font-weight:500;color:var(--text2)">건</span></div>
+          <div class="kpi-sub">어제 18건</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">누적 주문</div>
+          <div class="kpi-value">30<span style="font-size:14px;font-weight:500;color:var(--text2)">건</span></div>
+          <div class="kpi-sub">공구 2일차</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">오늘 매출</div>
+          <div class="kpi-value" style="font-size:18px">₩130,800</div>
+          <div class="kpi-sub">순매출 기준</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">예상 수익</div>
+          <div class="kpi-value" style="font-size:18px;color:var(--orange)">₩19,620</div>
+          <div class="kpi-sub">누적 예상</div>
+        </div>
+      </div>
+      <div style="background:var(--bg2);border-radius:14px;padding:14px 16px">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px">일별 현황 (D+1 15:00 업데이트)</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="font-size:12px;color:var(--text3);width:32px">5/13</div>
+            <div style="flex:1;background:var(--bg3);border-radius:4px;height:18px;overflow:hidden"><div style="height:100%;background:var(--orange);border-radius:4px;width:100%"></div></div>
+            <div style="font-size:12px;font-weight:500;color:var(--text);width:24px;text-align:right">18</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="font-size:12px;color:var(--text3);width:32px">5/14</div>
+            <div style="flex:1;background:var(--bg3);border-radius:4px;height:18px;overflow:hidden"><div style="height:100%;background:var(--orange);border-radius:4px;width:67%"></div></div>
+            <div style="font-size:12px;font-weight:500;color:var(--text);width:24px;text-align:right">12</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="font-size:12px;color:var(--text3);width:32px">5/15</div>
+            <div style="flex:1;background:var(--bg3);border-radius:4px;height:18px;overflow:hidden"><div style="height:100%;background:var(--border2);border-radius:4px;width:100%"></div></div>
+            <div style="font-size:12px;color:var(--text3);width:36px;text-align:right">집계중</div>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-gray" onclick="goScreen('screen-messages')">운영팀과 협의하기</button>
+    </div>
+  </div>
+
+  <!-- ===================== 공동구매 · 공구 종료 ===================== -->
+  <div class="screen" id="screen-gb-closed">
+    <div class="topbar">
+      <div class="topbar-back" onclick="goScreen('screen-status')">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </div>
+      <div class="topbar-title">공구 종료</div>
+    </div>
+    <div style="padding:8px 20px 4px;flex-shrink:0;font-size:12px;color:var(--text3)">
+      내 현황 <span style="margin:0 4px">›</span> 공동구매 <span style="margin:0 4px">›</span> <span style="color:var(--text)">공구 종료 · 당첨자 취합</span>
+    </div>
+    <div class="scroll-area" style="padding:16px 20px 24px;display:flex;flex-direction:column;gap:16px">
+      <div style="background:var(--bg2);border-radius:14px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-size:15px;font-weight:700;color:var(--text)">BAS 칼취채 핑크에디션</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:2px">5월 16일 23:59 종료</div>
+        </div>
+        <span class="chip chip-gray">종료</span>
+      </div>
+      <div class="alert alert-green">
+        공구가 종료됐어요! 주문 취합 및 최종 정산 데이터 검토 후 정산 신청이 가능해집니다.
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">총 주문 수</div>
+          <div class="kpi-value">48<span style="font-size:14px;font-weight:500;color:var(--text2)">건</span></div>
+          <div class="kpi-sub">반품 2건 제외</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">총 매출</div>
+          <div class="kpi-value" style="font-size:18px">₩523,200</div>
+          <div class="kpi-sub">순매출 기준</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">수수료율</div>
+          <div class="kpi-value">15<span style="font-size:14px;font-weight:500;color:var(--text2)">%</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">예상 정산액</div>
+          <div class="kpi-value" style="font-size:18px;color:var(--orange)">₩78,078</div>
+          <div class="kpi-sub">매칭 예약금 환급 별도</div>
+        </div>
+      </div>
+      <div style="background:var(--bg2);border-radius:14px;padding:14px 16px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <div style="font-size:13px;font-weight:600;color:var(--text)">당첨자 취합 현황</div>
+          <span class="chip chip-blue">집계 완료</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--text2)">
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--text3)">총 주문자</span><span style="font-weight:600">50명</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--text3)">취소/반품</span><span style="font-weight:600;color:var(--red)">2건</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--text3)">최종 확정</span><span style="font-weight:600;color:var(--green)">48건</span></div>
+        </div>
+      </div>
+      <button class="btn btn-orange" onclick="goScreen('screen-gb-sales-data')">정산 신청하기 →</button>
     </div>
   </div>
 
