@@ -211,13 +211,21 @@ textarea.form-input{resize:vertical;min-height:80px}
       <span class="nav-badge red">5</span>
     </div>
     <div class="nav-section">공동구매</div>
+    <div class="nav-item" onclick="goPage('page-gb-home')">
+      <div class="nav-dot"></div>
+      공동구매 홈
+    </div>
     <div class="nav-item" onclick="goPage('page-gb-new')">
       <div class="nav-dot"></div>
-      공구 캠페인 생성
+      캠페인 생성
+    </div>
+    <div class="nav-item" onclick="goPage('page-gb-pipeline')">
+      <div class="nav-dot"></div>
+      캠페인 파이프라인
     </div>
     <div class="nav-item" onclick="goPage('page-schedule')">
       <div class="nav-dot"></div>
-      공구 일정 관리
+      신청자 관리
     </div>
     <div class="nav-item" onclick="goPage('page-sales')">
       <div class="nav-dot"></div>
@@ -491,7 +499,7 @@ textarea.form-input{resize:vertical;min-height:80px}
               <td>
                 <div style="display:flex;gap:5px">
                   <button class="btn btn-secondary btn-sm" onclick="goPage('page-campaign-detail')">상세</button>
-                  <button class="btn btn-sm" style="background:#FCEBEB;color:#A32D2D;border:none">독촉</button>
+                  <button class="btn btn-sm" style="background:#FCEBEB;color:#A32D2D;border:none" onclick="openChaseModal('봄 신상 스킨케어 세트', '@yui.beauty')">독촉</button>
                 </div>
               </td>
             </tr>
@@ -796,6 +804,272 @@ textarea.form-input{resize:vertical;min-height:80px}
       </div>
     </div>
 
+    <!-- ===================== 공동구매 홈 ===================== -->
+    <div class="page" id="page-gb-home">
+      <div class="page-header">
+        <div>
+          <div class="page-title">공동구매 홈</div>
+          <div class="page-sub">공구 현황 한눈에 파악하고 빠르게 처리하세요</div>
+        </div>
+        <button class="btn btn-primary" onclick="goPage('page-gb-new')">+ 공구 캠페인 생성</button>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-card" style="border-left:3px solid var(--orange)">
+          <div class="stat-label">진행중 공구</div>
+          <div class="stat-value">3</div>
+          <span class="stat-badge up">↑ 1 이번주</span>
+        </div>
+        <div class="stat-card" style="border-left:3px solid var(--blue)">
+          <div class="stat-label">신청 승인 대기</div>
+          <div class="stat-value" style="color:#854F0B">2</div>
+          <div class="stat-sub">평균 대기 0.8일</div>
+        </div>
+        <div class="stat-card" style="border-left:3px solid var(--green)">
+          <div class="stat-label">이달 공구 매출</div>
+          <div class="stat-value">₩8.4M</div>
+          <span class="stat-badge up">↑ 18%</span>
+        </div>
+        <div class="stat-card" style="border-left:3px solid #EF9F27">
+          <div class="stat-label">정산 대기</div>
+          <div class="stat-value" style="color:#854F0B">₩1.2M</div>
+          <div class="stat-sub">셀러 3명</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 300px;gap:16px;margin-bottom:20px">
+        <!-- 진행중 공구 -->
+        <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:18px">
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:14px">진행중 공구</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="padding:12px;background:#EAF3DE;border-radius:10px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+                <div style="font-size:13px;font-weight:600;color:var(--text)">BAS 닭목라벨</div>
+                <span class="chip chip-green" style="font-size:10px">D-1</span>
+              </div>
+              <div style="font-size:12px;color:var(--text2)">@daily_jini · 4/16~19</div>
+              <div style="margin-top:6px;background:rgba(0,0,0,.06);border-radius:4px;height:4px"><div style="height:100%;background:var(--green);border-radius:4px;width:75%"></div></div>
+              <div style="font-size:11px;color:var(--text3);margin-top:3px">진행률 75%</div>
+            </div>
+            <div style="padding:12px;background:#FAEEDA;border-radius:10px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+                <div style="font-size:13px;font-weight:600;color:var(--text)">BAS 칼취채 핑크</div>
+                <span class="chip chip-amber" style="font-size:10px">D+24</span>
+              </div>
+              <div style="font-size:12px;color:var(--text2)">@yui.beauty · 5/13~16</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px">준비중 — 셀러 승인 완료</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 단계별 현황 -->
+        <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:18px">
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:14px">단계별 현황</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--bg2);border-radius:8px">
+              <span style="font-size:12px;color:var(--text2)">셀러 신청 접수</span><span style="font-size:13px;font-weight:600;color:#854F0B">2건</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--bg2);border-radius:8px">
+              <span style="font-size:12px;color:var(--text2)">조건 협의 중</span><span style="font-size:13px;font-weight:600">1건</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:#EAF3DE;border-radius:8px">
+              <span style="font-size:12px;color:var(--text2)">공구 진행중</span><span style="font-size:13px;font-weight:600;color:var(--green)">3건</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--bg2);border-radius:8px">
+              <span style="font-size:12px;color:var(--text2)">정산 대기</span><span style="font-size:13px;font-weight:600;color:#854F0B">2건</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 빠른 실행 -->
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:16px">
+            <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px">빠른 실행</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <button class="btn btn-primary" onclick="goPage('page-gb-new')" style="padding:10px;font-size:13px">+ 공구 캠페인 생성</button>
+              <button class="btn btn-secondary" onclick="goPage('page-schedule')" style="padding:10px;font-size:13px">신청자 관리</button>
+              <button class="btn btn-secondary" onclick="goPage('page-gb-pipeline')" style="padding:10px;font-size:13px">파이프라인 보기</button>
+              <button class="btn btn-secondary" onclick="goPage('page-sales')" style="padding:10px;font-size:13px">판매/정산 관리</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-header">
+          <div class="table-title">전체 공구 캠페인</div>
+          <div style="display:flex;gap:8px">
+            <select style="padding:6px 10px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);background:var(--bg);outline:none"><option>전체 상태</option><option>진행중</option><option>예정</option><option>완료</option></select>
+            <button class="btn btn-secondary btn-sm" onclick="goPage('page-gb-pipeline')">파이프라인 보기</button>
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>상품명</th><th>셀러</th><th>공구 기간</th><th>매출</th><th>단계</th><th>상태</th><th>관리</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="td-name">BAS 닭목라벨</div><div class="td-sub">BAS펫푸드 · 사료</div></td>
+              <td><div class="td-name">@daily_jini</div><div class="td-sub">팔로워 8.9K</div></td>
+              <td><div style="font-size:13px">4/16 ~ 4/19</div></td>
+              <td><div style="font-size:13px;font-weight:600;color:var(--green)">₩1.2M</div></td>
+              <td><span class="chip chip-green">공구 진행중</span></td>
+              <td><span class="chip chip-green">진행중</span></td>
+              <td><button class="btn btn-secondary btn-sm" onclick="goPage('page-gb-pipeline')">파이프라인</button></td>
+            </tr>
+            <tr>
+              <td><div class="td-name">BAS 칼취채 핑크에디션</div><div class="td-sub">BAS펫푸드 · 간식</div></td>
+              <td><div class="td-name">@yui.beauty</div><div class="td-sub">팔로워 12.4K</div></td>
+              <td><div style="font-size:13px">5/13 ~ 5/16</div></td>
+              <td><div style="font-size:13px;color:var(--text3)">-</div></td>
+              <td><span class="chip chip-amber">셀러 승인 완료</span></td>
+              <td><span class="chip chip-blue">예정</span></td>
+              <td><button class="btn btn-secondary btn-sm" onclick="goPage('page-gb-pipeline')">파이프라인</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===================== 공구 캠페인 파이프라인 ===================== -->
+    <div class="page" id="page-gb-pipeline">
+      <div class="page-header">
+        <div>
+          <div class="page-title">캠페인 파이프라인</div>
+          <div class="page-sub">BAS 칼취채 핑크에디션 · @yui.beauty</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-secondary" onclick="goPage('page-gb-home')">← 목록으로</button>
+          <button class="btn btn-primary">알림 발송</button>
+        </div>
+      </div>
+
+      <!-- 파이프라인 스테이지 -->
+      <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:24px;margin-bottom:20px">
+        <div style="display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:8px">
+          <!-- Stage 1 done -->
+          <div style="min-width:130px;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative">
+            <div style="width:40px;height:40px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;font-weight:700;z-index:1">✓</div>
+            <div style="font-size:12px;font-weight:600;color:var(--green);text-align:center">공구 등록 완료</div>
+            <div style="font-size:11px;color:var(--text3);text-align:center">4/14 완료</div>
+            <div style="position:absolute;top:20px;left:calc(50% + 20px);right:0;height:2px;background:var(--green)"></div>
+          </div>
+          <!-- Stage 2 done -->
+          <div style="min-width:130px;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative">
+            <div style="width:40px;height:40px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;font-weight:700;z-index:1">✓</div>
+            <div style="font-size:12px;font-weight:600;color:var(--green);text-align:center">셀러 신청 접수</div>
+            <div style="font-size:11px;color:var(--text3);text-align:center">4/18 완료</div>
+            <div style="position:absolute;top:20px;left:calc(50% + 20px);right:0;height:2px;background:var(--green)"></div>
+          </div>
+          <!-- Stage 3 done -->
+          <div style="min-width:130px;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative">
+            <div style="width:40px;height:40px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;font-weight:700;z-index:1">✓</div>
+            <div style="font-size:12px;font-weight:600;color:var(--green);text-align:center">승인·조건 협의</div>
+            <div style="font-size:11px;color:var(--text3);text-align:center">4/20 완료</div>
+            <div style="position:absolute;top:20px;left:calc(50% + 20px);right:0;height:2px;background:var(--green)"></div>
+          </div>
+          <!-- Stage 4 current -->
+          <div style="min-width:130px;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative">
+            <div style="width:40px;height:40px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700;z-index:1;box-shadow:0 0 0 4px #FFF3EE">4</div>
+            <div style="font-size:12px;font-weight:600;color:var(--orange);text-align:center">공구 오픈 준비</div>
+            <div style="font-size:11px;color:var(--orange);text-align:center">판매 링크 대기</div>
+            <div style="position:absolute;top:20px;left:calc(50% + 20px);right:0;height:2px;background:var(--border)"></div>
+          </div>
+          <!-- Stage 5 -->
+          <div style="min-width:130px;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative">
+            <div style="width:40px;height:40px;border-radius:50%;background:var(--bg2);border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:14px;font-weight:700;z-index:1">5</div>
+            <div style="font-size:12px;font-weight:500;color:var(--text3);text-align:center">공구 진행중</div>
+            <div style="font-size:11px;color:var(--text3);text-align:center">5/13~5/16</div>
+            <div style="position:absolute;top:20px;left:calc(50% + 20px);right:0;height:2px;background:var(--border)"></div>
+          </div>
+          <!-- Stage 6 -->
+          <div style="min-width:130px;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative">
+            <div style="width:40px;height:40px;border-radius:50%;background:var(--bg2);border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:14px;font-weight:700;z-index:1">6</div>
+            <div style="font-size:12px;font-weight:500;color:var(--text3);text-align:center">종료·당첨자 취합</div>
+            <div style="font-size:11px;color:var(--text3);text-align:center">5/17 예정</div>
+            <div style="position:absolute;top:20px;left:calc(50% + 20px);right:0;height:2px;background:var(--border)"></div>
+          </div>
+          <!-- Stage 7 -->
+          <div style="min-width:130px;display:flex;flex-direction:column;align-items:center;gap:8px">
+            <div style="width:40px;height:40px;border-radius:50%;background:var(--bg2);border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:14px;font-weight:700">7</div>
+            <div style="font-size:12px;font-weight:500;color:var(--text3);text-align:center">정산 처리</div>
+            <div style="font-size:11px;color:var(--text3);text-align:center">종료 후 14영업일</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 현재 단계 상세 -->
+      <div style="display:grid;grid-template-columns:1fr 300px;gap:16px">
+        <div>
+          <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:20px;margin-bottom:16px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+              <div style="font-size:14px;font-weight:700;color:var(--text)">현재 단계: 공구 오픈 준비</div>
+              <span class="chip chip-amber">처리 필요</span>
+            </div>
+            <div class="alert alert-amber" style="margin-bottom:14px">
+              공구 시작일(5/13) 전까지 셀러의 판매 링크 제출을 확인하세요. D-1까지 미제출 시 자동 독촉 알림이 발송됩니다.
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg2);border-radius:10px">
+                <div style="font-size:13px;color:var(--text)">보증금 납부</div>
+                <span class="chip chip-green">완료 · ₩100,000</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#FCEBEB;border-radius:10px">
+                <div style="font-size:13px;color:var(--text)">판매 링크 제출</div>
+                <span class="chip chip-red">미제출</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg2);border-radius:10px">
+                <div style="font-size:13px;color:var(--text)">사전 콘텐츠 검수</div>
+                <span class="chip chip-gray">대기중</span>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:14px">
+              <button class="btn btn-secondary" style="flex:1">판매 링크 독촉</button>
+              <button class="btn btn-primary" style="flex:1">다음 단계로 진행</button>
+            </div>
+          </div>
+
+          <!-- 이력 -->
+          <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:20px">
+            <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:14px">진행 이력</div>
+            <div style="display:flex;flex-direction:column;gap:0">
+              <div style="display:flex;gap:12px;padding:10px 0;border-bottom:0.5px solid var(--border)">
+                <div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:4px"></div>
+                <div><div style="font-size:13px;font-weight:500;color:var(--text)">조건 협의 완료 · 수수료 15% 확정</div><div style="font-size:11px;color:var(--text3);margin-top:2px">4/20 14:23 · 운영팀</div></div>
+              </div>
+              <div style="display:flex;gap:12px;padding:10px 0;border-bottom:0.5px solid var(--border)">
+                <div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:4px"></div>
+                <div><div style="font-size:13px;font-weight:500;color:var(--text)">셀러 승인 완료 · 알림톡 발송</div><div style="font-size:11px;color:var(--text3);margin-top:2px">4/19 10:05 · 운영팀</div></div>
+              </div>
+              <div style="display:flex;gap:12px;padding:10px 0">
+                <div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:4px"></div>
+                <div><div style="font-size:13px;font-weight:500;color:var(--text)">공구 캠페인 등록 완료</div><div style="font-size:11px;color:var(--text3);margin-top:2px">4/14 09:00 · 운영팀</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 캠페인 요약 -->
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:16px">
+            <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px">캠페인 요약</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--text3)">상품</span><span style="font-weight:500;color:var(--text)">BAS 칼취채 핑크에디션</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--text3)">셀러</span><span style="font-weight:500;color:var(--text)">@yui.beauty</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--text3)">공구 기간</span><span style="font-weight:500;color:var(--text)">5/13 ~ 5/16</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--text3)">공구가</span><span style="font-weight:700;color:var(--orange)">10,900원 (20%↓)</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--text3)">수수료율</span><span style="font-weight:500;color:var(--text)">15%</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--text3)">보증금</span><span style="font-weight:500;color:var(--green)">납부 완료</span></div>
+            </div>
+          </div>
+          <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:16px">
+            <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px">다음 자동 알림</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div class="noti-rule"><div class="noti-dot"></div>D-3 준비 알림 (5/10)<span class="noti-auto">자동</span></div>
+              <div class="noti-rule"><div class="noti-dot"></div>D-1 링크 미제출 독촉<span class="noti-auto">자동</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ===================== 공구 일정 관리 ===================== -->
     <!-- ===================== 공동구매 캠페인 생성 ===================== -->
     <div class="page" id="page-gb-new">
@@ -833,11 +1107,15 @@ textarea.form-input{resize:vertical;min-height:80px}
             </div>
             <div class="form-group">
               <label class="form-label">카테고리</label>
-              <select class="form-input">
+              <select class="form-input" id="gb-cat-main" onchange="updateGbSubCat()">
                 <option value="">선택</option>
                 <option>사료</option><option>간식</option><option>의류</option>
                 <option>용품</option><option>뷰티</option><option>푸드</option><option>라이프</option>
               </select>
+            </div>
+            <div class="form-group" id="gb-subcat-wrap" style="display:none">
+              <label class="form-label">세부 카테고리</label>
+              <select class="form-input" id="gb-cat-sub"></select>
             </div>
             <div class="form-group" style="grid-column:1/-1">
               <label class="form-label">상품 설명</label>
@@ -923,7 +1201,8 @@ textarea.form-input{resize:vertical;min-height:80px}
 
             <!-- 우측: 혜택 & 이벤트 -->
             <div>
-              <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:16px">공구 혜택 설정</div>
+              <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:8px">공구 혜택 설정</div>
+              <div class="alert alert-amber" style="font-size:12px;margin-bottom:14px">할인·증정·적립·무료배송 등 셀러가 구매자에게 제공하는 혜택을 입력하세요. 복수 설정 가능하며, 사용자 앱 공구 상세 페이지에 노출됩니다.</div>
               <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:28px">
                 <div class="form-group">
                   <label class="form-label">공구 혜택 (다중 입력 가능)</label>
@@ -948,7 +1227,8 @@ textarea.form-input{resize:vertical;min-height:80px}
               </div>
 
               <div style="border-top:0.5px solid var(--border);padding-top:24px">
-                <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:16px">공구 이벤트 설정</div>
+                <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:8px">공구 이벤트 설정</div>
+                <div class="alert alert-purple" style="font-size:12px;margin-bottom:14px">이벤트는 선착순·한정 수량 등 특별 판매 방식을 추가할 때 사용합니다. 선택한 유형에 따라 사용자 앱에 뱃지와 카운트다운이 노출됩니다.</div>
                 <div style="display:flex;flex-direction:column;gap:14px">
                   <div class="form-group">
                     <label class="form-label">이벤트 유형</label>
@@ -994,17 +1274,34 @@ textarea.form-input{resize:vertical;min-height:80px}
               <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:16px">셀러 자격 조건</div>
               <div style="display:flex;flex-direction:column;gap:14px">
                 <div class="form-group">
-                  <label class="form-label">최소 팔로워 수</label>
-                  <input class="form-input" type="number" placeholder="예) 1000">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">허용 플랫폼</label>
-                  <div style="display:flex;flex-direction:column;gap:6px">
-                    <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2);cursor:pointer"><input type="checkbox" checked style="accent-color:var(--orange)"> 인스타그램</label>
-                    <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2);cursor:pointer"><input type="checkbox" checked style="accent-color:var(--orange)"> 유튜브</label>
-                    <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2);cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> 틱톡</label>
-                    <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2);cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> 네이버 블로그</label>
+                  <label class="form-label">허용 플랫폼 및 최소 팔로워/구독자</label>
+                  <div style="display:flex;flex-direction:column;gap:8px">
+                    <div style="display:flex;align-items:center;gap:8px">
+                      <input type="checkbox" checked style="accent-color:var(--orange);flex-shrink:0;width:15px;height:15px">
+                      <span style="font-size:13px;width:96px;color:var(--text2);flex-shrink:0">인스타그램</span>
+                      <input class="form-input" type="number" placeholder="최소 팔로워" style="flex:1" value="1000">
+                      <span style="font-size:11px;color:var(--text3);flex-shrink:0">명</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px">
+                      <input type="checkbox" checked style="accent-color:var(--orange);flex-shrink:0;width:15px;height:15px">
+                      <span style="font-size:13px;width:96px;color:var(--text2);flex-shrink:0">유튜브</span>
+                      <input class="form-input" type="number" placeholder="최소 구독자" style="flex:1">
+                      <span style="font-size:11px;color:var(--text3);flex-shrink:0">명</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px">
+                      <input type="checkbox" style="accent-color:var(--orange);flex-shrink:0;width:15px;height:15px">
+                      <span style="font-size:13px;width:96px;color:var(--text2);flex-shrink:0">틱톡</span>
+                      <input class="form-input" type="number" placeholder="최소 팔로워" style="flex:1;opacity:0.5" disabled>
+                      <span style="font-size:11px;color:var(--text3);flex-shrink:0">명</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px">
+                      <input type="checkbox" style="accent-color:var(--orange);flex-shrink:0;width:15px;height:15px">
+                      <span style="font-size:13px;width:96px;color:var(--text2);flex-shrink:0">네이버 블로그</span>
+                      <input class="form-input" type="number" placeholder="최소 이웃 수" style="flex:1;opacity:0.5" disabled>
+                      <span style="font-size:11px;color:var(--text3);flex-shrink:0">명</span>
+                    </div>
                   </div>
+                  <span style="font-size:11px;color:var(--text3)">플랫폼 체크 시 해당 플랫폼 팔로워 조건이 활성화됩니다</span>
                 </div>
                 <div class="form-group">
                   <label class="form-label">선호 카테고리</label>
@@ -1038,13 +1335,8 @@ textarea.form-input{resize:vertical;min-height:80px}
                     <option>노쇼 시 전액 몰취</option>
                   </select>
                 </div>
-                <div class="form-group">
-                  <label class="form-label">정산 주기</label>
-                  <div class="toggle-group">
-                    <div class="toggle-opt on">월 1회</div>
-                    <div class="toggle-opt">월 2회</div>
-                    <div class="toggle-opt">건별</div>
-                  </div>
+                <div class="alert alert-green" style="font-size:12px">
+                  <strong>정산 주기 고정:</strong> 공구 종료일로부터 영업일 기준 <strong>14일 후</strong> 정산이 자동 처리됩니다. 별도 설정 불필요.
                 </div>
                 <div style="background:var(--bg2);border-radius:10px;padding:14px">
                   <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px">자동 알림 설정</div>
@@ -1113,7 +1405,7 @@ textarea.form-input{resize:vertical;min-height:80px}
             <button class="btn btn-secondary" onclick="gbNextStep(3)">← 이전</button>
             <div style="display:flex;gap:8px">
               <button class="btn btn-secondary">임시 저장</button>
-              <button class="btn btn-primary" onclick="goPage('page-schedule')">공구 캠페인 개설하기</button>
+              <button class="btn btn-primary" onclick="goPage('page-gb-pipeline')">공구 캠페인 개설하기</button>
             </div>
           </div>
         </div>
@@ -1774,14 +2066,33 @@ textarea.form-input{resize:vertical;min-height:80px}
         <div class="stat-card"><div class="stat-label">매크로 (10K~100K)</div><div class="stat-value">158</div></div>
         <div class="stat-card"><div class="stat-label">메가 (100K+)</div><div class="stat-value">18</div></div>
       </div>
+      <!-- 필터 -->
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;background:var(--bg);border-radius:12px;border:0.5px solid var(--border);padding:14px 18px;align-items:center">
+        <span style="font-size:12px;font-weight:600;color:var(--text3);margin-right:4px">필터</span>
+        <input style="padding:7px 12px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);outline:none;width:180px" placeholder="이름 · 계정 검색...">
+        <select style="padding:7px 12px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);background:var(--bg);outline:none">
+          <option>전체 등급</option><option>나노 (1K~10K)</option><option>매크로 (10K~100K)</option><option>메가 (100K+)</option>
+        </select>
+        <select style="padding:7px 12px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);background:var(--bg);outline:none">
+          <option>전체 플랫폼</option><option>인스타그램</option><option>유튜브</option><option>틱톡</option><option>네이버 블로그</option>
+        </select>
+        <select style="padding:7px 12px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);background:var(--bg);outline:none">
+          <option>전체 카테고리</option><option>뷰티</option><option>라이프</option><option>반려동물</option><option>푸드</option><option>패션</option>
+        </select>
+        <select style="padding:7px 12px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);background:var(--bg);outline:none">
+          <option>전체 팔로워</option><option>1K ~ 10K</option><option>10K ~ 100K</option><option>100K+</option>
+        </select>
+        <button class="btn btn-secondary btn-sm" style="margin-left:auto">초기화</button>
+      </div>
+
       <div class="table-wrap">
         <div class="table-header">
-          <div class="table-title">인플루언서</div>
-          <input style="padding:7px 12px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);outline:none;width:200px" placeholder="이름 · 계정 검색...">
+          <div class="table-title">인플루언서 <span style="font-size:12px;font-weight:400;color:var(--text3)">318명</span></div>
+          <button class="btn btn-secondary btn-sm">엑셀 내보내기</button>
         </div>
         <table>
           <thead>
-            <tr><th>인플루언서</th><th>플랫폼</th><th>팔로워</th><th>등급</th><th>카테고리</th><th>누적 캠페인</th><th>상태</th></tr>
+            <tr><th>인플루언서</th><th>플랫폼</th><th>팔로워</th><th>등급 <span style="font-weight:400;color:var(--text3)">(수기 설정 가능)</span></th><th>카테고리</th><th>누적 캠페인</th><th>상태</th></tr>
           </thead>
           <tbody>
             <tr>
@@ -1793,7 +2104,11 @@ textarea.form-input{resize:vertical;min-height:80px}
               </td>
               <td><span class="chip chip-pink">인스타</span></td>
               <td><div style="font-size:13px;font-weight:500">12.4K</div></td>
-              <td><span class="chip chip-purple">매크로</span></td>
+              <td>
+                <select style="padding:4px 8px;border-radius:6px;border:1px solid var(--border2);font-size:12px;color:var(--text);background:var(--bg);outline:none;cursor:pointer">
+                  <option>나노</option><option selected>매크로</option><option>메가</option><option>VIP</option><option>VVIP</option>
+                </select>
+              </td>
               <td><span class="chip chip-gray">뷰티</span></td>
               <td><div style="font-size:13px">8건</div></td>
               <td><span class="chip chip-green">활성</span></td>
@@ -1807,7 +2122,11 @@ textarea.form-input{resize:vertical;min-height:80px}
               </td>
               <td><span class="chip chip-pink">인스타</span></td>
               <td><div style="font-size:13px;font-weight:500">38.2K</div></td>
-              <td><span class="chip chip-purple">매크로</span></td>
+              <td>
+                <select style="padding:4px 8px;border-radius:6px;border:1px solid var(--border2);font-size:12px;color:var(--text);background:var(--bg);outline:none;cursor:pointer">
+                  <option>나노</option><option selected>매크로</option><option>메가</option><option>VIP</option><option>VVIP</option>
+                </select>
+              </td>
               <td><span class="chip chip-gray">뷰티</span></td>
               <td><div style="font-size:13px">14건</div></td>
               <td><span class="chip chip-green">활성</span></td>
@@ -1821,7 +2140,11 @@ textarea.form-input{resize:vertical;min-height:80px}
               </td>
               <td><span class="chip chip-pink">인스타</span></td>
               <td><div style="font-size:13px;font-weight:500">8.9K</div></td>
-              <td><span class="chip chip-blue">나노</span></td>
+              <td>
+                <select style="padding:4px 8px;border-radius:6px;border:1px solid var(--border2);font-size:12px;color:var(--text);background:var(--bg);outline:none;cursor:pointer">
+                  <option selected>나노</option><option>매크로</option><option>메가</option><option>VIP</option><option>VVIP</option>
+                </select>
+              </td>
               <td><span class="chip chip-gray">라이프</span></td>
               <td><div style="font-size:13px">5건</div></td>
               <td><span class="chip chip-green">활성</span></td>
@@ -2207,14 +2530,59 @@ textarea.form-input{resize:vertical;min-height:80px}
   </div><!-- .content -->
 </div><!-- .main -->
 
+<!-- 독촉 알림톡 모달 -->
+<div id="chase-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:999;display:none;align-items:center;justify-content:center">
+  <div style="background:var(--bg);border-radius:20px;width:480px;max-width:90vw;padding:28px;box-shadow:0 24px 60px rgba(0,0,0,.25)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div style="font-size:17px;font-weight:700;color:var(--text)">알림톡 수동 발송</div>
+      <button onclick="closeChaseModal()" style="width:32px;height:32px;border-radius:8px;border:1px solid var(--border2);background:var(--bg2);cursor:pointer;font-size:16px;color:var(--text2)">×</button>
+    </div>
+    <div style="background:#FAEEDA;border-radius:10px;padding:12px 14px;margin-bottom:16px">
+      <div style="font-size:12px;font-weight:600;color:#854F0B;margin-bottom:2px">발송 대상</div>
+      <div style="font-size:14px;font-weight:700;color:var(--text)" id="chase-target-name">—</div>
+      <div style="font-size:12px;color:var(--text2)" id="chase-campaign-name">—</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+      <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:4px">알림 템플릿 선택</div>
+      <label style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border:1px solid var(--border2);border-radius:10px;cursor:pointer;background:var(--bg2)">
+        <input type="radio" name="chase-type" value="d7" style="margin-top:3px;accent-color:var(--orange)" checked>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--text)">D-7 미제출 독촉</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:2px">[바잇미] {이름}님, '{캠페인명}' 콘텐츠 제출 마감이 7일 남았어요. 앱에서 URL을 제출해주세요!</div>
+        </div>
+      </label>
+      <label style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border:1px solid var(--border2);border-radius:10px;cursor:pointer">
+        <input type="radio" name="chase-type" value="d3" style="margin-top:3px;accent-color:var(--orange)">
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--text)">D-3 긴급 독촉</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:2px">[바잇미] ⚠️ {이름}님, '{캠페인명}' 마감 D-3입니다. {마감일}까지 미제출 시 패널티가 부과될 수 있어요.</div>
+        </div>
+      </label>
+      <label style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border:1px solid var(--border2);border-radius:10px;cursor:pointer">
+        <input type="radio" name="chase-type" value="custom" style="margin-top:3px;accent-color:var(--orange)">
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:600;color:var(--text)">직접 입력</div>
+          <textarea class="form-input" rows="2" placeholder="직접 메시지를 입력하세요..." style="font-size:12px;margin-top:6px;background:var(--bg)"></textarea>
+        </div>
+      </label>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button onclick="closeChaseModal()" class="btn btn-secondary" style="flex:1">취소</button>
+      <button onclick="sendChaseAlert()" class="btn btn-primary" style="flex:1;background:#A32D2D">알림톡 발송</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const breadcrumbs = {
   'page-home': '개요 › <strong>대시보드 홈</strong>',
   'page-campaigns': '캠페인 › <strong>시딩 캠페인</strong>',
   'page-campaign-new': '캠페인 › <strong>신규 생성</strong>',
   'page-applications': '캠페인 › <strong>신청 관리</strong>',
-  'page-gb-new': '공동구매 › <strong>공구 캠페인 생성</strong>',
-  'page-schedule': '공동구매 › <strong>공구 일정 관리</strong>',
+  'page-gb-home': '공동구매 › <strong>공동구매 홈</strong>',
+  'page-gb-new': '공동구매 › <strong>캠페인 생성</strong>',
+  'page-gb-pipeline': '공동구매 › <strong>캠페인 파이프라인</strong>',
+  'page-schedule': '공동구매 › <strong>신청자 관리</strong>',
   'page-sales': '공동구매 › <strong>판매/정산 관리</strong>',
   'page-vip': '공동구매 › <strong>VIP 상품관</strong>',
   'page-deposit': '공동구매 › <strong>보증금 관리</strong>',
@@ -2234,9 +2602,9 @@ function goPage(id) {
   const navMap = {
     'page-home': 0,
     'page-campaigns': 1, 'page-campaign-new': 2, 'page-applications': 3,
-    'page-gb-new': 4, 'page-schedule': 5, 'page-sales': 6, 'page-vip': 7, 'page-deposit': 8,
-    'page-review': 9, 'page-influencers': 10,
-    'page-notifications': 11, 'page-messages': 12
+    'page-gb-home': 4, 'page-gb-new': 5, 'page-gb-pipeline': 6, 'page-schedule': 7, 'page-sales': 8, 'page-vip': 9, 'page-deposit': 10,
+    'page-review': 11, 'page-influencers': 12,
+    'page-notifications': 13, 'page-messages': 14
   };
   const navItems = document.querySelectorAll('.nav-item');
   if (navMap[id] !== undefined) navItems[navMap[id]].classList.add('on');
@@ -2342,6 +2710,43 @@ function switchReviewTab(tab) {
   tg.style.cssText = !isSeeding
     ? 'padding:10px 20px;font-size:14px;font-weight:600;color:var(--orange);border-bottom:2px solid var(--orange);cursor:pointer'
     : 'padding:10px 20px;font-size:14px;font-weight:500;color:var(--text3);cursor:pointer';
+}
+
+function openChaseModal(campaign, target) {
+  document.getElementById('chase-campaign-name').textContent = campaign;
+  document.getElementById('chase-target-name').textContent = target;
+  const modal = document.getElementById('chase-modal');
+  modal.style.display = 'flex';
+}
+function closeChaseModal() {
+  document.getElementById('chase-modal').style.display = 'none';
+}
+function sendChaseAlert() {
+  const type = document.querySelector('input[name="chase-type"]:checked').value;
+  const msgs = { d7: 'D-7 독촉 알림톡이 발송됐습니다.', d3: 'D-3 긴급 독촉 알림톡이 발송됐습니다.', custom: '직접 입력 알림톡이 발송됐습니다.' };
+  closeChaseModal();
+  alert(msgs[type] || '알림톡이 발송됐습니다.');
+}
+
+const gbSubCats = {
+  '사료': ['건식', '습식', '동결건조', '생식', '기능성'],
+  '간식': ['육류', '어류', '유제품', '식물성', '기타'],
+  '의류': ['상의', '하의', '아우터', '신발', '액세서리'],
+  '용품': ['하우스/침대', '장난감', '이동장', '청결용품', '기타'],
+  '뷰티': ['스킨케어', '메이크업', '헤어', '바디', '향수'],
+  '푸드': ['간편식', '음료', '건강식품', '디저트', '기타'],
+  '라이프': ['홈인테리어', '주방용품', '운동/스포츠', '반려용품', '기타'],
+};
+function updateGbSubCat() {
+  const main = document.getElementById('gb-cat-main').value;
+  const wrap = document.getElementById('gb-subcat-wrap');
+  const sub = document.getElementById('gb-cat-sub');
+  if (main && gbSubCats[main]) {
+    sub.innerHTML = '<option value="">선택</option>' + gbSubCats[main].map(s => `<option>${s}</option>`).join('');
+    wrap.style.display = 'flex';
+  } else {
+    wrap.style.display = 'none';
+  }
 }
 
 // 토글 옵션
