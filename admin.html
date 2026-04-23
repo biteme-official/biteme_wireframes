@@ -2663,6 +2663,194 @@ textarea.form-input{resize:vertical;min-height:80px}
       </div>
     </div>
 
+    <!-- ===================== 셀러 상세프로필 ===================== -->
+    <div class="page" id="page-seller-profile">
+      <div class="page-header">
+        <div>
+          <div class="page-title">셀러 상세프로필</div>
+          <div class="page-sub">@yui.beauty · 유이</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-secondary" onclick="goPage('page-grade-mgmt')">← 목록으로</button>
+          <button class="btn btn-primary">등급 저장</button>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 320px;gap:20px">
+
+        <!-- 좌측: 상세 정보 -->
+        <div style="display:flex;flex-direction:column;gap:16px">
+
+          <!-- 기본 정보 -->
+          <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:20px">
+            <div style="display:flex;align-items:center;gap:16px;margin-bottom:18px">
+              <div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#F5E6D3,#E8D5C0);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:var(--text);flex-shrink:0">유</div>
+              <div>
+                <div style="font-size:18px;font-weight:700;color:var(--text)">유이</div>
+                <div style="font-size:13px;color:var(--text3);margin-top:2px">@yui.beauty · 가입일 2024.03.15</div>
+              </div>
+              <span class="chip chip-green" style="margin-left:auto">승인됨</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div style="background:var(--bg2);border-radius:10px;padding:12px">
+                <div style="font-size:11px;color:var(--text3);margin-bottom:4px">공구 진행 횟수</div>
+                <div style="font-size:20px;font-weight:700;color:var(--text)">3회</div>
+              </div>
+              <div style="background:var(--bg2);border-radius:10px;padding:12px">
+                <div style="font-size:11px;color:var(--text3);margin-bottom:4px">누적 공구 매출</div>
+                <div style="font-size:20px;font-weight:700;color:var(--orange)">₩2.4M</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 채널 정보 및 크롤링 -->
+          <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:20px">
+            <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:14px">채널 정보 · 자동 크롤링</div>
+
+            <!-- 인스타그램 -->
+            <div style="border:0.5px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:12px">
+              <div style="padding:10px 14px;background:var(--bg2);display:flex;align-items:center;justify-content:space-between">
+                <div style="display:flex;align-items:center;gap:8px">
+                  <span class="chip chip-pink">인스타그램</span>
+                  <span style="font-size:12px;color:var(--text2)">instagram.com/yui.beauty</span>
+                </div>
+                <button style="padding:4px 10px;background:#FFF3EE;color:var(--orange);border:1px solid #FDDDB8;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer">크롤링 새로고침</button>
+              </div>
+              <div style="padding:12px 14px">
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px">
+                  <div style="text-align:center">
+                    <div style="font-size:16px;font-weight:700;color:var(--text)">12.4K</div>
+                    <div style="font-size:11px;color:var(--text3)">팔로워</div>
+                  </div>
+                  <div style="text-align:center">
+                    <div style="font-size:16px;font-weight:700;color:var(--text)">4.2%</div>
+                    <div style="font-size:11px;color:var(--text3)">평균 ER</div>
+                  </div>
+                  <div style="text-align:center">
+                    <div style="font-size:16px;font-weight:700;color:var(--text)">8.7K</div>
+                    <div style="font-size:11px;color:var(--text3)">평균 조회수</div>
+                  </div>
+                </div>
+                <div style="font-size:11px;color:var(--text3);margin-bottom:8px">최근 릴스 분석 (링크 기반 크롤링)</div>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg2);border-radius:8px">
+                    <div style="flex:1">
+                      <div style="font-size:11px;font-weight:600;color:var(--text)">릴스 #1 · 2024.04.10 발행</div>
+                      <div style="font-size:11px;color:var(--text3);margin-top:2px">조회수 12.3K · 좋아요 521 · 댓글 48 · 공유 23</div>
+                    </div>
+                    <input type="text" placeholder="릴스 링크 입력" style="padding:5px 8px;border:1px solid var(--border2);border-radius:6px;font-size:11px;color:var(--text);background:var(--bg);outline:none;width:160px">
+                  </div>
+                  <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg2);border-radius:8px">
+                    <div style="flex:1">
+                      <div style="font-size:11px;font-weight:600;color:var(--text)">릴스 #2 · 2024.03.28 발행</div>
+                      <div style="font-size:11px;color:var(--text3);margin-top:2px">조회수 7.8K · 좋아요 334 · 댓글 29 · 공유 14</div>
+                    </div>
+                    <input type="text" placeholder="릴스 링크 입력" style="padding:5px 8px;border:1px solid var(--border2);border-radius:6px;font-size:11px;color:var(--text);background:var(--bg);outline:none;width:160px">
+                  </div>
+                  <button style="width:100%;padding:7px;background:var(--bg2);border:1px dashed var(--border2);border-radius:8px;font-size:12px;color:var(--text2);cursor:pointer">+ 릴스 링크 추가</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 인스타 링크 직접 입력 -->
+            <div style="background:var(--bg2);border-radius:10px;padding:12px 14px">
+              <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px">인스타그램 프로필 링크로 팔로워 재크롤링</div>
+              <div style="display:flex;gap:8px">
+                <input type="text" placeholder="https://instagram.com/yui.beauty" style="flex:1;padding:8px 10px;border:1px solid var(--border2);border-radius:8px;font-size:12px;color:var(--text);background:var(--bg);outline:none">
+                <button style="padding:8px 14px;background:var(--orange);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer">크롤링</button>
+              </div>
+              <div style="font-size:11px;color:var(--text3);margin-top:6px">마지막 크롤링: 2024.04.23 09:15</div>
+            </div>
+          </div>
+
+          <!-- 공구 이력 -->
+          <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:20px">
+            <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:14px">공구 진행 이력</div>
+            <table>
+              <thead><tr><th>캠페인</th><th>기간</th><th>수수료</th><th>매출</th><th>상태</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><div class="td-name">BAS 칼취채 핑크에디션</div></td>
+                  <td><div style="font-size:12px">5/13 ~ 5/16</div></td>
+                  <td><div style="font-size:12px">15%</div></td>
+                  <td><div style="font-size:12px;font-weight:600;color:var(--orange)">진행중</div></td>
+                  <td><span class="chip chip-amber">진행중</span></td>
+                </tr>
+                <tr>
+                  <td><div class="td-name">BAS 닭목라벨</div></td>
+                  <td><div style="font-size:12px">4/10 ~ 4/13</div></td>
+                  <td><div style="font-size:12px">15%</div></td>
+                  <td><div style="font-size:12px;font-weight:600">₩1.2M</div></td>
+                  <td><span class="chip chip-green">정산 완료</span></td>
+                </tr>
+                <tr>
+                  <td><div class="td-name">봄 신상 립밤 기획</div></td>
+                  <td><div style="font-size:12px">3/5 ~ 3/8</div></td>
+                  <td><div style="font-size:12px">12%</div></td>
+                  <td><div style="font-size:12px;font-weight:600">₩1.2M</div></td>
+                  <td><span class="chip chip-green">정산 완료</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 우측: 등급 설정 -->
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:16px">
+            <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:14px">등급 설정</div>
+            <div style="margin-bottom:12px">
+              <div style="font-size:11px;color:var(--text3);margin-bottom:6px">시스템 추천 등급</div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <span class="chip chip-blue" style="font-size:13px;padding:6px 14px">매크로</span>
+                <div style="font-size:11px;color:var(--text3);line-height:1.5">팔로워 12.4K<br>ER 4.2% 기준</div>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:11px;color:var(--text3);margin-bottom:6px">관리자 지정 등급</div>
+              <select class="form-input" style="font-size:14px;font-weight:600">
+                <option>나노 (~10K)</option>
+                <option selected>매크로 (10K~50K)</option>
+                <option>메가 (50K~200K)</option>
+                <option>VIP (200K~500K)</option>
+                <option>VVIP (500K+)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:16px">
+            <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px">승인 상태</div>
+            <div class="toggle-group">
+              <div class="toggle-opt on">승인됨</div>
+              <div class="toggle-opt">검토중</div>
+              <div class="toggle-opt">미승인</div>
+            </div>
+          </div>
+
+          <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:16px">
+            <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px">관리자 메모</div>
+            <textarea class="form-input" rows="4" placeholder="셀러 관련 특이사항, 협의 내용 등 내부 메모를 입력하세요"></textarea>
+          </div>
+
+          <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:16px">
+            <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px">연결 협의 게시판</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg2);border-radius:8px;cursor:pointer">
+                <div style="width:6px;height:6px;border-radius:50%;background:var(--orange);flex-shrink:0"></div>
+                <div style="font-size:12px;color:var(--text)">BAS 칼취채 · 판매 링크 협의</div>
+                <div style="font-size:11px;color:var(--text3);margin-left:auto">방금 전</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg2);border-radius:8px;cursor:pointer">
+                <div style="width:6px;height:6px;border-radius:50%;background:var(--border2);flex-shrink:0"></div>
+                <div style="font-size:12px;color:var(--text3)">BAS 닭목라벨 · 완료</div>
+                <div style="font-size:11px;color:var(--text3);margin-left:auto">4/13</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ===================== VIP 상품관 ===================== -->
     <div class="page" id="page-vip">
       <div class="page-header">
