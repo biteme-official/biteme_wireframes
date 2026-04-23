@@ -480,6 +480,20 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
         <div class="scroll-cat">뷰티</div>
       </div>
       <div class="scroll-area" style="padding:0 20px 20px">
+
+        <!-- VIP 전용 상품관 배너 -->
+        <div style="background:linear-gradient(135deg,#2D1B69,#534AB7);border-radius:14px;padding:16px;margin-bottom:14px;cursor:pointer;position:relative;overflow:hidden">
+          <div style="position:absolute;top:-10px;right:-10px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.06)"></div>
+          <div style="position:absolute;bottom:-20px;right:20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,0.04)"></div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <span style="font-size:11px;font-weight:700;background:#FFC107;color:#1A1200;border-radius:4px;padding:2px 7px">VIP</span>
+            <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.85)">전용 상품관</span>
+          </div>
+          <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:4px">익스클루시브 상품</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.65);line-height:1.5">VIP 등급 이상 셀러에게만 공개되는<br>특별 공동구매 상품이에요.</div>
+          <div style="margin-top:10px;font-size:12px;font-weight:600;color:#FFC107">VIP 상품 보러가기 →</div>
+        </div>
+
         <div class="product-item" onclick="goScreen('screen-gb-product')" style="cursor:pointer">
           <div class="product-thumb" style="cursor:pointer"><div class="product-badge">NEW</div></div>
           <div class="product-info">
@@ -558,7 +572,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
     </div>
     <!-- 상세 콘텐츠 -->
     <div class="scroll-area" id="detail-content" style="padding:0 0 100px">
-      <div style="height:200px;background:linear-gradient(135deg,#F5E6D3,#E8D5C0);position:relative">
+      <div style="aspect-ratio:4/3;max-height:280px;background:linear-gradient(135deg,#F5E6D3,#E8D5C0);position:relative">
         <div style="position:absolute;bottom:14px;left:20px">
           <div class="camp-tags"><span class="chip chip-teal">단순협찬</span><span class="chip chip-gray">뷰티</span></div>
         </div>
@@ -577,6 +591,8 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
           <div class="summary-row"><span class="summary-label">모집 현황</span><span class="summary-value" id="detail-recruit">8 / 10명</span></div>
           <div class="summary-row"><span class="summary-label">조건</span><span class="summary-value">팔로워 3,000명+ · 뷰티</span></div>
           <div class="summary-row"><span class="summary-label">플랫폼</span><span class="summary-value">인스타그램</span></div>
+          <div class="summary-row"><span class="summary-label">리워드</span><span class="summary-value" style="color:var(--orange);font-weight:600">원고료 ₩50,000</span></div>
+          <div class="summary-row"><span class="summary-label">리워드 조건</span><span class="summary-value" style="font-size:12px">게시 후 7일 기준 조회수 달성 시 지급</span></div>
         </div>
         <div class="alert alert-green" style="margin-bottom:14px">
           내 팔로워 <strong>12,400명</strong> — 조건 충족 ✓
@@ -615,11 +631,19 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
       <div style="width:36px;height:4px;background:var(--border2);border-radius:2px;margin:12px auto 20px"></div>
       <div style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:4px">신청할까요?</div>
       <div style="font-size:13px;color:var(--text3);margin-bottom:20px">신청 후 운영팀 검토를 거쳐 선정 여부를 알려드려요</div>
-      <div style="background:var(--bg2);border-radius:14px;padding:14px 16px;margin-bottom:20px;display:flex;flex-direction:column;gap:8px">
+      <div style="background:var(--bg2);border-radius:14px;padding:14px 16px;margin-bottom:14px;display:flex;flex-direction:column;gap:8px">
         <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text2)">캠페인</span><span style="font-weight:600;color:var(--text)">봄 신상 립밤 3종 세트</span></div>
         <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text2)">채널</span><span style="font-weight:600;color:var(--text)">@yui.beauty</span></div>
         <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text2)">배송지</span><span style="font-weight:600;color:var(--text)">서울 강남구 언주로 ···</span></div>
         <div style="font-size:11px;color:var(--blue);margin-top:4px;cursor:pointer" onclick="closeApplySheet();goScreen('screen-mypage')">배송지 변경은 내 정보 → 배송지 수정에서 가능해요 →</div>
+      </div>
+      <div style="background:#FFF8E7;border:1px solid #FDDDB8;border-radius:10px;padding:12px 14px;margin-bottom:14px">
+        <div style="font-size:11px;font-weight:700;color:#854F0B;margin-bottom:6px">공동구매 비밀유지 동의</div>
+        <div style="font-size:11px;color:#6B3A08;line-height:1.6;margin-bottom:8px">셀러는 공동구매와 관련하여 제공받거나 인지하게 된 모든 정보(판매가, 할인 조건, 수수료율, 정산 조건, 판매 데이터, 제안서 및 가이드 등)를 비밀로 유지해야 합니다. 위반 시 공동구매 즉시 중단, 정산 보류 및 손해배상 청구 등의 조치를 취할 수 있습니다. 본 의무는 공동구매 종료 후에도 유효합니다.</div>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+          <input type="checkbox" style="width:16px;height:16px;accent-color:var(--orange)">
+          <span style="font-size:12px;font-weight:600;color:#854F0B">위 비밀유지 의무에 동의합니다 (필수)</span>
+        </label>
       </div>
       <button class="btn btn-dark" style="margin-bottom:10px" onclick="submitApply()">신청 완료</button>
       <button class="btn btn-gray" onclick="closeApplySheet()">취소</button>
@@ -660,8 +684,8 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
             <div class="tracker-step"><div class="tracker-dot dot-done"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div><div class="tracker-content"><div class="tracker-title">협찬 신청</div><div class="tracker-sub">4월 10일</div></div></div>
             <div class="tracker-step"><div class="tracker-dot dot-done"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div><div class="tracker-content"><div class="tracker-title">선정 승인</div><div class="tracker-sub">4월 12일 · 운영팀 승인 완료</div></div></div>
             <div class="tracker-step"><div class="tracker-dot dot-done"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div><div class="tracker-content"><div class="tracker-title">상품 수령</div><div class="tracker-sub">4월 15일</div></div></div>
-            <div class="tracker-step"><div class="tracker-dot dot-now">!</div><div class="tracker-content"><div class="tracker-title">콘텐츠 제출</div><div class="tracker-sub" style="color:var(--red)">D-3 · 4월 20일까지</div><div class="tracker-action" onclick="goScreen('screen-submit')">지금 제출하기 →</div></div></div>
-            <div class="tracker-step"><div class="tracker-dot dot-idle">5</div><div class="tracker-content"><div class="tracker-title" style="color:var(--text3)">검수 · 승인</div></div></div>
+            <div class="tracker-step"><div class="tracker-dot dot-now">!</div><div class="tracker-content"><div class="tracker-title">검수 · 승인 <span style="font-size:10px;color:var(--orange);font-weight:500">(유가협찬)</span></div><div class="tracker-sub" style="color:var(--orange)">콘텐츠 초안 검수 중 · 승인 후 제출 가능</div></div></div>
+            <div class="tracker-step"><div class="tracker-dot dot-idle">5</div><div class="tracker-content"><div class="tracker-title" style="color:var(--text3)">콘텐츠 제출</div><div class="tracker-sub" style="color:var(--text3)">승인 후 게시물 URL 제출</div></div></div>
             <div class="tracker-step"><div class="tracker-dot dot-idle">6</div><div class="tracker-content"><div class="tracker-title" style="color:var(--text3)">리워드 지급</div></div></div>
           </div>
         </div>
@@ -921,6 +945,13 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
           BAS 칼취채 핑크에디션은 국내산 닭고기와 연어를 주원료로 한 프리미엄 반려견 사료입니다.<br><br>
           칼슘과 오메가-3가 풍부하며, 유통기한이 길어 공동구매에 최적화된 상품입니다.
         </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--bg2);border-radius:10px;margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2.5" stroke-linecap="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            <span style="font-size:13px;font-weight:500;color:var(--text)">상품 페이지 바로가기</span>
+          </div>
+          <a href="#" style="font-size:12px;color:var(--orange);font-weight:600;text-decoration:none">보기 →</a>
+        </div>
         <div class="alert alert-amber">
           공동구매 셀러 전용 상품입니다. 신청 후 운영팀이 일정을 검토하여 확정합니다.
         </div>
@@ -996,8 +1027,8 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
             <div style="font-size:13px;font-weight:500;color:var(--text2);width:44px;flex-shrink:0">시작</div>
             <div style="font-size:13px;font-weight:600;color:var(--text);flex:1">5월 13일</div>
             <select class="input" style="width:100px;padding:8px 10px;font-size:13px">
-              <option>00:00</option><option>06:00</option><option selected>09:00</option>
-              <option>10:00</option><option>12:00</option><option>18:00</option>
+              <option>00:00</option><option selected>11:00</option><option>13:00</option>
+              <option>17:00</option><option>19:00</option>
             </select>
           </div>
           <div style="display:flex;align-items:center;gap:10px">
@@ -1088,7 +1119,15 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
         <div class="input-hint">운영팀과 협의 후 최종 확정됩니다</div>
       </div>
 
-      <div class="alert alert-amber">매칭 예약금 ₩100,000 · 승인 후 납부 · 공구 종료 후 100% 환급 (노쇼 시 50% 몰취)</div>
+      <div class="alert alert-amber" style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-weight:600">매칭 예약금 ₩100,000 · 승인 후 납부 · 공구 종료 후 100% 환급 (노쇼 시 50% 몰취)</div>
+        <div style="border-top:1px dashed rgba(0,0,0,0.12);padding-top:8px;display:flex;flex-direction:column;gap:4px">
+          <div style="font-size:12px;font-weight:600;color:var(--text)">납부 계좌 안내</div>
+          <div style="font-size:12px;color:var(--text2)">은행: 기업은행</div>
+          <div style="font-size:12px;color:var(--text2)">계좌번호: 123-456789-01-234</div>
+          <div style="font-size:12px;color:var(--text2)">예금주: (주)바잇미</div>
+        </div>
+      </div>
       <button class="btn btn-dark" onclick="goScreen('screen-gb-done')">신청 완료</button>
     </div>
   </div>
@@ -1125,6 +1164,10 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
     </div>
     <div style="padding:8px 20px 4px;flex-shrink:0;font-size:12px;color:var(--text3)">
       내 현황 <span style="margin:0 4px">›</span> 공동구매 <span style="margin:0 4px">›</span> <span style="color:var(--text)">계약/가이드 확인</span>
+    </div>
+    <div style="background:#3D1A1A;padding:10px 20px;display:flex;align-items:center;gap:8px;flex-shrink:0">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F87171" stroke-width="2.5" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span style="font-size:12px;font-weight:600;color:#FECACA">공동구매 관련 정보는 외부로의 노출을 엄격히 금지합니다.</span>
     </div>
     <div class="scroll-area" style="padding:12px 20px 24px;display:flex;flex-direction:column;gap:16px">
       <div class="alert alert-green">
@@ -1531,7 +1574,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
       <div class="topbar-title">협의 게시판</div>
     </div>
     <div class="scroll-area" style="padding:12px 20px;display:flex;flex-direction:column;gap:10px">
-      <div style="font-size:12px;color:var(--text3);margin-bottom:2px">공구 오픈 전 사진·링크 협의 전용</div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:2px">협찬 · 공동구매 협의 전용 게시판</div>
 
       <!-- 메시지 스레드 카드 -->
       <div style="background:linear-gradient(135deg,#FFF3EE,#FAEEDA);border-radius:14px;overflow:hidden;cursor:pointer" onclick="goScreen('screen-message-thread')">
@@ -1539,7 +1582,10 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
           <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#1a1a18,#3a3a36);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0">BM</div>
           <div style="flex:1">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px">
-              <div style="font-size:14px;font-weight:700;color:var(--text)">운영팀</div>
+              <div style="display:flex;align-items:center;gap:6px">
+                <div style="font-size:14px;font-weight:700;color:var(--text)">운영팀</div>
+                <span style="font-size:10px;font-weight:600;background:#FFF3EE;color:var(--orange);border:1px solid #FDDDB8;border-radius:4px;padding:1px 5px">공구</span>
+              </div>
               <div style="font-size:11px;color:var(--text3)">방금 전</div>
             </div>
             <div style="font-size:12px;color:var(--text2)">BAS 칼취채 핑크에디션 · 5/13~16</div>
@@ -1554,7 +1600,10 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
           <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#1a1a18,#3a3a36);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0">BM</div>
           <div style="flex:1">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px">
-              <div style="font-size:14px;font-weight:600;color:var(--text)">운영팀</div>
+              <div style="display:flex;align-items:center;gap:6px">
+                <div style="font-size:14px;font-weight:600;color:var(--text)">운영팀</div>
+                <span style="font-size:10px;font-weight:600;background:#EAF3DE;color:#1D9E75;border:1px solid #B8DFC7;border-radius:4px;padding:1px 5px">협찬</span>
+              </div>
               <div style="font-size:11px;color:var(--text3)">3일 전</div>
             </div>
             <div style="font-size:12px;color:var(--text2)">BAS 닭목라벨 · 4/16~19</div>
