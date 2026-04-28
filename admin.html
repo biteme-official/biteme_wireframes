@@ -283,7 +283,7 @@ textarea.form-input{resize:vertical;min-height:80px}
     <div class="breadcrumb" id="breadcrumb">캠페인 › <strong>시딩 캠페인</strong></div>
     <div class="topbar-right">
       <span style="font-size:13px;color:var(--text3)">2026.04.14</span>
-      <button class="btn btn-secondary" style="font-size:12px;padding:6px 12px">내보내기</button>
+      <button class="btn btn-secondary" style="font-size:12px;padding:6px 12px" onclick="showToast('리포트를 내보냈습니다')">내보내기</button>
     </div>
   </div>
 
@@ -297,7 +297,7 @@ textarea.form-input{resize:vertical;min-height:80px}
           <div class="page-sub">2026년 4월 20일 · 운영팀 안녕하세요 👋</div>
         </div>
         <div style="display:flex;gap:8px">
-          <button class="btn btn-secondary">리포트 내보내기</button>
+          <button class="btn btn-secondary" onclick="showToast('리포트를 내보냈습니다')">리포트 내보내기</button>
         </div>
       </div>
 
@@ -525,7 +525,7 @@ textarea.form-input{resize:vertical;min-height:80px}
               <td><span class="chip chip-blue">모집중</span></td>
               <td>
                 <div style="display:flex;gap:5px">
-                  <button class="btn btn-secondary btn-sm">상세</button>
+                  <button class="btn btn-secondary btn-sm" onclick="goPage('page-campaign-new')">상세</button>
                 </div>
               </td>
             </tr>
@@ -547,7 +547,7 @@ textarea.form-input{resize:vertical;min-height:80px}
               <td><span class="chip chip-blue">모집중</span></td>
               <td>
                 <div style="display:flex;gap:5px">
-                  <button class="btn btn-secondary btn-sm">상세</button>
+                  <button class="btn btn-secondary btn-sm" onclick="goPage('page-campaign-new')">상세</button>
                 </div>
               </td>
             </tr>
@@ -569,7 +569,7 @@ textarea.form-input{resize:vertical;min-height:80px}
               <td><span class="chip chip-gray">완료</span></td>
               <td>
                 <div style="display:flex;gap:5px">
-                  <button class="btn btn-secondary btn-sm">리포트</button>
+                  <button class="btn btn-secondary btn-sm" onclick="goPage('page-sales')">리포트</button>
                 </div>
               </td>
             </tr>
@@ -617,9 +617,33 @@ textarea.form-input{resize:vertical;min-height:80px}
             <div class="form-group">
               <label class="form-label">협찬 유형</label>
               <div class="toggle-group">
-                <div class="toggle-opt on">단순 협찬</div>
-                <div class="toggle-opt">유가 협찬</div>
+                <div class="toggle-opt on" id="camp-type-simple" onclick="toggleCampType('simple')">단순 협찬</div>
+                <div class="toggle-opt" id="camp-type-paid" onclick="toggleCampType('paid')">유가 협찬</div>
               </div>
+            </div>
+            <!-- 유가협찬 리워드 설정 (유가 협찬 선택 시 표시) -->
+            <div class="form-group" id="reward-section" style="display:none;grid-column:1/-1">
+              <label class="form-label">리워드(원고료) 설정</label>
+              <div class="toggle-group" style="margin-bottom:10px">
+                <div class="toggle-opt on" id="reward-fixed" onclick="toggleRewardType('fixed')">고정 원고료</div>
+                <div class="toggle-opt" id="reward-view" onclick="toggleRewardType('view')">조회수 연동</div>
+              </div>
+              <div id="reward-fixed-input" style="display:flex;gap:10px;align-items:center">
+                <input class="form-input" type="number" placeholder="원고료 (원)" style="flex:1" value="50000">
+                <span style="font-size:12px;color:var(--text3);white-space:nowrap">원 (세전)</span>
+              </div>
+              <div id="reward-view-input" style="display:none;flex-direction:column;gap:8px">
+                <div style="display:flex;gap:8px;align-items:center;font-size:12px">
+                  <span style="width:80px;color:var(--text3)">기본 원고료</span>
+                  <input class="form-input" type="number" placeholder="원" style="flex:1" value="30000">
+                  <span style="color:var(--text3)">원</span>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center;font-size:12px">
+                  <span style="width:80px;color:var(--text3)">추가 조건</span>
+                  <input class="form-input" placeholder="예) 조회수 10,000 달성 시 +₩20,000" style="flex:1">
+                </div>
+              </div>
+              <span style="font-size:11px;color:var(--text3);margin-top:4px">유가 협찬 리워드는 셀러 앱 캠페인 상세에도 표시됩니다</span>
             </div>
             <div class="form-group">
               <label class="form-label">모집 인원</label>
@@ -669,8 +693,17 @@ textarea.form-input{resize:vertical;min-height:80px}
                 <input class="form-input" value="3,000">
               </div>
               <div class="form-group">
-                <label class="form-label">관심 카테고리</label>
-                <input class="form-input" value="뷰티, 라이프">
+                <label class="form-label">관심 카테고리 <span style="font-size:10px;font-weight:400;color:var(--text3)">(복수 선택 가능)</span></label>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;padding:10px 12px;background:var(--bg);border:1px solid var(--border2);border-radius:8px">
+                  <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--orange)"> 뷰티</label>
+                  <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> 푸드</label>
+                  <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--orange)"> 라이프</label>
+                  <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> 패션</label>
+                  <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> 반려동물</label>
+                  <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> 여행</label>
+                  <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> 육아</label>
+                  <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> 스포츠/헬스</label>
+                </div>
               </div>
               <div class="form-group">
                 <label class="form-label">자동 선정 기준</label>
@@ -682,6 +715,9 @@ textarea.form-input{resize:vertical;min-height:80px}
             </div>
             <div>
               <div class="form-section-title">미제출 독촉 알림 (자동)</div>
+              <div class="alert" style="background:#EAF3DE;border:1px solid #B8DFC7;color:#1D6647;font-size:11px;padding:8px 12px;margin-bottom:8px">
+                콘텐츠 게시 마감일 기준으로, 아직 콘텐츠를 제출하지 않은 셀러에게 자동으로 알림톡을 발송합니다. 별도 설정 없이 캠페인 생성 시 자동 활성화됩니다.
+              </div>
               <div style="display:flex;flex-direction:column;gap:6px">
                 <div class="noti-rule"><div class="noti-dot"></div>D-7 자동 독촉 알림톡<span class="noti-auto">자동</span></div>
                 <div class="noti-rule"><div class="noti-dot"></div>D-3 자동 독촉 알림톡<span class="noti-auto">자동</span></div>
@@ -709,13 +745,25 @@ textarea.form-input{resize:vertical;min-height:80px}
               <div style="border:0.5px solid var(--border);border-radius:10px;overflow:hidden">
                 <div style="padding:10px 14px;background:var(--bg2);border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between">
                   <span style="font-size:13px;font-weight:600;color:var(--text)">필수 해시태그</span>
-                  <button class="btn btn-secondary btn-sm">+ 추가</button>
                 </div>
-                <div style="padding:12px 14px;display:flex;gap:6px;flex-wrap:wrap">
-                  <span class="chip chip-gray">#바잇미</span>
-                  <span class="chip chip-gray">#립밤체험</span>
-                  <span class="chip chip-gray">#뷰티리뷰</span>
-                  <span class="chip chip-gray">#봄뷰티</span>
+                <div style="padding:12px 14px;display:flex;flex-direction:column;gap:8px" id="hashtag-list">
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <input class="form-input" value="#바잇미" style="flex:1;padding:6px 10px;font-size:12px">
+                    <button onclick="this.parentElement.remove()" style="width:26px;height:26px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);color:var(--text3);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0">×</button>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <input class="form-input" value="#립밤체험" style="flex:1;padding:6px 10px;font-size:12px">
+                    <button onclick="this.parentElement.remove()" style="width:26px;height:26px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);color:var(--text3);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0">×</button>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <input class="form-input" value="#뷰티리뷰" style="flex:1;padding:6px 10px;font-size:12px">
+                    <button onclick="this.parentElement.remove()" style="width:26px;height:26px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);color:var(--text3);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0">×</button>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <input class="form-input" value="#봄뷰티" style="flex:1;padding:6px 10px;font-size:12px">
+                    <button onclick="this.parentElement.remove()" style="width:26px;height:26px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);color:var(--text3);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0">×</button>
+                  </div>
+                  <button onclick="addHashtag()" class="btn btn-secondary btn-sm" style="align-self:flex-start">+ 해시태그 추가</button>
                 </div>
               </div>
               <div style="border:0.5px solid var(--border);border-radius:10px;overflow:hidden">
@@ -735,7 +783,7 @@ textarea.form-input{resize:vertical;min-height:80px}
                     <div style="width:6px;height:6px;border-radius:50%;background:var(--orange);flex-shrink:0"></div>
                     <input class="form-input" style="flex:1;padding:8px 10px" value="릴스 또는 피드 1개 이상 게시">
                   </div>
-                  <button class="btn btn-secondary btn-sm" style="align-self:flex-start;margin-top:4px">+ 항목 추가</button>
+                  <button class="btn btn-secondary btn-sm" style="align-self:flex-start;margin-top:4px" onclick="addRequirement(this)">+ 항목 추가</button>
                 </div>
               </div>
               <div style="border:0.5px solid var(--border);border-radius:10px;overflow:hidden">
@@ -800,9 +848,112 @@ textarea.form-input{resize:vertical;min-height:80px}
           <div style="display:flex;justify-content:space-between">
             <button class="btn btn-secondary" onclick="nextStep(3)">← 이전</button>
             <div style="display:flex;gap:8px">
-              <button class="btn btn-secondary">임시 저장</button>
+              <button class="btn btn-secondary" onclick="showToast('임시 저장되었습니다')">임시 저장</button>
               <button class="btn btn-primary" onclick="goPage('page-campaigns')">캠페인 개설하기</button>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== 캠페인 상세 관리 ===================== -->
+    <div class="page" id="page-campaign-detail">
+      <div class="page-header">
+        <div>
+          <div class="page-title">봄 신상 스킨케어 세트</div>
+          <div class="page-sub">바잇미 코스메틱 · 뷰티 · 단순협찬 · 마감 4월 20일</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-secondary" onclick="goPage('page-campaigns')">← 목록으로</button>
+          <button class="btn btn-secondary" onclick="showToast('리포트를 내보냈습니다')">내보내기</button>
+          <button class="btn btn-primary" onclick="openChaseModal('봄 신상 스킨케어 세트','전체')">일괄 독촉</button>
+        </div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-label">모집 현황</div><div class="stat-value">8 <span style="font-size:16px;font-weight:400;color:var(--text2)">/ 10명</span></div><div class="prog-bar" style="margin-top:8px"><div class="prog-fill" style="width:80%"></div></div></div>
+        <div class="stat-card"><div class="stat-label">콘텐츠 제출</div><div class="stat-value" style="color:var(--green)">5</div><div class="stat-sub">대기 중 3건</div></div>
+        <div class="stat-card"><div class="stat-label">D-day</div><div class="stat-value" style="color:var(--red)">D-6</div><div class="stat-sub">4월 20일 마감</div></div>
+        <div class="stat-card"><div class="stat-label">누적 노출</div><div class="stat-value">142K</div><span class="stat-badge up">↑ 12%</span></div>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-header">
+          <div class="table-title">선정 인플루언서 현황</div>
+          <div style="display:flex;gap:8px">
+            <select style="padding:7px 12px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);background:var(--bg);outline:none">
+              <option>전체 상태</option><option>제출 완료</option><option>제출 대기</option><option>기한 초과</option>
+            </select>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr><th>인플루언서</th><th>팔로워</th><th>채널</th><th>제출 URL</th><th>조회수</th><th>상태</th><th>관리</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px"><div class="inf-avatar">유</div><div><div class="td-name">유이</div><div class="td-sub">@yui.beauty</div></div></div></td>
+              <td><div style="font-size:13px;font-weight:500">12.4K</div></td>
+              <td><span class="chip chip-pink">인스타</span></td>
+              <td><div style="font-size:12px;color:var(--blue);text-decoration:underline;cursor:pointer" onclick="showToast('게시물 링크를 엽니다')">instagram.com/p/abc123</div></td>
+              <td><div style="font-size:13px;font-weight:600">8.7K</div></td>
+              <td><span class="chip chip-green">제출 완료</span></td>
+              <td><div style="display:flex;gap:5px"><button class="btn btn-secondary btn-sm" onclick="goPage('page-seller-profile')">상세</button><button class="btn btn-secondary btn-sm" onclick="goPage('page-review')">검수</button></div></td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px"><div class="inf-avatar" style="background:linear-gradient(135deg,#E6F1FB,#85B7EB);color:var(--blue)">미</div><div><div class="td-name">미소</div><div class="td-sub">@beauty_miso</div></div></div></td>
+              <td><div style="font-size:13px;font-weight:500">38.2K</div></td>
+              <td><span class="chip chip-pink">인스타</span></td>
+              <td><div style="font-size:12px;color:var(--blue);text-decoration:underline;cursor:pointer" onclick="showToast('게시물 링크를 엽니다')">instagram.com/p/def456</div></td>
+              <td><div style="font-size:13px;font-weight:600">31.1K</div></td>
+              <td><span class="chip chip-green">제출 완료</span></td>
+              <td><div style="display:flex;gap:5px"><button class="btn btn-secondary btn-sm" onclick="goPage('page-seller-profile')">상세</button><button class="btn btn-secondary btn-sm" onclick="goPage('page-review')">검수</button></div></td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px"><div class="inf-avatar" style="background:linear-gradient(135deg,#EEEDFE,#AFA9EC);color:#534AB7">하</div><div><div class="td-name">하루</div><div class="td-sub">@haru_daily</div></div></div></td>
+              <td><div style="font-size:13px;font-weight:500">21.5K</div></td>
+              <td><span class="chip chip-blue">유튜브</span></td>
+              <td><div style="font-size:12px;color:var(--text3)">미제출</div></td>
+              <td><div style="font-size:12px;color:var(--text3)">—</div></td>
+              <td><span class="chip chip-amber">제출 대기</span></td>
+              <td><div style="display:flex;gap:5px"><button class="btn btn-secondary btn-sm" onclick="goPage('page-seller-profile')">상세</button><button class="btn btn-sm" style="background:#FCEBEB;color:#A32D2D;border:none" onclick="openChaseModal('봄 신상 스킨케어 세트','@haru_daily')">독촉</button></div></td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px"><div class="inf-avatar" style="background:linear-gradient(135deg,#EAF3DE,#97C459);color:#3B6D11">지</div><div><div class="td-name">지니</div><div class="td-sub">@daily_jini</div></div></div></td>
+              <td><div style="font-size:13px;font-weight:500">8.9K</div></td>
+              <td><span class="chip chip-pink">인스타</span></td>
+              <td><div style="font-size:12px;color:var(--text3)">미제출</div></td>
+              <td><div style="font-size:12px;color:var(--text3)">—</div></td>
+              <td><span class="chip chip-red" style="color:#A32D2D">기한 D-2</span></td>
+              <td><div style="display:flex;gap:5px"><button class="btn btn-secondary btn-sm" onclick="goPage('page-seller-profile')">상세</button><button class="btn btn-sm" style="background:#FCEBEB;color:#A32D2D;border:none" onclick="openChaseModal('봄 신상 스킨케어 세트','@daily_jini')">독촉</button></div></td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px"><div class="inf-avatar" style="background:linear-gradient(135deg,#F5E6D3,#E8D5C0)">나</div><div><div class="td-name">나영</div><div class="td-sub">@na_log</div></div></div></td>
+              <td><div style="font-size:13px;font-weight:500">5.3K</div></td>
+              <td><span class="chip chip-pink">인스타</span></td>
+              <td><div style="font-size:12px;color:var(--blue);text-decoration:underline;cursor:pointer" onclick="showToast('게시물 링크를 엽니다')">instagram.com/p/ghi789</div></td>
+              <td><div style="font-size:13px;font-weight:600">4.2K</div></td>
+              <td><span class="chip chip-green">제출 완료</span></td>
+              <td><div style="display:flex;gap:5px"><button class="btn btn-secondary btn-sm" onclick="goPage('page-seller-profile')">상세</button><button class="btn btn-secondary btn-sm" onclick="goPage('page-review')">검수</button></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:20px">
+        <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:14px">캠페인 설정</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+          <div style="background:var(--bg2);border-radius:10px;padding:12px">
+            <div style="font-size:11px;color:var(--text3);margin-bottom:4px">독촉 알림</div>
+            <div style="font-size:13px;font-weight:500;color:var(--text)">D-7, D-3, D-day 자동발송</div>
+          </div>
+          <div style="background:var(--bg2);border-radius:10px;padding:12px">
+            <div style="font-size:11px;color:var(--text3);margin-bottom:4px">선정 방식</div>
+            <div style="font-size:13px;font-weight:500;color:var(--text)">자동 선정 (선착순)</div>
+          </div>
+          <div style="background:var(--bg2);border-radius:10px;padding:12px">
+            <div style="font-size:11px;color:var(--text3);margin-bottom:4px">최소 팔로워</div>
+            <div style="font-size:13px;font-weight:500;color:var(--text)">3,000명</div>
           </div>
         </div>
       </div>
@@ -941,35 +1092,54 @@ textarea.form-input{resize:vertical;min-height:80px}
         </div>
         <div style="display:flex;gap:8px">
           <button class="btn btn-secondary" onclick="goPage('page-gb-home')">← 목록으로</button>
-          <button class="btn btn-secondary">캠페인 수정</button>
-          <button class="btn btn-primary">알림 발송</button>
+          <button class="btn btn-secondary" onclick="goPage('page-gb-new')">캠페인 수정</button>
+          <button class="btn btn-primary" onclick="showToast('알림톡을 발송했습니다')">알림 발송</button>
         </div>
       </div>
 
+      <!-- 미공개 캠페인 알림 (개설 후 모집 시작 전) -->
+      <div class="alert alert-amber" style="margin-bottom:16px;display:flex;align-items:center;justify-content:space-between">
+        <span>미공개 캠페인 1개가 있어요. 준비 완료 후 [모집 시작하기]를 눌러 공개하세요.</span>
+        <button style="padding:4px 10px;background:var(--orange);color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;margin-left:12px" onclick="this.closest('.alert').remove();showToast('모집을 시작했습니다. 셀러에게 노출됩니다')">모집 시작하기</button>
+      </div>
+      <!-- 미공개 캠페인 카드 -->
+      <div style="background:var(--bg);border:2px dashed var(--border2);border-radius:12px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <span style="font-size:10px;font-weight:700;background:var(--bg2);color:var(--text3);border-radius:4px;padding:2px 6px">미공개</span>
+            <div style="font-size:13px;font-weight:600;color:var(--text)">봄 스킨케어 기획전</div>
+          </div>
+          <div style="font-size:11px;color:var(--text3)">개설일: 4월 27일 · 모집 시작 전</div>
+        </div>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-secondary btn-sm" onclick="goPage('page-gb-new')">수정</button>
+          <button class="btn btn-primary btn-sm" onclick="this.closest('[style*=dashed]').remove();showToast('모집을 시작했습니다')">모집 시작</button>
+        </div>
+      </div>
       <!-- 진행중 캠페인 리스트 -->
       <div style="display:flex;gap:10px;margin-bottom:20px;overflow-x:auto;padding-bottom:4px">
-        <div style="min-width:200px;background:var(--orange);border-radius:12px;padding:12px 14px;cursor:pointer">
-          <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.8);margin-bottom:4px">판매 링크 발급 중</div>
+        <div id="pipeline-card-0" style="min-width:200px;background:var(--orange);border-radius:12px;padding:12px 14px;cursor:pointer;outline:3px solid var(--orange);outline-offset:2px" onclick="selectPipelineCard(0)">
+          <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.8);margin-bottom:4px">홍보 콘텐츠 제출 대기</div>
           <div style="font-size:13px;font-weight:700;color:#fff">BAS 칼취채 핑크에디션</div>
           <div style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:3px">@yui.beauty · 5/13~5/16</div>
         </div>
-        <div style="min-width:200px;background:var(--bg);border:1px solid var(--green);border-radius:12px;padding:12px 14px;cursor:pointer">
+        <div id="pipeline-card-1" style="min-width:200px;background:var(--bg);border:1px solid var(--green);border-radius:12px;padding:12px 14px;cursor:pointer" onclick="selectPipelineCard(1)">
           <div style="font-size:11px;font-weight:600;color:var(--green);margin-bottom:4px">공구 진행중</div>
           <div style="font-size:13px;font-weight:700;color:var(--text)">고메잇 브런치 세트</div>
           <div style="font-size:11px;color:var(--text3);margin-top:3px">@daily_jini · 4/16~4/19</div>
         </div>
-        <div style="min-width:200px;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:12px 14px;cursor:pointer">
+        <div id="pipeline-card-2" style="min-width:200px;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:12px 14px;cursor:pointer" onclick="selectPipelineCard(2)">
           <div style="font-size:11px;font-weight:600;color:var(--text3);margin-bottom:4px">조건 협의 중</div>
           <div style="font-size:13px;font-weight:700;color:var(--text)">봄 립밤 기획세트</div>
           <div style="font-size:11px;color:var(--text3);margin-top:3px">@beauty_miso · 미정</div>
         </div>
-        <div style="min-width:200px;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:12px 14px;cursor:pointer">
+        <div id="pipeline-card-3" style="min-width:200px;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:12px 14px;cursor:pointer" onclick="selectPipelineCard(3)">
           <div style="font-size:11px;font-weight:600;color:#7C3AED;margin-bottom:4px">종료 · 당첨자 취합</div>
           <div style="font-size:13px;font-weight:700;color:var(--text)">BAS 닭목라벨</div>
           <div style="font-size:11px;color:var(--text3);margin-top:3px">@kko_cats · 4/10~4/13</div>
         </div>
       </div>
-      <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px">BAS 칼취채 핑크에디션 상세 파이프라인 · @yui.beauty</div>
+      <div id="pipeline-title" style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px">BAS 칼취채 핑크에디션 상세 파이프라인 · @yui.beauty</div>
 
       <!-- 파이프라인 스테이지 -->
       <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:24px;margin-bottom:20px">
@@ -1065,8 +1235,8 @@ textarea.form-input{resize:vertical;min-height:80px}
               </div>
             </div>
             <div style="display:flex;gap:8px;margin-top:14px">
-              <button class="btn btn-secondary" style="flex:1">판매 링크 독촉</button>
-              <button class="btn btn-primary" style="flex:1">다음 단계로 진행</button>
+              <button class="btn btn-secondary" style="flex:1" onclick="showToast('독촉 알림톡을 발송했습니다')">판매 링크 독촉</button>
+              <button class="btn btn-primary" style="flex:1" onclick="showToast('다음 단계로 진행합니다')">다음 단계로 진행</button>
             </div>
           </div>
 
@@ -1184,7 +1354,7 @@ textarea.form-input{resize:vertical;min-height:80px}
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
               <div style="font-size:13px;font-weight:600;color:var(--text)">셀러 자료 업로드</div>
               <!-- Row 45: AI 자동 생성 버튼 -->
-              <button style="padding:4px 10px;background:#EEEDFE;color:#534AB7;border:1px solid #AFA9EC;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer">AI 자동 생성</button>
+              <button style="padding:4px 10px;background:#EEEDFE;color:#534AB7;border:1px solid #AFA9EC;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer" onclick="showToast('AI가 캠페인 정보 기반으로 문서를 생성합니다...')">AI 자동 생성</button>
             </div>
             <div style="display:flex;flex-direction:column;gap:8px">
               <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg2);border-radius:8px">
@@ -1193,8 +1363,8 @@ textarea.form-input{resize:vertical;min-height:80px}
                   <div style="font-size:11px;color:var(--green);margin-top:1px">AI 초안 생성됨 · 검수 필요</div>
                 </div>
                 <div style="display:flex;gap:5px">
-                  <button class="btn btn-secondary btn-sm">편집</button>
-                  <button class="btn btn-secondary btn-sm">업로드</button>
+                  <button class="btn btn-secondary btn-sm" onclick="showToast('편집 모드로 진입합니다')">편집</button>
+                  <button class="btn btn-secondary btn-sm" onclick="showToast('파일 업로드 창을 엽니다')">업로드</button>
                 </div>
               </div>
               <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg2);border-radius:8px">
@@ -1203,8 +1373,8 @@ textarea.form-input{resize:vertical;min-height:80px}
                   <div style="font-size:11px;color:var(--green);margin-top:1px">AI 초안 생성됨 · 검수 필요</div>
                 </div>
                 <div style="display:flex;gap:5px">
-                  <button class="btn btn-secondary btn-sm">편집</button>
-                  <button class="btn btn-secondary btn-sm">업로드</button>
+                  <button class="btn btn-secondary btn-sm" onclick="showToast('편집 모드로 진입합니다')">편집</button>
+                  <button class="btn btn-secondary btn-sm" onclick="showToast('파일 업로드 창을 엽니다')">업로드</button>
                 </div>
               </div>
               <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg2);border-radius:8px">
@@ -1212,7 +1382,7 @@ textarea.form-input{resize:vertical;min-height:80px}
                   <div style="font-size:12px;font-weight:600;color:var(--text)">상품 이미지/영상 소재</div>
                   <div style="font-size:11px;color:var(--text3);margin-top:1px">미업로드</div>
                 </div>
-                <button class="btn btn-secondary btn-sm">업로드</button>
+                <button class="btn btn-secondary btn-sm" onclick="showToast('파일 업로드 창을 엽니다')">업로드</button>
               </div>
             </div>
           </div>
@@ -1280,15 +1450,15 @@ textarea.form-input{resize:vertical;min-height:80px}
                 <label class="form-label">공구 시작일</label>
                 <div style="display:flex;gap:8px">
                   <input class="form-input" type="date" style="flex:1">
-                  <input class="form-input" type="text" placeholder="00:00" maxlength="5" style="width:90px" pattern="\d{2}:\d{2}">
+                  <input class="form-input" type="text" placeholder="00:00" maxlength="5" style="width:90px" pattern="\d{2}:\d{2}" oninput="autoColon(this)">
                 </div>
-                <span style="font-size:11px;color:var(--text3)">시간 형식: HH:MM (예: 11:00, 19:00)</span>
+                <span style="font-size:11px;color:var(--text3)">숫자 4자리 입력 시 자동으로 : 삽입 (예: 1100 → 11:00)</span>
               </div>
               <div class="form-group">
                 <label class="form-label">공구 종료일</label>
                 <div style="display:flex;gap:8px">
                   <input class="form-input" type="date" style="flex:1">
-                  <input class="form-input" type="text" value="23:59" maxlength="5" style="width:90px" pattern="\d{2}:\d{2}">
+                  <input class="form-input" type="text" value="23:59" maxlength="5" style="width:90px" pattern="\d{2}:\d{2}" oninput="autoColon(this)">
                 </div>
                 <span style="font-size:11px;color:var(--text3)">종료 시간 기본값 23:59</span>
               </div>
@@ -1404,14 +1574,43 @@ textarea.form-input{resize:vertical;min-height:80px}
                         <input type="checkbox" style="width:15px;height:15px;accent-color:var(--orange)"> 시즌 기획
                       </label>
                       <label style="display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--border2);border-radius:8px;cursor:pointer;font-size:13px;color:var(--text2)">
-                        <input type="checkbox" style="width:15px;height:15px;accent-color:var(--orange)"> 소문내기 이벤트
+                        <input type="checkbox" style="width:15px;height:15px;accent-color:var(--orange)" onchange="toggleSnsEventPanel()"> 소문내기 이벤트
                       </label>
                       <label style="display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--border2);border-radius:8px;cursor:pointer;font-size:13px;color:var(--text2)">
-                        <input type="checkbox" style="width:15px;height:15px;accent-color:var(--orange)"> 구매인증 이벤트
+                        <input type="checkbox" style="width:15px;height:15px;accent-color:var(--orange)" onchange="toggleSnsEventPanel()"> 구매인증 이벤트
                       </label>
                     </div>
                     <div style="margin-top:8px;padding:10px 12px;background:#F5F0FF;border-radius:8px;font-size:12px;color:#6B21A8">
                       SNS 경품 이벤트 선택 시 추가 설정이 활성화됩니다 (경품 내용, 당첨 인원, 인증 방식 등)
+                    </div>
+                    <div id="sns-event-extra" style="display:none;margin-top:12px;border:1px solid #C4B5FD;border-radius:10px;padding:16px;background:#FAFAFF">
+                      <div style="font-size:13px;font-weight:600;color:#6B21A8;margin-bottom:12px">SNS 경품 이벤트 추가 설정</div>
+                      <div style="display:flex;flex-direction:column;gap:10px">
+                        <div class="form-group">
+                          <label class="form-label">경품 내용</label>
+                          <input class="form-input" placeholder="예) 스킨케어 풀세트 (5만원 상당)">
+                        </div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                          <div class="form-group">
+                            <label class="form-label">당첨 인원</label>
+                            <input class="form-input" type="number" placeholder="예) 3">
+                          </div>
+                          <div class="form-group">
+                            <label class="form-label">인증 방식</label>
+                            <select class="form-input">
+                              <option value="">선택</option>
+                              <option>인스타 게시물 태그</option>
+                              <option>구매 영수증 인증</option>
+                              <option>릴스/숏폼 게시</option>
+                              <option>스토리 공유</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="form-label">당첨자 발표 방법</label>
+                          <input class="form-input" placeholder="예) 인스타 DM 개별 안내 / 공식 계정 발표">
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="form-group">
@@ -1456,13 +1655,13 @@ textarea.form-input{resize:vertical;min-height:80px}
                       <span style="font-size:11px;color:var(--text3);flex-shrink:0">명</span>
                     </div>
                     <div style="display:flex;align-items:center;gap:8px">
-                      <input type="checkbox" style="accent-color:var(--orange);flex-shrink:0;width:15px;height:15px">
+                      <input type="checkbox" style="accent-color:var(--orange);flex-shrink:0;width:15px;height:15px" onchange="toggleFollowerInput(this)">
                       <span style="font-size:13px;width:96px;color:var(--text2);flex-shrink:0">틱톡</span>
                       <input class="form-input" type="number" placeholder="최소 팔로워" style="flex:1;opacity:0.5" disabled>
                       <span style="font-size:11px;color:var(--text3);flex-shrink:0">명</span>
                     </div>
                     <div style="display:flex;align-items:center;gap:8px">
-                      <input type="checkbox" style="accent-color:var(--orange);flex-shrink:0;width:15px;height:15px">
+                      <input type="checkbox" style="accent-color:var(--orange);flex-shrink:0;width:15px;height:15px" onchange="toggleFollowerInput(this)">
                       <span style="font-size:13px;width:96px;color:var(--text2);flex-shrink:0">네이버 블로그</span>
                       <input class="form-input" type="number" placeholder="최소 이웃 수" style="flex:1;opacity:0.5" disabled>
                       <span style="font-size:11px;color:var(--text3);flex-shrink:0">명</span>
@@ -1473,6 +1672,15 @@ textarea.form-input{resize:vertical;min-height:80px}
                 <div class="form-group">
                   <label class="form-label">선호 카테고리</label>
                   <input class="form-input" placeholder="예) 반려동물, 라이프">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">캠페인 접근 등급 <span style="font-size:10px;font-weight:400;color:var(--orange)">익스클루시브 설정</span></label>
+                  <div class="toggle-group" style="margin-bottom:8px">
+                    <div class="toggle-opt on" id="access-all" onclick="toggleAccess('all')">전체 공개</div>
+                    <div class="toggle-opt" id="access-vip" onclick="toggleAccess('vip')">VIP 이상</div>
+                    <div class="toggle-opt" id="access-vvip" onclick="toggleAccess('vvip')">VVIP 전용</div>
+                  </div>
+                  <span style="font-size:11px;color:var(--text3)">VIP 이상 선택 시 사용자 앱 익스클루시브 상품관에 노출됩니다</span>
                 </div>
                 <div class="form-group">
                   <label class="form-label">공구 경험 필수 여부</label>
@@ -1582,7 +1790,7 @@ textarea.form-input{resize:vertical;min-height:80px}
           <div style="display:flex;justify-content:space-between">
             <button class="btn btn-secondary" onclick="gbNextStep(3)">← 이전</button>
             <div style="display:flex;gap:8px">
-              <button class="btn btn-secondary">임시 저장</button>
+              <button class="btn btn-secondary" onclick="showToast('임시 저장되었습니다')">임시 저장</button>
               <button class="btn btn-dark" onclick="goPage('page-gb-pipeline')">캠페인 개설 (미공개 상태)</button>
               <button class="btn btn-primary" onclick="goPage('page-gb-pipeline')">개설 + 모집 시작하기</button>
             </div>
@@ -1597,7 +1805,7 @@ textarea.form-input{resize:vertical;min-height:80px}
           <div class="page-title">공구 일정 관리</div>
           <div class="page-sub">셀러별 공동구매 일정을 확인하고 승인하세요</div>
         </div>
-        <button class="btn btn-primary">+ 일정 추가</button>
+        <button class="btn btn-primary" onclick="showToast('일정 추가 폼을 엽니다')">+ 일정 추가</button>
       </div>
 
       <div class="panel-layout">
@@ -1606,8 +1814,8 @@ textarea.form-input{resize:vertical;min-height:80px}
             <div class="table-header">
               <div class="table-title">2026년 4월</div>
               <div style="display:flex;gap:8px">
-                <button class="btn btn-secondary btn-sm">‹</button>
-                <button class="btn btn-secondary btn-sm">›</button>
+                <button class="btn btn-secondary btn-sm" onclick="calPrev()">‹</button>
+                <button class="btn btn-secondary btn-sm" onclick="calNext()">›</button>
               </div>
             </div>
             <div style="padding:16px">
@@ -1661,8 +1869,8 @@ textarea.form-input{resize:vertical;min-height:80px}
                   <td><span class="chip chip-amber">승인 대기</span></td>
                   <td>
                     <div style="display:flex;gap:5px">
-                      <button class="btn btn-green btn-sm">승인</button>
-                      <button class="btn btn-secondary btn-sm" style="color:var(--red)">반려</button>
+                      <button class="btn btn-green btn-sm" onclick="approveItem(this)">승인</button>
+                      <button class="btn btn-secondary btn-sm" style="color:var(--red)" onclick="rejectItem(this)">반려</button>
                     </div>
                   </td>
                 </tr>
@@ -1678,8 +1886,8 @@ textarea.form-input{resize:vertical;min-height:80px}
                   <td><span class="chip chip-amber">승인 대기</span></td>
                   <td>
                     <div style="display:flex;gap:5px">
-                      <button class="btn btn-green btn-sm">승인</button>
-                      <button class="btn btn-secondary btn-sm" style="color:var(--red)">반려</button>
+                      <button class="btn btn-green btn-sm" onclick="approveItem(this)">승인</button>
+                      <button class="btn btn-secondary btn-sm" style="color:var(--red)" onclick="rejectItem(this)">반려</button>
                     </div>
                   </td>
                 </tr>
@@ -1693,7 +1901,7 @@ textarea.form-input{resize:vertical;min-height:80px}
                   <td><span class="chip chip-pink">인스타</span></td>
                   <td><div style="font-size:13px;font-weight:500">18%</div></td>
                   <td><span class="chip chip-green">승인됨</span></td>
-                  <td><button class="btn btn-secondary btn-sm">상세</button></td>
+                  <td><button class="btn btn-secondary btn-sm" onclick="goPage('page-seller-profile')">상세</button></td>
                 </tr>
               </tbody>
             </table>
@@ -1761,8 +1969,8 @@ textarea.form-input{resize:vertical;min-height:80px}
               </div>
               <div style="display:flex;gap:8px;align-items:center">
                 <span class="chip chip-amber">검수 대기</span>
-                <button class="btn btn-green btn-sm">승인</button>
-                <button class="btn btn-secondary btn-sm" style="color:var(--red)">반려</button>
+                <button class="btn btn-green btn-sm" onclick="approveItem(this)">승인</button>
+                <button class="btn btn-secondary btn-sm" style="color:var(--red)" onclick="rejectItem(this)">반려</button>
               </div>
             </div>
             <div class="review-body">
@@ -1804,8 +2012,8 @@ textarea.form-input{resize:vertical;min-height:80px}
               </div>
               <div style="display:flex;gap:8px;align-items:center">
                 <span class="chip chip-amber">검수 대기</span>
-                <button class="btn btn-green btn-sm">승인</button>
-                <button class="btn btn-secondary btn-sm" style="color:var(--red)">반려</button>
+                <button class="btn btn-green btn-sm" onclick="approveItem(this)">승인</button>
+                <button class="btn btn-secondary btn-sm" style="color:var(--red)" onclick="rejectItem(this)">반려</button>
               </div>
             </div>
             <div class="review-body">
@@ -1875,8 +2083,8 @@ textarea.form-input{resize:vertical;min-height:80px}
                 </div>
                 <div style="display:flex;gap:8px;align-items:center">
                   <span class="chip chip-purple">사전검수 대기</span>
-                  <button class="btn btn-green btn-sm">승인</button>
-                  <button class="btn btn-secondary btn-sm" style="color:var(--red)">수정 요청</button>
+                  <button class="btn btn-green btn-sm" onclick="approveItem(this)">승인</button>
+                  <button class="btn btn-secondary btn-sm" style="color:var(--red)" onclick="showToast('수정 요청을 발송했습니다')">수정 요청</button>
                 </div>
               </div>
               <div class="review-body">
@@ -1917,7 +2125,7 @@ textarea.form-input{resize:vertical;min-height:80px}
                 </div>
                 <div style="display:flex;gap:8px;align-items:center">
                   <span class="chip chip-teal">결과 확인</span>
-                  <button class="btn btn-green btn-sm">정산 승인</button>
+                  <button class="btn btn-green btn-sm" onclick="approveItem(this);showToast('정산이 승인되었습니다')">정산 승인</button>
                 </div>
               </div>
               <div style="padding:14px 16px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px">
@@ -2018,8 +2226,8 @@ textarea.form-input{resize:vertical;min-height:80px}
               <td><span class="chip chip-amber">승인 대기</span></td>
               <td>
                 <div style="display:flex;gap:5px">
-                  <button class="btn btn-green btn-sm" onclick="this.closest('tr').querySelector('.chip-amber').outerHTML='<span class=\'chip chip-green\'>승인됨</span>';this.closest('td').innerHTML='<button class=\'btn btn-secondary btn-sm\'>상세</button>'">승인</button>
-                  <button class="btn btn-secondary btn-sm" style="color:var(--red)">반려</button>
+                  <button class="btn btn-green btn-sm" onclick="approveItem(this)">승인</button>
+                  <button class="btn btn-secondary btn-sm" style="color:var(--red)" onclick="rejectItem(this)">반려</button>
                 </div>
               </td>
             </tr>
@@ -2040,8 +2248,8 @@ textarea.form-input{resize:vertical;min-height:80px}
               <td><span class="chip chip-amber">승인 대기</span></td>
               <td>
                 <div style="display:flex;gap:5px">
-                  <button class="btn btn-green btn-sm">승인</button>
-                  <button class="btn btn-secondary btn-sm" style="color:var(--red)">반려</button>
+                  <button class="btn btn-green btn-sm" onclick="approveItem(this)">승인</button>
+                  <button class="btn btn-secondary btn-sm" style="color:var(--red)" onclick="rejectItem(this)">반려</button>
                 </div>
               </td>
             </tr>
@@ -2060,7 +2268,7 @@ textarea.form-input{resize:vertical;min-height:80px}
               </td>
               <td><span class="chip chip-pink">인스타</span></td>
               <td><span class="chip chip-red">반려</span></td>
-              <td><button class="btn btn-secondary btn-sm">상세</button></td>
+              <td><button class="btn btn-secondary btn-sm" onclick="goPage('page-seller-profile')">상세</button></td>
             </tr>
             <tr>
               <td>
@@ -2077,7 +2285,7 @@ textarea.form-input{resize:vertical;min-height:80px}
               </td>
               <td><span class="chip chip-blue">유튜브</span></td>
               <td><span class="chip chip-green">승인됨</span></td>
-              <td><button class="btn btn-secondary btn-sm">상세</button></td>
+              <td><button class="btn btn-secondary btn-sm" onclick="goPage('page-seller-profile')">상세</button></td>
             </tr>
           </tbody>
         </table>
@@ -2103,8 +2311,8 @@ textarea.form-input{resize:vertical;min-height:80px}
           <div class="page-sub">공동구매 판매 데이터를 확인하고 정산을 처리하세요</div>
         </div>
         <div style="display:flex;gap:8px">
-          <button class="btn btn-secondary">이지어드민 연동</button>
-          <button class="btn btn-primary">+ 데이터 업로드</button>
+          <button class="btn btn-secondary" onclick="showToast('이지어드민 연동 설정 창을 엽니다')">이지어드민 연동</button>
+          <button class="btn btn-primary" onclick="showToast('파일 업로드 창을 엽니다')">+ 데이터 업로드</button>
         </div>
       </div>
 
@@ -2156,8 +2364,8 @@ textarea.form-input{resize:vertical;min-height:80px}
                   <td><span class="chip chip-amber">정산 대기</span></td>
                   <td>
                     <div style="display:flex;gap:5px">
-                      <button class="btn btn-green btn-sm">정산 처리</button>
-                      <button class="btn btn-secondary btn-sm">상세</button>
+                      <button class="btn btn-green btn-sm" onclick="settleItem(this)">정산 처리</button>
+                      <button class="btn btn-secondary btn-sm" onclick="goPage('page-seller-profile')">상세</button>
                     </div>
                   </td>
                 </tr>
@@ -2173,7 +2381,7 @@ textarea.form-input{resize:vertical;min-height:80px}
                   <td><div style="font-size:13px">15%</div></td>
                   <td><div style="font-size:12px;color:var(--text3)">—</div></td>
                   <td><span class="chip chip-blue">진행 예정</span></td>
-                  <td><button class="btn btn-secondary btn-sm">상세</button></td>
+                  <td><button class="btn btn-secondary btn-sm" onclick="goPage('page-seller-profile')">상세</button></td>
                 </tr>
                 <tr>
                   <td>
@@ -2187,7 +2395,7 @@ textarea.form-input{resize:vertical;min-height:80px}
                   <td><div style="font-size:13px">12%</div></td>
                   <td><div style="font-size:13px;font-weight:700">₩182K</div></td>
                   <td><span class="chip chip-green">정산 완료</span></td>
-                  <td><button class="btn btn-secondary btn-sm">리포트</button></td>
+                  <td><button class="btn btn-secondary btn-sm" onclick="goPage('page-sales')">리포트</button></td>
                 </tr>
               </tbody>
             </table>
@@ -2210,8 +2418,8 @@ textarea.form-input{resize:vertical;min-height:80px}
                   <td><div style="font-size:12px;color:var(--text2)">카카오뱅크 3333-****-1234</div></td>
                   <td>
                     <div style="display:flex;gap:5px">
-                      <button class="btn btn-green btn-sm">이체 완료</button>
-                      <button class="btn btn-secondary btn-sm">상세</button>
+                      <button class="btn btn-green btn-sm" onclick="transferItem(this)">이체 완료</button>
+                      <button class="btn btn-secondary btn-sm" onclick="goPage('page-seller-profile')">상세</button>
                     </div>
                   </td>
                 </tr>
@@ -2236,7 +2444,7 @@ textarea.form-input{resize:vertical;min-height:80px}
               <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text2)">이번달 지급</span><span style="font-weight:600;color:var(--green)">₩4.8M</span></div>
               <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text2)">평균 정산액</span><span style="font-weight:600">₩138K</span></div>
             </div>
-            <button class="btn btn-primary" style="width:100%;margin-top:12px;padding:10px">일괄 정산 처리</button>
+            <button class="btn btn-primary" style="width:100%;margin-top:12px;padding:10px" onclick="showToast('일괄 정산을 처리합니다')">일괄 정산 처리</button>
           </div>
         </div>
       </div>
@@ -2272,13 +2480,13 @@ textarea.form-input{resize:vertical;min-height:80px}
         <select style="padding:7px 12px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);background:var(--bg);outline:none">
           <option>전체 팔로워</option><option>1K ~ 10K</option><option>10K ~ 100K</option><option>100K+</option>
         </select>
-        <button class="btn btn-secondary btn-sm" style="margin-left:auto">초기화</button>
+        <button class="btn btn-secondary btn-sm" style="margin-left:auto" onclick="this.closest('div').querySelectorAll('select').forEach(s=>s.selectedIndex=0);showToast('필터가 초기화되었습니다')">초기화</button>
       </div>
 
       <div class="table-wrap">
         <div class="table-header">
           <div class="table-title">인플루언서 <span style="font-size:12px;font-weight:400;color:var(--text3)">318명</span></div>
-          <button class="btn btn-secondary btn-sm">엑셀 내보내기</button>
+          <button class="btn btn-secondary btn-sm" onclick="showToast('엑셀 파일을 준비 중입니다...')">엑셀 내보내기</button>
         </div>
         <table>
           <thead>
@@ -2351,7 +2559,7 @@ textarea.form-input{resize:vertical;min-height:80px}
           <div class="page-title">알림 자동화</div>
           <div class="page-sub">트리거 조건에 따라 알림톡이 자동 발송됩니다</div>
         </div>
-        <button class="btn btn-primary">+ 알림 규칙 추가</button>
+        <button class="btn btn-primary" onclick="showToast('알림 규칙 추가 폼을 엽니다')">+ 알림 규칙 추가</button>
       </div>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
@@ -2506,7 +2714,7 @@ textarea.form-input{resize:vertical;min-height:80px}
               <td><div style="font-size:13px">4월 21일</div></td>
               <td><span class="chip chip-amber">노쇼 50% 몰취</span></td>
               <td><span class="chip chip-green">납부 완료</span></td>
-              <td><div style="display:flex;gap:5px"><button class="btn btn-secondary btn-sm">환불</button><button class="btn btn-sm" style="background:#FCEBEB;color:var(--red);border:none">몰취</button></div></td>
+              <td><div style="display:flex;gap:5px"><button class="btn btn-secondary btn-sm" onclick="showToast('환불을 처리합니다')">환불</button><button class="btn btn-sm" style="background:#FCEBEB;color:var(--red);border:none;cursor:pointer" onclick="showToast('보증금을 몰취 처리했습니다')">몰취</button></div></td>
             </tr>
             <tr>
               <td><div class="td-name">@beauty_miso</div><div class="td-sub">고메잇 브런치</div></td>
@@ -2515,7 +2723,7 @@ textarea.form-input{resize:vertical;min-height:80px}
               <td><div style="font-size:13px;color:var(--text3)">미납</div></td>
               <td><span class="chip chip-amber">노쇼 50% 몰취</span></td>
               <td><span class="chip chip-red">납부 대기</span></td>
-              <td><button class="btn btn-secondary btn-sm">독촉 발송</button></td>
+              <td><button class="btn btn-secondary btn-sm" onclick="showToast('독촉 알림톡을 발송했습니다')">독촉 발송</button></td>
             </tr>
             <tr>
               <td><div class="td-name">@daily_jini</div><div class="td-sub">BAS 닭목라벨</div></td>
@@ -2524,7 +2732,7 @@ textarea.form-input{resize:vertical;min-height:80px}
               <td><div style="font-size:13px">4월 10일</div></td>
               <td><span class="chip chip-amber">노쇼 50% 몰취</span></td>
               <td><span class="chip chip-blue">환불 예정</span></td>
-              <td><button class="btn btn-green btn-sm">환불 처리</button></td>
+              <td><button class="btn btn-green btn-sm" onclick="showToast('환불 처리를 완료했습니다')">환불 처리</button></td>
             </tr>
           </tbody>
         </table>
@@ -2540,14 +2748,26 @@ textarea.form-input{resize:vertical;min-height:80px}
         </div>
         <div style="display:flex;gap:8px">
           <button class="btn btn-secondary" onclick="goPage('page-grade-criteria')">등급 기준 조정</button>
-          <button class="btn btn-primary">+ 등급 일괄 업데이트</button>
+          <button class="btn btn-primary" onclick="showToast('등급을 일괄 업데이트합니다')">+ 등급 일괄 업데이트</button>
         </div>
       </div>
 
+      <!-- 셀러 검색 -->
+      <div style="margin-bottom:12px">
+        <input style="width:100%;max-width:320px;padding:8px 12px;border-radius:8px;border:1px solid var(--border2);font-size:13px;color:var(--text);background:var(--bg);outline:none" placeholder="셀러 아이디 또는 이름 검색...">
+      </div>
+      <!-- 등급 필터 (체크박스) -->
+      <div style="margin-bottom:12px">
+        <div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:6px">셀러 등급 필터 (중복 선택 가능)</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> 나노</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> 매크로</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--orange)"> 메가</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--orange)"> VIP</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> VVIP</label>
+        </div>
+      </div>
       <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
-        <select style="padding:6px 10px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);background:var(--bg);outline:none">
-          <option>전체 등급</option><option>나노</option><option>매크로</option><option>메가</option><option>VIP</option><option>VVIP</option>
-        </select>
         <select style="padding:6px 10px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);background:var(--bg);outline:none">
           <option>전체 승인 상태</option><option>승인됨</option><option>검토중</option><option>미승인</option>
         </select>
@@ -2663,6 +2883,102 @@ textarea.form-input{resize:vertical;min-height:80px}
       </div>
     </div>
 
+    <!-- ===================== 등급 기준 조정 ===================== -->
+    <div class="page" id="page-grade-criteria">
+      <div class="page-header">
+        <div>
+          <div class="page-title">등급 기준 조정</div>
+          <div class="page-sub">셀러 등급별 팔로워 기준과 혜택을 설정하세요</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-secondary" onclick="goPage('page-grade-mgmt')">← 뒤로</button>
+          <button class="btn btn-primary" onclick="showToast('기준이 저장되었습니다');goPage('page-grade-mgmt')">기준 저장</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px">팔로워 수 기준 설정</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="background:var(--bg);border-radius:10px;border:0.5px solid var(--border);padding:14px 16px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                <span style="font-size:12px;font-weight:700;color:var(--text3)">나노</span>
+                <span class="chip chip-gray">기본</span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center">
+                <input class="form-input" type="number" value="0" style="width:80px;font-size:12px"> <span style="font-size:11px;color:var(--text3)">~</span>
+                <input class="form-input" type="number" value="10000" style="width:80px;font-size:12px"> <span style="font-size:11px;color:var(--text3)">팔로워</span>
+              </div>
+            </div>
+            <div style="background:var(--bg);border-radius:10px;border:0.5px solid var(--border);padding:14px 16px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                <span style="font-size:12px;font-weight:700;color:var(--green)">매크로</span>
+                <span class="chip chip-green">중간</span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center">
+                <input class="form-input" type="number" value="10000" style="width:80px;font-size:12px"> <span style="font-size:11px;color:var(--text3)">~</span>
+                <input class="form-input" type="number" value="50000" style="width:80px;font-size:12px"> <span style="font-size:11px;color:var(--text3)">팔로워</span>
+              </div>
+            </div>
+            <div style="background:var(--bg);border-radius:10px;border:0.5px solid var(--border);padding:14px 16px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                <span style="font-size:12px;font-weight:700;color:#534AB7">메가</span>
+                <span class="chip chip-blue">상위</span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center">
+                <input class="form-input" type="number" value="50000" style="width:80px;font-size:12px"> <span style="font-size:11px;color:var(--text3)">~</span>
+                <input class="form-input" type="number" value="200000" style="width:80px;font-size:12px"> <span style="font-size:11px;color:var(--text3)">팔로워</span>
+              </div>
+            </div>
+            <div style="background:var(--bg);border-radius:10px;border:0.5px solid var(--border);padding:14px 16px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                <span style="font-size:12px;font-weight:700;color:var(--orange)">VIP</span>
+                <span class="chip chip-amber">프리미엄</span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center">
+                <input class="form-input" type="number" value="200000" style="width:80px;font-size:12px"> <span style="font-size:11px;color:var(--text3)">~</span>
+                <input class="form-input" type="number" value="500000" style="width:80px;font-size:12px"> <span style="font-size:11px;color:var(--text3)">팔로워</span>
+              </div>
+            </div>
+            <div style="background:var(--bg);border-radius:10px;border:0.5px solid var(--border);padding:14px 16px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                <span style="font-size:12px;font-weight:700;color:#854F0B">VVIP</span>
+                <span class="chip" style="background:linear-gradient(135deg,#FFF8E7,#FFD700);color:#854F0B">최상위</span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center">
+                <input class="form-input" type="number" value="500000" style="width:80px;font-size:12px"> <span style="font-size:11px;color:var(--text3)">~</span>
+                <span style="font-size:11px;color:var(--text3)">팔로워 이상</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px">등급별 혜택 설정</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="background:var(--bg);border-radius:10px;border:0.5px solid var(--border);padding:14px 16px">
+              <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:10px">쿠폰 지급 수량</div>
+              <div style="display:flex;flex-direction:column;gap:6px;font-size:12px">
+                <div style="display:flex;justify-content:space-between;align-items:center"><span style="color:var(--text3)">나노</span><input type="number" value="1" style="width:60px;padding:4px 8px;border-radius:6px;border:1px solid var(--border2);font-size:12px;text-align:center"> <span style="color:var(--text3)">장</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center"><span style="color:var(--text3)">매크로</span><input type="number" value="2" style="width:60px;padding:4px 8px;border-radius:6px;border:1px solid var(--border2);font-size:12px;text-align:center"> <span style="color:var(--text3)">장</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center"><span style="color:var(--text3)">메가</span><input type="number" value="3" style="width:60px;padding:4px 8px;border-radius:6px;border:1px solid var(--border2);font-size:12px;text-align:center"> <span style="color:var(--text3)">장</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center"><span style="color:var(--orange)">VIP</span><input type="number" value="5" style="width:60px;padding:4px 8px;border-radius:6px;border:1px solid var(--border2);font-size:12px;text-align:center"> <span style="color:var(--text3)">장</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center"><span style="color:#854F0B">VVIP</span><input type="number" value="10" style="width:60px;padding:4px 8px;border-radius:6px;border:1px solid var(--border2);font-size:12px;text-align:center"> <span style="color:var(--text3)">장</span></div>
+              </div>
+            </div>
+            <div style="background:var(--bg);border-radius:10px;border:0.5px solid var(--border);padding:14px 16px">
+              <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:10px">적립금 지급액 (원)</div>
+              <div style="display:flex;flex-direction:column;gap:6px;font-size:12px">
+                <div style="display:flex;justify-content:space-between;align-items:center"><span style="color:var(--text3)">나노</span><input type="number" value="2000" style="width:80px;padding:4px 8px;border-radius:6px;border:1px solid var(--border2);font-size:12px;text-align:right"> <span style="color:var(--text3)">원</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center"><span style="color:var(--text3)">매크로</span><input type="number" value="5000" style="width:80px;padding:4px 8px;border-radius:6px;border:1px solid var(--border2);font-size:12px;text-align:right"> <span style="color:var(--text3)">원</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center"><span style="color:var(--text3)">메가</span><input type="number" value="10000" style="width:80px;padding:4px 8px;border-radius:6px;border:1px solid var(--border2);font-size:12px;text-align:right"> <span style="color:var(--text3)">원</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center"><span style="color:var(--orange)">VIP</span><input type="number" value="20000" style="width:80px;padding:4px 8px;border-radius:6px;border:1px solid var(--border2);font-size:12px;text-align:right"> <span style="color:var(--text3)">원</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center"><span style="color:#854F0B">VVIP</span><input type="number" value="50000" style="width:80px;padding:4px 8px;border-radius:6px;border:1px solid var(--border2);font-size:12px;text-align:right"> <span style="color:var(--text3)">원</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ===================== 셀러 상세프로필 ===================== -->
     <div class="page" id="page-seller-profile">
       <div class="page-header">
@@ -2672,7 +2988,7 @@ textarea.form-input{resize:vertical;min-height:80px}
         </div>
         <div style="display:flex;gap:8px">
           <button class="btn btn-secondary" onclick="goPage('page-grade-mgmt')">← 목록으로</button>
-          <button class="btn btn-primary">등급 저장</button>
+          <button class="btn btn-primary" onclick="showToast('등급이 저장되었습니다');goPage('page-grade-mgmt')">등급 저장</button>
         </div>
       </div>
 
@@ -2714,7 +3030,7 @@ textarea.form-input{resize:vertical;min-height:80px}
                   <span class="chip chip-pink">인스타그램</span>
                   <span style="font-size:12px;color:var(--text2)">instagram.com/yui.beauty</span>
                 </div>
-                <button style="padding:4px 10px;background:#FFF3EE;color:var(--orange);border:1px solid #FDDDB8;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer">크롤링 새로고침</button>
+                <button style="padding:4px 10px;background:#FFF3EE;color:var(--orange);border:1px solid #FDDDB8;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer" onclick="showToast('크롤링 중입니다...')">크롤링 새로고침</button>
               </div>
               <div style="padding:12px 14px">
                 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px">
@@ -2747,7 +3063,7 @@ textarea.form-input{resize:vertical;min-height:80px}
                     </div>
                     <input type="text" placeholder="릴스 링크 입력" style="padding:5px 8px;border:1px solid var(--border2);border-radius:6px;font-size:11px;color:var(--text);background:var(--bg);outline:none;width:160px">
                   </div>
-                  <button style="width:100%;padding:7px;background:var(--bg2);border:1px dashed var(--border2);border-radius:8px;font-size:12px;color:var(--text2);cursor:pointer">+ 릴스 링크 추가</button>
+                  <button style="width:100%;padding:7px;background:var(--bg2);border:1px dashed var(--border2);border-radius:8px;font-size:12px;color:var(--text2);cursor:pointer" onclick="addReelsLink(this)">+ 릴스 링크 추가</button>
                 </div>
               </div>
             </div>
@@ -2757,7 +3073,7 @@ textarea.form-input{resize:vertical;min-height:80px}
               <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px">인스타그램 프로필 링크로 팔로워 재크롤링</div>
               <div style="display:flex;gap:8px">
                 <input type="text" placeholder="https://instagram.com/yui.beauty" style="flex:1;padding:8px 10px;border:1px solid var(--border2);border-radius:8px;font-size:12px;color:var(--text);background:var(--bg);outline:none">
-                <button style="padding:8px 14px;background:var(--orange);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer">크롤링</button>
+                <button style="padding:8px 14px;background:var(--orange);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer" onclick="showToast('인스타그램 데이터를 수집 중입니다...')">크롤링</button>
               </div>
               <div style="font-size:11px;color:var(--text3);margin-top:6px">마지막 크롤링: 2024.04.23 09:15</div>
             </div>
@@ -2858,7 +3174,7 @@ textarea.form-input{resize:vertical;min-height:80px}
           <div class="page-title">VIP 상품관</div>
           <div class="page-sub">특정 등급 셀러에게만 노출되는 익스클루시브 상품을 관리하세요</div>
         </div>
-        <button class="btn btn-primary">+ VIP 상품 추가</button>
+        <button class="btn btn-primary" onclick="showToast('VIP 상품 추가 폼을 엽니다')">+ VIP 상품 추가</button>
       </div>
 
       <div class="ai-box" style="margin-bottom:20px">
@@ -2893,7 +3209,7 @@ textarea.form-input{resize:vertical;min-height:80px}
                   <td><div style="font-size:13px">18명</div></td>
                   <td><div style="font-size:13px">5월 1일 ~ 5월 3일</div></td>
                   <td><span class="chip chip-amber">모집중</span></td>
-                  <td><div style="display:flex;gap:5px"><button class="btn btn-secondary btn-sm">편집</button><button class="btn btn-secondary btn-sm">초대</button></div></td>
+                  <td><div style="display:flex;gap:5px"><button class="btn btn-secondary btn-sm" onclick="showToast('편집 창을 엽니다')">편집</button><button class="btn btn-secondary btn-sm" onclick="showToast('초대 링크를 발송합니다')">초대</button></div></td>
                 </tr>
                 <tr>
                   <td><div class="td-name">프리미엄 유기농 사료 (3kg)</div><div class="td-sub">BAS × 바잇미 콜라보</div></td>
@@ -2901,7 +3217,7 @@ textarea.form-input{resize:vertical;min-height:80px}
                   <td><div style="font-size:13px">158명</div></td>
                   <td><div style="font-size:13px">4월 28일 ~ 4월 30일</div></td>
                   <td><span class="chip chip-green">승인 진행중</span></td>
-                  <td><div style="display:flex;gap:5px"><button class="btn btn-secondary btn-sm">편집</button></div></td>
+                  <td><div style="display:flex;gap:5px"><button class="btn btn-secondary btn-sm" onclick="showToast('편집 창을 엽니다')">편집</button></div></td>
                 </tr>
               </tbody>
             </table>
@@ -2925,7 +3241,7 @@ textarea.form-input{resize:vertical;min-height:80px}
                 <div style="font-size:11px;color:#B8B8A0;margin-top:2px">팔로워 100K+ OR 매출 ₩10M+</div>
               </div>
             </div>
-            <button class="btn btn-secondary" style="width:100%;margin-top:10px;font-size:12px">등급 기준 수정</button>
+            <button class="btn btn-secondary" style="width:100%;margin-top:10px;font-size:12px" onclick="goPage('page-grade-criteria')">등급 기준 수정</button>
           </div>
           <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:16px">
             <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:8px">VIP 인플루언서 현황</div>
@@ -3031,7 +3347,7 @@ textarea.form-input{resize:vertical;min-height:80px}
 
           <div style="padding:12px 18px;border-top:0.5px solid var(--border);display:flex;gap:8px">
             <input style="flex:1;padding:10px 14px;border-radius:10px;border:1px solid var(--border2);font-size:13px;color:var(--text);outline:none" placeholder="메시지 입력...">
-            <button class="btn btn-primary" style="padding:10px 16px">전송</button>
+            <button class="btn btn-primary" style="padding:10px 16px" onclick="sendAdminMsg()">전송</button>
           </div>
         </div>
       </div>
@@ -3084,6 +3400,80 @@ textarea.form-input{resize:vertical;min-height:80px}
 </div>
 
 <script>
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = 'position:fixed;top:20px;right:20px;background:rgba(20,20,20,0.92);color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:500;z-index:9999;pointer-events:none;opacity:0;transition:opacity .2s,transform .2s;transform:translateY(-8px)';
+  document.body.appendChild(t);
+  requestAnimationFrame(() => { t.style.opacity='1'; t.style.transform='translateY(0)'; });
+  setTimeout(() => { t.style.opacity='0'; setTimeout(() => t.remove(), 250); }, 2200);
+}
+function approveItem(btn) {
+  const row = btn.closest('tr') || btn.closest('.review-item');
+  if (row) {
+    const chip = row.querySelector('.chip-amber,.chip-red,.chip-purple');
+    if (chip) { chip.className='chip chip-green'; chip.textContent='승인됨'; }
+    const wrap = btn.parentElement;
+    if (wrap) wrap.innerHTML='<button class="btn btn-secondary btn-sm" onclick="goPage(\'page-seller-profile\')">상세</button>';
+  }
+  showToast('승인 처리되었습니다');
+}
+function rejectItem(btn) {
+  const row = btn.closest('tr') || btn.closest('.review-item');
+  if (row) {
+    const chip = row.querySelector('.chip-amber,.chip-purple,.chip-green');
+    if (chip) { chip.className='chip chip-red'; chip.textContent='반려됨'; }
+    const wrap = btn.parentElement;
+    if (wrap) wrap.innerHTML='<button class="btn btn-secondary btn-sm" onclick="goPage(\'page-seller-profile\')">상세</button>';
+  }
+  showToast('반려 처리되었습니다');
+}
+function settleItem(btn) {
+  const row = btn.closest('tr');
+  if (row) {
+    const chip = row.querySelector('.chip-amber');
+    if (chip) { chip.className='chip chip-green'; chip.textContent='정산 완료'; }
+    const wrap = btn.parentElement;
+    if (wrap) wrap.innerHTML='<button class="btn btn-secondary btn-sm" onclick="goPage(\'page-seller-profile\')">상세</button>';
+  }
+  showToast('정산 처리가 완료되었습니다');
+}
+function transferItem(btn) {
+  const row = btn.closest('tr');
+  if (row) { row.style.opacity='.45'; }
+  showToast('이체 완료 처리되었습니다');
+}
+function sendAdminMsg() {
+  const inp = document.querySelector('#page-messages input[placeholder="메시지 입력..."]');
+  if (inp && inp.value.trim()) { inp.value=''; showToast('메시지를 전송했습니다'); }
+}
+function addRequirement(btn) {
+  const div = document.createElement('div');
+  div.style.cssText = 'display:flex;align-items:center;gap:8px';
+  div.innerHTML = '<div style="width:6px;height:6px;border-radius:50%;background:var(--orange);flex-shrink:0"></div><input class="form-input" style="flex:1;padding:8px 10px" placeholder="새 항목 입력...">';
+  btn.parentElement.insertBefore(div, btn);
+  div.querySelector('input').focus();
+}
+function addReelsLink(btn) {
+  const div = document.createElement('div');
+  div.style.cssText = 'display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg2);border-radius:8px';
+  div.innerHTML = '<input type="text" placeholder="릴스 링크 입력" style="flex:1;padding:5px 8px;border:1px solid var(--border2);border-radius:6px;font-size:11px;color:var(--text);background:var(--bg);outline:none">';
+  btn.parentElement.insertBefore(div, btn);
+  div.querySelector('input').focus();
+}
+let calMonth = 4;
+const calMonthNames = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+function calPrev() {
+  calMonth = calMonth > 1 ? calMonth-1 : 12;
+  const title = document.querySelector('#page-schedule .table-title');
+  if (title) title.textContent = '2026년 ' + calMonthNames[calMonth-1];
+}
+function calNext() {
+  calMonth = calMonth < 12 ? calMonth+1 : 1;
+  const title = document.querySelector('#page-schedule .table-title');
+  if (title) title.textContent = '2026년 ' + calMonthNames[calMonth-1];
+}
+
 const breadcrumbs = {
   'page-home': '개요 › <strong>대시보드 홈</strong>',
   'page-campaigns': '캠페인 › <strong>시딩 캠페인</strong>',
@@ -3096,6 +3486,7 @@ const breadcrumbs = {
   'page-sales': '공동구매 › <strong>판매/정산 관리</strong>',
   'page-vip': '공동구매 › <strong>VIP 상품관</strong>',
   'page-grade-mgmt': '공동구매 › <strong>셀러등급관리</strong>',
+  'page-grade-criteria': '공동구매 › 셀러등급관리 › <strong>등급 기준 조정</strong>',
   'page-seller-profile': '공동구매 › 셀러등급관리 › <strong>셀러 상세프로필</strong>',
   'page-deposit': '공동구매 › <strong>보증금 관리</strong>',
   'page-review': '콘텐츠 › <strong>검수</strong>',
@@ -3113,13 +3504,73 @@ function goPage(id) {
   // nav 동기화
   const navMap = {
     'page-home': 0,
-    'page-campaigns': 1, 'page-campaign-new': 2, 'page-applications': 3,
+    'page-campaigns': 1, 'page-campaign-new': 2, 'page-campaign-detail': 1, 'page-applications': 3,
     'page-gb-home': 4, 'page-gb-new': 5, 'page-gb-pipeline': 6, 'page-schedule': 7, 'page-sales': 8, 'page-vip': 9, 'page-deposit': 10,
+    'page-grade-criteria': 10,
     'page-review': 11, 'page-influencers': 12,
     'page-notifications': 13, 'page-messages': 14
   };
   const navItems = document.querySelectorAll('.nav-item');
   if (navMap[id] !== undefined) navItems[navMap[id]].classList.add('on');
+}
+
+const pipelineData = [
+  { name: 'BAS 칼취채 핑크에디션', seller: '@yui.beauty', period: '5/13~5/16', stage: '홍보 콘텐츠 제출 대기' },
+  { name: '고메잇 브런치 세트', seller: '@daily_jini', period: '4/16~4/19', stage: '공구 진행중' },
+  { name: '봄 립밤 기획세트', seller: '@beauty_miso', period: '미정', stage: '조건 협의 중' },
+  { name: 'BAS 닭목라벨', seller: '@kko_cats', period: '4/10~4/13', stage: '종료 · 당첨자 취합' }
+];
+function selectPipelineCard(idx) {
+  document.querySelectorAll('[id^="pipeline-card-"]').forEach((el, i) => {
+    el.style.outline = i === idx ? '3px solid var(--orange)' : 'none';
+    el.style.outlineOffset = i === idx ? '2px' : '0';
+  });
+  const d = pipelineData[idx];
+  const title = document.getElementById('pipeline-title');
+  if (title) title.textContent = d.name + ' 상세 파이프라인 · ' + d.seller;
+}
+
+function autoColon(el) {
+  let v = el.value.replace(/[^0-9]/g, '');
+  if (v.length >= 3) v = v.slice(0, 2) + ':' + v.slice(2, 4);
+  el.value = v;
+}
+
+function toggleCampType(type) {
+  ['simple', 'paid'].forEach(t => {
+    const el = document.getElementById('camp-type-' + t);
+    if (el) el.classList.toggle('on', t === type);
+  });
+  const reward = document.getElementById('reward-section');
+  if (reward) reward.style.display = type === 'paid' ? 'block' : 'none';
+}
+
+function toggleRewardType(type) {
+  ['fixed', 'view'].forEach(t => {
+    const el = document.getElementById('reward-' + t);
+    if (el) el.classList.toggle('on', t === type);
+  });
+  const fixedWrap = document.getElementById('reward-fixed-input');
+  const viewWrap = document.getElementById('reward-view-input');
+  if (fixedWrap) fixedWrap.style.display = type === 'fixed' ? 'flex' : 'none';
+  if (viewWrap) viewWrap.style.display = type === 'view' ? 'flex' : 'none';
+}
+
+function toggleAccess(type) {
+  ['all', 'vip', 'vvip'].forEach(t => {
+    const el = document.getElementById('access-' + t);
+    if (el) el.classList.toggle('on', t === type);
+  });
+}
+
+function addHashtag() {
+  const list = document.getElementById('hashtag-list');
+  if (!list) return;
+  const item = document.createElement('div');
+  item.style.cssText = 'display:flex;align-items:center;gap:6px;margin-bottom:6px';
+  item.innerHTML = '<span style="background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 10px;display:flex;align-items:center;gap:6px"><input type="text" placeholder="#해시태그" style="border:none;background:transparent;font-size:13px;outline:none;width:80px"><span onclick="this.parentElement.parentElement.remove()" style="cursor:pointer;color:var(--text3);font-size:14px">×</span></span>';
+  list.appendChild(item);
+  item.querySelector('input').focus();
 }
 
 let currentStep = 1;
@@ -3259,6 +3710,21 @@ function updateGbSubCat() {
   } else {
     wrap.style.display = 'none';
   }
+}
+
+function toggleFollowerInput(checkbox) {
+  const input = checkbox.closest('div').querySelector('input[type="number"]');
+  if (!input) return;
+  input.disabled = !checkbox.checked;
+  input.style.opacity = checkbox.checked ? '1' : '0.5';
+}
+
+function toggleSnsEventPanel() {
+  const panel = document.getElementById('sns-event-extra');
+  if (!panel) return;
+  const anyChecked = document.querySelectorAll('#gbstep-2 input[type="checkbox"][onchange="toggleSnsEventPanel()"]');
+  const active = Array.from(anyChecked).some(cb => cb.checked);
+  panel.style.display = active ? 'block' : 'none';
 }
 
 // 토글 옵션
