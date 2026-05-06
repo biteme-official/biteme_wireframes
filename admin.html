@@ -604,15 +604,15 @@ textarea.form-input{resize:vertical;min-height:80px}
           <div class="form-grid">
             <div class="form-group" style="grid-column:1/-1">
               <label class="form-label">캠페인명</label>
-              <input class="form-input" value="봄 신상 스킨케어 세트 체험단">
+              <input id="camp-name" class="form-input" value="봄 신상 스킨케어 세트 체험단">
             </div>
             <div class="form-group">
               <label class="form-label">브랜드명</label>
-              <input class="form-input" value="바잇미 코스메틱">
+              <input id="camp-brand" class="form-input" value="바잇미 코스메틱">
             </div>
             <div class="form-group">
               <label class="form-label">카테고리</label>
-              <select class="form-input"><option>뷰티</option><option>푸드</option><option>라이프</option><option>반려동물</option></select>
+              <select id="camp-cat" class="form-input"><option>뷰티</option><option>푸드</option><option>라이프</option><option>반려동물</option></select>
             </div>
             <div class="form-group">
               <label class="form-label">협찬 유형</label>
@@ -647,11 +647,11 @@ textarea.form-input{resize:vertical;min-height:80px}
             </div>
             <div class="form-group">
               <label class="form-label">모집 인원</label>
-              <input class="form-input" type="number" value="10">
+              <input id="camp-count" class="form-input" type="number" value="10">
             </div>
             <div class="form-group">
               <label class="form-label">협찬 상품가 (원)</label>
-              <input class="form-input" type="number" value="32000">
+              <input id="camp-price" class="form-input" type="number" value="32000">
             </div>
             <div class="form-group">
               <label class="form-label">신청 마감일</label>
@@ -659,7 +659,7 @@ textarea.form-input{resize:vertical;min-height:80px}
             </div>
             <div class="form-group">
               <label class="form-label">게시 마감일</label>
-              <input class="form-input" type="date" value="2026-05-10">
+              <input id="camp-deadline" class="form-input" type="date" value="2026-05-10">
             </div>
             <div class="form-group" style="grid-column:1/-1">
               <label class="form-label">캠페인 설명</label>
@@ -677,11 +677,11 @@ textarea.form-input{resize:vertical;min-height:80px}
             <div>
               <div class="form-section-title">선정 방식</div>
               <div class="toggle-group">
-                <div class="toggle-opt on" style="padding:12px;text-align:left">
+                <div id="camp-method-auto" class="toggle-opt on" style="padding:12px;text-align:left" onclick="toggleCampMethod('auto')">
                   <div style="font-weight:600;margin-bottom:2px">자동 선정</div>
                   <div style="font-size:11px;color:var(--text3);font-weight:400">조건 충족 신청자 자동 선정</div>
                 </div>
-                <div class="toggle-opt" style="padding:12px;text-align:left">
+                <div id="camp-method-manual" class="toggle-opt" style="padding:12px;text-align:left" onclick="toggleCampMethod('manual')">
                   <div style="font-weight:600;margin-bottom:2px">수동 선정</div>
                   <div style="font-size:11px;color:var(--text3);font-weight:400">운영팀이 직접 선정</div>
                 </div>
@@ -690,7 +690,7 @@ textarea.form-input{resize:vertical;min-height:80px}
             <div class="form-grid">
               <div class="form-group">
                 <label class="form-label">최소 팔로워 수</label>
-                <input class="form-input" value="3,000">
+                <input id="camp-followers" class="form-input" value="3,000">
               </div>
               <div class="form-group">
                 <label class="form-label">관심 카테고리 <span style="font-size:10px;font-weight:400;color:var(--text3)">(복수 선택 가능)</span></label>
@@ -708,8 +708,8 @@ textarea.form-input{resize:vertical;min-height:80px}
               <div class="form-group">
                 <label class="form-label">자동 선정 기준</label>
                 <div class="toggle-group">
-                  <div class="toggle-opt on">선착순</div>
-                  <div class="toggle-opt">랜덤</div>
+                  <div id="camp-order-first" class="toggle-opt on" onclick="toggleCampOrder('first')">선착순</div>
+                  <div id="camp-order-random" class="toggle-opt" onclick="toggleCampOrder('random')">랜덤</div>
                 </div>
               </div>
             </div>
@@ -805,11 +805,11 @@ textarea.form-input{resize:vertical;min-height:80px}
             <div style="padding:20px;display:flex;flex-direction:column;gap:12px">
               <div style="font-size:13px;font-weight:600;color:var(--text3);letter-spacing:.04em">미리보기</div>
               <div style="background:var(--bg2);border-radius:10px;padding:14px;font-size:12px;line-height:1.8;color:var(--text2)">
-                <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px">봄 신상 스킨케어 세트 체험단</div>
-                <div style="margin-bottom:6px"><strong>브랜드:</strong> 바잇미 코스메틱</div>
-                <div style="margin-bottom:6px"><strong>협찬가:</strong> ₩32,000</div>
-                <div style="margin-bottom:6px"><strong>게시 마감:</strong> 5월 10일</div>
-                <div style="margin-bottom:8px"><strong>조건:</strong> 팔로워 3,000+명 · 뷰티</div>
+                <div id="rv3-name" style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px">봄 신상 스킨케어 세트 체험단</div>
+                <div style="margin-bottom:6px"><strong>브랜드:</strong> <span id="rv3-brand">바잇미 코스메틱</span></div>
+                <div style="margin-bottom:6px"><strong>협찬가:</strong> <span id="rv3-price">₩32,000</span></div>
+                <div style="margin-bottom:6px"><strong>게시 마감:</strong> <span id="rv3-deadline">5월 10일</span></div>
+                <div style="margin-bottom:8px"><strong>조건:</strong> <span id="rv3-conditions">팔로워 3,000+명 · 뷰티</span></div>
                 <div style="border-top:0.5px solid var(--border);padding-top:8px;font-size:11px;color:var(--text3)">
                   #바잇미 #립밤체험 #뷰티리뷰 #봄뷰티
                 </div>
@@ -828,18 +828,18 @@ textarea.form-input{resize:vertical;min-height:80px}
             <div>
               <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px">기본 정보</div>
               <div style="background:var(--bg2);border-radius:10px;overflow:hidden">
-                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">캠페인명</span><span style="font-size:12px;font-weight:500;color:var(--text)">봄 신상 스킨케어 세트</span></div>
-                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">브랜드</span><span style="font-size:12px;font-weight:500;color:var(--text)">바잇미 코스메틱</span></div>
-                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">유형</span><span class="chip chip-blue" style="font-size:11px">단순협찬</span></div>
-                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">모집 인원</span><span style="font-size:12px;font-weight:500;color:var(--text)">10명</span></div>
-                <div style="display:flex;justify-content:space-between;padding:10px 14px"><span style="font-size:12px;color:var(--text3)">게시 마감</span><span style="font-size:12px;font-weight:500;color:var(--text)">5월 10일</span></div>
+                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">캠페인명</span><span id="rv-name" style="font-size:12px;font-weight:500;color:var(--text)">봄 신상 스킨케어 세트</span></div>
+                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">브랜드</span><span id="rv-brand" style="font-size:12px;font-weight:500;color:var(--text)">바잇미 코스메틱</span></div>
+                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">유형</span><span id="rv-type" class="chip chip-blue" style="font-size:11px">단순협찬</span></div>
+                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">모집 인원</span><span id="rv-count" style="font-size:12px;font-weight:500;color:var(--text)">10명</span></div>
+                <div style="display:flex;justify-content:space-between;padding:10px 14px"><span style="font-size:12px;color:var(--text3)">게시 마감</span><span id="rv-deadline" style="font-size:12px;font-weight:500;color:var(--text)">5월 10일</span></div>
               </div>
             </div>
             <div>
               <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px">선정 조건</div>
               <div style="background:var(--bg2);border-radius:10px;overflow:hidden">
-                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">선정 방식</span><span style="font-size:12px;font-weight:500;color:var(--text)">자동 선정 (선착순)</span></div>
-                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">최소 팔로워</span><span style="font-size:12px;font-weight:500;color:var(--text)">3,000명</span></div>
+                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">선정 방식</span><span id="rv-method" style="font-size:12px;font-weight:500;color:var(--text)">자동 선정 (선착순)</span></div>
+                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">최소 팔로워</span><span id="rv-followers" style="font-size:12px;font-weight:500;color:var(--text)">3,000명</span></div>
                 <div style="display:flex;justify-content:space-between;padding:10px 14px"><span style="font-size:12px;color:var(--text3)">독촉 알림</span><span style="font-size:12px;font-weight:500;color:var(--text)">D-7, D-3, D-day</span></div>
               </div>
             </div>
@@ -849,7 +849,7 @@ textarea.form-input{resize:vertical;min-height:80px}
             <button class="btn btn-secondary" onclick="nextStep(3)">← 이전</button>
             <div style="display:flex;gap:8px">
               <button class="btn btn-secondary" onclick="showToast('임시 저장되었습니다')">임시 저장</button>
-              <button class="btn btn-primary" onclick="goPage('page-campaigns')">캠페인 개설하기</button>
+              <button class="btn btn-primary" onclick="createCampaign()">캠페인 개설하기</button>
             </div>
           </div>
         </div>
@@ -3605,6 +3605,7 @@ function goPage(id) {
   };
   const navItems = document.querySelectorAll('.nav-item');
   if (navMap[id] !== undefined) navItems[navMap[id]].classList.add('on');
+  if (id === 'page-campaign-new') resetCampaignForm();
 }
 
 const pipelineData = [
@@ -3699,6 +3700,109 @@ function addHashtag() {
   item.querySelector('input').focus();
 }
 
+function toggleCampMethod(type) {
+  document.getElementById('camp-method-auto').classList.toggle('on', type === 'auto');
+  document.getElementById('camp-method-manual').classList.toggle('on', type === 'manual');
+}
+
+function toggleCampOrder(type) {
+  document.getElementById('camp-order-first').classList.toggle('on', type === 'first');
+  document.getElementById('camp-order-random').classList.toggle('on', type === 'random');
+}
+
+function _fmtDate(v) {
+  if (!v) return '';
+  const d = new Date(v);
+  return (d.getMonth() + 1) + '월 ' + d.getDate() + '일';
+}
+
+function updateStep3Preview() {
+  const name     = document.getElementById('camp-name')?.value || '';
+  const brand    = document.getElementById('camp-brand')?.value || '';
+  const price    = parseFloat(document.getElementById('camp-price')?.value) || 0;
+  const deadline = document.getElementById('camp-deadline')?.value || '';
+  const followers= document.getElementById('camp-followers')?.value || '';
+  const cat      = document.getElementById('camp-cat')?.value || '뷰티';
+  const set = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t; };
+  set('rv3-name', name);
+  set('rv3-brand', brand);
+  set('rv3-price', price ? '₩' + price.toLocaleString() : '');
+  set('rv3-deadline', _fmtDate(deadline));
+  set('rv3-conditions', '팔로워 ' + followers + '+명 · ' + cat);
+}
+
+function campaignUpdateReview() {
+  const name     = document.getElementById('camp-name')?.value || '';
+  const brand    = document.getElementById('camp-brand')?.value || '';
+  const count    = document.getElementById('camp-count')?.value || '';
+  const deadline = document.getElementById('camp-deadline')?.value || '';
+  const followers= document.getElementById('camp-followers')?.value || '';
+  const isSimple = document.getElementById('camp-type-simple')?.classList.contains('on');
+  const isAuto   = document.getElementById('camp-method-auto')?.classList.contains('on');
+  const isFirst  = document.getElementById('camp-order-first')?.classList.contains('on');
+  const set = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t; };
+  set('rv-name', name);
+  set('rv-brand', brand);
+  set('rv-count', count + '명');
+  set('rv-deadline', _fmtDate(deadline));
+  set('rv-method', isAuto ? '자동 선정 (' + (isFirst ? '선착순' : '랜덤') + ')' : '수동 선정');
+  set('rv-followers', followers + '명');
+  const rvType = document.getElementById('rv-type');
+  if (rvType) {
+    rvType.className = isSimple ? 'chip chip-blue' : 'chip chip-amber';
+    rvType.style.fontSize = '11px';
+    rvType.textContent = isSimple ? '단순협찬' : '유가협찬';
+  }
+}
+
+function resetCampaignForm() {
+  currentStep = 1;
+  for (let i = 1; i <= 4; i++) {
+    const step = document.getElementById('step-' + i);
+    if (step) step.style.display = i === 1 ? 'block' : 'none';
+    const num = document.getElementById('sn' + i);
+    const lbl = document.getElementById('sl' + i);
+    if (!num) continue;
+    if (i === 1) {
+      num.style.cssText = 'background:var(--text);color:#fff;border:none';
+      num.innerHTML = '1'; lbl.className = 'step-lbl on';
+    } else {
+      num.style.cssText = 'background:var(--bg2);color:var(--text3);border:1px solid var(--border2)';
+      num.innerHTML = i; lbl.className = 'step-lbl';
+    }
+    if (i < 4) {
+      const line = document.getElementById('sl-' + i);
+      if (line) line.className = 'step-line';
+    }
+  }
+}
+
+function createCampaign() {
+  const name     = document.getElementById('camp-name')?.value || '새 캠페인';
+  const brand    = document.getElementById('camp-brand')?.value || '';
+  const cat      = document.getElementById('camp-cat')?.value || '뷰티';
+  const count    = document.getElementById('camp-count')?.value || '0';
+  const deadline = document.getElementById('camp-deadline')?.value || '';
+  const isSimple = document.getElementById('camp-type-simple')?.classList.contains('on');
+  const typeLabel    = isSimple ? '단순협찬' : '유가협찬';
+  const typeChipCls  = isSimple ? 'chip chip-blue' : 'chip chip-amber';
+  const deadlineFmt  = _fmtDate(deadline) || '-';
+  const tbody = document.querySelector('#page-campaigns table tbody');
+  if (tbody) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = '<td><div class="td-name">' + name + '</div><div class="td-sub">' + brand + ' · ' + cat + '</div></td>'
+      + '<td><span class="' + typeChipCls + '">' + typeLabel + '</span></td>'
+      + '<td><div style="font-size:12px;margin-bottom:4px;font-weight:500">0 / ' + count + '명</div><div class="prog-bar"><div class="prog-fill" style="width:0%"></div></div></td>'
+      + '<td><div style="font-size:13px">' + deadlineFmt + '</div></td>'
+      + '<td><div style="font-size:12px;color:var(--text3)">제출 0</div></td>'
+      + '<td><span class="chip chip-blue">모집중</span></td>'
+      + '<td><div style="display:flex;gap:5px"><button class="btn btn-secondary btn-sm" onclick="goPage(\'page-campaign-detail\')">상세</button></div></td>';
+    tbody.insertBefore(tr, tbody.firstChild);
+  }
+  showToast(name + ' 캠페인이 개설되었습니다');
+  goPage('page-campaigns');
+}
+
 let currentStep = 1;
 function nextStep(n) {
   document.getElementById('step-' + currentStep).style.display = 'none';
@@ -3723,6 +3827,8 @@ function nextStep(n) {
     }
   }
   currentStep = n;
+  if (n === 3) updateStep3Preview();
+  if (n === 4) campaignUpdateReview();
 }
 
 let gbCurrentStep = 1;
