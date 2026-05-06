@@ -3787,6 +3787,8 @@ function createCampaign() {
   const typeLabel    = isSimple ? '단순협찬' : '유가협찬';
   const typeChipCls  = isSimple ? 'chip chip-blue' : 'chip chip-amber';
   const deadlineFmt  = _fmtDate(deadline) || '-';
+  const price     = document.getElementById('camp-price')?.value || '0';
+  const followers = document.getElementById('camp-followers')?.value || '';
   const tbody = document.querySelector('#page-campaigns table tbody');
   if (tbody) {
     const tr = document.createElement('tr');
@@ -3799,6 +3801,11 @@ function createCampaign() {
       + '<td><div style="display:flex;gap:5px"><button class="btn btn-secondary btn-sm" onclick="goPage(\'page-campaign-detail\')">상세</button></div></td>';
     tbody.insertBefore(tr, tbody.firstChild);
   }
+  // 사용자 화면과 공유 (localStorage)
+  const saved = JSON.parse(localStorage.getItem('biteme_new_campaigns') || '[]');
+  saved.unshift({ name, brand, cat, count, price, deadline: deadlineFmt, followers,
+    type: typeLabel, typeChip: isSimple ? 'chip-teal' : 'chip-amber' });
+  localStorage.setItem('biteme_new_campaigns', JSON.stringify(saved));
   showToast(name + ' 캠페인이 개설되었습니다');
   goPage('page-campaigns');
 }

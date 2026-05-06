@@ -273,6 +273,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
           <div style="font-size:15px;font-weight:700;color:var(--text)">지금 신청 가능한 캠페인</div>
           <div style="font-size:13px;color:var(--orange);font-weight:600;cursor:pointer" onclick="goScreen('screen-explore')">전체보기</div>
         </div>
+        <div id="new-camps-home"></div>
         <div class="camp-card" onclick="goScreen('screen-detail')">
           <div class="camp-thumb"></div>
           <div class="camp-body">
@@ -455,6 +456,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
         <div class="scroll-cat" onclick="filterCat(this,'explore-sponsor')">반려동물</div>
       </div>
       <div class="scroll-area" style="padding:0 20px 20px;display:flex;flex-direction:column;gap:10px">
+        <div id="new-camps-explore"></div>
         <div class="camp-card" onclick="goScreen('screen-detail')">
           <div class="camp-thumb"></div>
           <div class="camp-body">
@@ -2057,6 +2059,7 @@ function goScreen(id) {
     target.classList.add('active');
     target.querySelector('.scroll-area')?.scrollTo(0, 0);
   }
+  if (id === 'screen-home' || id === 'screen-explore') renderNewCampaigns();
   // 상세 화면 진입 시 신청 상태 초기화
   if (id === 'screen-detail') {
     const cta = document.getElementById('detail-cta');
@@ -2216,11 +2219,38 @@ function addIgLink() {
   wrap.appendChild(row);
 }
 
+function renderNewCampaigns() {
+  const camps = JSON.parse(localStorage.getItem('biteme_new_campaigns') || '[]');
+  ['home', 'explore'].forEach(function(ctx) {
+    const container = document.getElementById('new-camps-' + ctx);
+    if (!container) return;
+    container.innerHTML = '';
+    camps.forEach(function(c) {
+      const priceNum = parseFloat(c.price) || 0;
+      const div = document.createElement('div');
+      div.className = 'camp-card';
+      div.style.marginBottom = '0';
+      div.setAttribute('onclick', "goScreen('screen-detail')");
+      div.innerHTML =
+        '<div class="camp-thumb" style="background:linear-gradient(135deg,#FFE5D6,#F5C9A8)"></div>'
+        + '<div class="camp-body">'
+        + '<div class="camp-name">' + c.name + '</div>'
+        + '<div class="camp-meta">' + c.brand + ' · 협찬가 ₩' + priceNum.toLocaleString() + ' · 마감 ' + c.deadline + ' · ' + c.count + '명 모집</div>'
+        + '<div class="camp-tags"><span class="chip ' + c.typeChip + '">' + c.type + '</span><span class="chip chip-gray">' + c.cat + '</span>'
+        + (c.followers ? '<span class="chip chip-blue">' + c.followers + '+명</span>' : '') + '</div>'
+        + '</div>'
+        + '<div class="camp-footer"><span class="camp-footer-label">0/' + c.count + '명</span><span class="camp-footer-action">상세보기 →</span></div>';
+      container.appendChild(div);
+    });
+  });
+}
+
 // 초기화
 document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
 document.getElementById('screen-home').style.display = 'flex';
 document.getElementById('screen-home').classList.add('active');
 document.getElementById('home-tab-gb').style.display = 'none';
+renderNewCampaigns();
 </script>
 </body>
 </html>
