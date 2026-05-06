@@ -2232,7 +2232,9 @@ function renderNewCampaigns() {
       div.style.marginBottom = '0';
       div.setAttribute('onclick', "goScreen('screen-detail')");
       div.innerHTML =
-        '<div class="camp-thumb" style="background:linear-gradient(135deg,#FFE5D6,#F5C9A8)"></div>'
+        '<div class="camp-thumb" style="background:linear-gradient(135deg,#FFE5D6,#F5C9A8);position:relative">'
+        + '<span style="position:absolute;top:8px;left:8px;background:var(--orange);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px">NEW</span>'
+        + '</div>'
         + '<div class="camp-body">'
         + '<div class="camp-name">' + c.name + '</div>'
         + '<div class="camp-meta">' + c.brand + ' · 협찬가 ₩' + priceNum.toLocaleString() + ' · 마감 ' + c.deadline + ' · ' + c.count + '명 모집</div>'
@@ -2244,6 +2246,11 @@ function renderNewCampaigns() {
     });
   });
 }
+
+// 다른 탭(admin)에서 캠페인 저장 시 자동 반영
+window.addEventListener('storage', function(e) {
+  if (e.key === 'biteme_new_campaigns') renderNewCampaigns();
+});
 
 // 초기화
 document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
