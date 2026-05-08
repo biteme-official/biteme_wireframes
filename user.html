@@ -2124,9 +2124,8 @@ function handleStatusUpdate(statuses) {
 // 다른 탭(admin)에서 변경 시 자동 반영
 window.addEventListener('storage', function(e) {
   if (e.key === 'biteme_new_campaigns') renderNewCampaigns();
-  if (e.key === 'biteme_gb_campaigns') renderGbCampaigns();
+  if (e.key === 'biteme_gb_campaigns') { renderGbCampaigns(); renderVipProducts(); }
   if (e.key === 'biteme_statuses') handleStatusUpdate(JSON.parse(e.newValue || '{}'));
-  if (e.key === 'biteme_vip_products') renderVipProducts();
   if (e.key === 'biteme_messages') {
     const msgs = JSON.parse(e.newValue || '[]');
     const last = msgs[msgs.length - 1];
@@ -2189,31 +2188,34 @@ function submitSignup() {
   goScreen('screen-home');
 }
 
-// ===== VIP 상품관 (사용자) =====
+// ===== VIP 상품관 (사용자) — 캠페인 접근 등급이 vip/vvip인 공구만 표시 =====
 function renderVipProducts() {
   const list = document.getElementById('vip-product-list');
   if (!list) return;
-  const products = JSON.parse(localStorage.getItem('biteme_vip_products') || '[]');
+  const allCamps = JSON.parse(localStorage.getItem('biteme_gb_campaigns') || '[]');
+  const products = allCamps.filter(c => c.accessType === 'vip' || c.accessType === 'vvip');
   if (products.length === 0) {
-    list.innerHTML = '<div style="text-align:center;padding:32px 0;color:var(--text3);font-size:13px">등록된 VIP 상품이 없습니다</div>';
+    list.innerHTML = '<div style="text-align:center;padding:32px 0;color:var(--text3);font-size:13px">현재 오픈된 익스클루시브 공구가 없습니다</div>';
     return;
   }
   const gradients = ['linear-gradient(135deg,#2D1B69,#534AB7)','linear-gradient(135deg,#1A4A2E,#2D7A4A)','linear-gradient(135deg,#4A1A3A,#7A2D5A)','linear-gradient(135deg,#1A2A4A,#2D4A7A)'];
-  list.innerHTML = products.map((p, i) => {
-    const discPct = (p.origPrice > 0 && p.salePrice > 0) ? Math.round((1 - p.salePrice / p.origPrice) * 100) : 0;
-    return `<div class="product-item" style="cursor:pointer" onclick="goScreen('screen-gb-product')">
+  list.innerHTML = products.map((c, i) => {
+    const discPct = c.discRate || 0;
+    const gradeLabel = c.accessType === 'vvip' ? 'VVIP' : 'VIP';
+    const gradeChipStyle = c.accessType === 'vvip' ? 'background:#1a1a18;color:#FFD700' : 'background:#EEEDFE;color:#534AB7';
+    return `<div class="product-item" style="cursor:pointer" onclick="openGbSalesData('${c.name.replace(/'/g,"\\'")}')">
       <div class="product-thumb" style="background:${gradients[i % gradients.length]}">
-        <div class="product-badge" style="background:#FFC107;color:#1A1200">VIP</div>
+        <div class="product-badge" style="background:#FFC107;color:#1A1200">${gradeLabel}</div>
       </div>
       <div class="product-info">
-        <div class="product-name">${p.name}</div>
+        <div class="product-name">${c.name}</div>
         <div class="product-price">
-          ${discPct > 0 ? `<span class="product-discount">${discPct}%</span><span class="product-original">${parseInt(p.origPrice).toLocaleString()}원</span>` : ''}
-          <span class="product-current">${parseInt(p.salePrice || p.origPrice).toLocaleString()}원</span>
+          ${discPct > 0 ? `<span class="product-discount">${discPct}%</span><span class="product-original">${parseInt(c.origPrice).toLocaleString()}원</span>` : ''}
+          <span class="product-current">${parseInt(c.salePrice || c.origPrice || 0).toLocaleString()}원</span>
         </div>
         <div style="display:flex;gap:6px;margin-top:4px">
-          <span class="chip" style="background:#EEEDFE;color:#534AB7;font-size:11px">익스클루시브</span>
-          <span class="chip chip-amber" style="font-size:11px">${p.grade}</span>
+          <span class="chip" style="${gradeChipStyle};font-size:11px">익스클루시브</span>
+          <span class="chip chip-gray" style="font-size:11px">${c.period || '일정 협의'}</span>
         </div>
       </div>
     </div>`;

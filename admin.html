@@ -231,11 +231,7 @@ textarea.form-input{resize:vertical;min-height:80px}
       <div class="nav-dot"></div>
       판매/정산 관리
     </div>
-    <div class="nav-item" onclick="goPage('page-vip')">
-      <div class="nav-dot"></div>
-      VIP 상품관
-      <span class="nav-badge" style="background:#EEEDFE;color:#534AB7">PRO</span>
-    </div>
+
     <div class="nav-item" onclick="goPage('page-grade-mgmt')">
       <div class="nav-dot"></div>
       셀러등급관리
@@ -2517,13 +2513,11 @@ textarea.form-input{resize:vertical;min-height:80px}
     </div>
 
     <!-- ===================== VIP 상품관 ===================== -->
-    <div class="page" id="page-vip">
+    <div class="page" id="page-vip" style="display:none">
       <div class="page-header">
         <div>
           <div class="page-title">VIP 상품관</div>
-          <div class="page-sub">특정 등급 셀러에게만 노출되는 익스클루시브 상품을 관리하세요</div>
         </div>
-        <button class="btn btn-primary" onclick="openVipModal()">+ VIP 상품 추가</button>
       </div>
 
       <div class="ai-box" style="margin-bottom:20px">
@@ -2791,7 +2785,7 @@ const breadcrumbs = {
   'page-gb-pipeline': '공동구매 › <strong>캠페인 파이프라인</strong>',
   'page-schedule': '공동구매 › <strong>신청자 관리</strong>',
   'page-sales': '공동구매 › <strong>판매/정산 관리</strong>',
-  'page-vip': '공동구매 › <strong>VIP 상품관</strong>',
+
   'page-grade-mgmt': '공동구매 › <strong>셀러등급관리</strong>',
   'page-grade-criteria': '공동구매 › 셀러등급관리 › <strong>등급 기준 조정</strong>',
   'page-seller-profile': '공동구매 › 셀러등급관리 › <strong>셀러 상세프로필</strong>',
@@ -2812,18 +2806,17 @@ function goPage(id) {
   const navMap = {
     'page-home': 0,
     'page-campaigns': 1, 'page-campaign-new': 2, 'page-campaign-detail': 1, 'page-applications': 3,
-    'page-gb-home': 4, 'page-gb-new': 5, 'page-gb-pipeline': 6, 'page-schedule': 7, 'page-sales': 8, 'page-vip': 9,
-    'page-grade-mgmt': 10, 'page-grade-criteria': 10,
-    'page-deposit': 11,
-    'page-review': 12, 'page-influencers': 13,
-    'page-notifications': 14, 'page-messages': 15,
+    'page-gb-home': 4, 'page-gb-new': 5, 'page-gb-pipeline': 6, 'page-schedule': 7, 'page-sales': 8,
+    'page-grade-mgmt': 9, 'page-grade-criteria': 9,
+    'page-deposit': 10,
+    'page-review': 11, 'page-influencers': 12,
+    'page-notifications': 13, 'page-messages': 14,
     'page-seller-profile': 10
   };
   const navItems = document.querySelectorAll('.nav-item');
   if (navMap[id] !== undefined) navItems[navMap[id]].classList.add('on');
   if (id === 'page-campaign-new') resetCampaignForm();
   if (id === 'page-grade-criteria') initGradeCriteria();
-  if (id === 'page-vip') initVipProducts();
   if (id === 'page-sales') initSalesPage();
 }
 
@@ -3159,8 +3152,10 @@ function gbOpenAndStart() {
   const orig = parseFloat(priceInputs[0]?.value) || 0;
   const sale = parseFloat(priceInputs[1]?.value) || 0;
   const discRate = (orig > 0 && sale > 0 && sale < orig) ? Math.round((1 - sale / orig) * 100) : 0;
+  const accessType = document.getElementById('access-vvip')?.classList.contains('on') ? 'vvip'
+    : document.getElementById('access-vip')?.classList.contains('on') ? 'vip' : 'all';
   const gbCamps = JSON.parse(localStorage.getItem('biteme_gb_campaigns') || '[]');
-  gbCamps.unshift({ name: nameVal, brand: brandVal, cat: catVal, period, discRate, salePrice: sale, origPrice: orig });
+  gbCamps.unshift({ name: nameVal, brand: brandVal, cat: catVal, period, discRate, salePrice: sale, origPrice: orig, accessType });
   localStorage.setItem('biteme_gb_campaigns', JSON.stringify(gbCamps));
   alert('캠페인 개설 및 모집이 시작됐습니다!\n셀러 앱에 공구가 공개됩니다.');
   goPage('page-gb-pipeline');
@@ -3508,66 +3503,6 @@ function saveGradeCriteria() {
   goPage('page-grade-mgmt');
 }
 
-// ===== VIP 상품관 =====
-function openVipModal() { document.getElementById('vip-modal').style.display = 'flex'; }
-function closeVipModal() {
-  document.getElementById('vip-modal').style.display = 'none';
-  ['vip-new-name','vip-new-period','vip-new-orig','vip-new-sale'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
-}
-function saveVipProduct() {
-  const name = document.getElementById('vip-new-name')?.value.trim();
-  const grade = document.getElementById('vip-new-grade')?.value;
-  const period = document.getElementById('vip-new-period')?.value;
-  const origPrice = parseFloat(document.getElementById('vip-new-orig')?.value) || 0;
-  const salePrice = parseFloat(document.getElementById('vip-new-sale')?.value) || 0;
-  if (!name) { showToast('상품명을 입력해주세요'); return; }
-  const products = JSON.parse(localStorage.getItem('biteme_vip_products') || '[]');
-  products.unshift({ id: Date.now(), name, grade, period, origPrice, salePrice, status: '모집중' });
-  localStorage.setItem('biteme_vip_products', JSON.stringify(products));
-  closeVipModal();
-  initVipProducts();
-  showToast('VIP 상품이 추가되었습니다');
-}
-function deleteVipProduct(id) {
-  if (!confirm('이 VIP 상품을 삭제하시겠습니까?')) return;
-  const products = JSON.parse(localStorage.getItem('biteme_vip_products') || '[]').filter(p => p.id !== id);
-  localStorage.setItem('biteme_vip_products', JSON.stringify(products));
-  initVipProducts();
-  showToast('상품이 삭제되었습니다');
-}
-function toggleVipStatus(btn, id) {
-  const products = JSON.parse(localStorage.getItem('biteme_vip_products') || '[]');
-  const p = products.find(p => p.id === id);
-  if (!p) return;
-  p.status = p.status === '모집중' ? '종료' : '모집중';
-  localStorage.setItem('biteme_vip_products', JSON.stringify(products));
-  initVipProducts();
-  showToast(p.name + ' 상태 변경: ' + p.status);
-}
-function initVipProducts() {
-  const tbody = document.querySelector('#page-vip table tbody');
-  if (!tbody) return;
-  const products = JSON.parse(localStorage.getItem('biteme_vip_products') || '[]');
-  if (products.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text3);font-size:13px;padding:24px">등록된 VIP 상품이 없습니다</td></tr>';
-    return;
-  }
-  tbody.innerHTML = '';
-  products.forEach(p => {
-    const discPct = (p.origPrice > 0 && p.salePrice > 0) ? Math.round((1 - p.salePrice / p.origPrice) * 100) : 0;
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td><div class="td-name">${p.name}</div>${discPct > 0 ? '<div class="td-sub">' + discPct + '% 할인</div>' : ''}</td>`
-      + `<td><span class="chip chip-amber">${p.grade}</span></td>`
-      + `<td><div style="font-size:12px">—</div></td>`
-      + `<td><div style="font-size:12px">${p.period || '—'}</div></td>`
-      + `<td><span class="chip ${p.status === '모집중' ? 'chip-green' : 'chip-gray'}">${p.status}</span></td>`
-      + `<td><div style="display:flex;gap:5px">
-           <button class="btn btn-secondary btn-sm" onclick="toggleVipStatus(this,${p.id})">${p.status === '모집중' ? '모집 종료' : '모집 시작'}</button>
-           <button class="btn btn-sm" style="background:#FCEBEB;color:#A32D2D;border:none" onclick="deleteVipProduct(${p.id})">삭제</button>
-         </div></td>`;
-    tbody.appendChild(tr);
-  });
-}
 
 // ===== 판매/정산 관리 =====
 function initSalesPage() {
@@ -3622,46 +3557,5 @@ function processSalesSettle(btn, settleAmt, campName) {
 }
 </script>
 
-<!-- VIP 상품 추가 모달 -->
-<div id="vip-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;align-items:center;justify-content:center">
-  <div style="background:var(--bg);border-radius:16px;padding:24px;width:420px;max-width:90vw;display:flex;flex-direction:column;gap:14px">
-    <div style="display:flex;align-items:center;justify-content:space-between">
-      <div style="font-size:16px;font-weight:700;color:var(--text)">VIP 상품 추가</div>
-      <button onclick="closeVipModal()" style="background:none;border:none;font-size:20px;color:var(--text3);cursor:pointer">×</button>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:10px">
-      <div>
-        <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:5px">상품명 *</div>
-        <input id="vip-new-name" class="form-input" placeholder="상품명을 입력하세요" style="width:100%">
-      </div>
-      <div>
-        <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:5px">접근 등급</div>
-        <select id="vip-new-grade" class="form-input" style="width:100%">
-          <option value="VIP">VIP</option>
-          <option value="VVIP">VVIP</option>
-          <option value="VIP+VVIP">VIP + VVIP</option>
-        </select>
-      </div>
-      <div style="display:flex;gap:10px">
-        <div style="flex:1">
-          <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:5px">정가 (원)</div>
-          <input id="vip-new-orig" class="form-input" type="number" placeholder="0" style="width:100%">
-        </div>
-        <div style="flex:1">
-          <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:5px">공구가 (원)</div>
-          <input id="vip-new-sale" class="form-input" type="number" placeholder="0" style="width:100%">
-        </div>
-      </div>
-      <div>
-        <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:5px">공구 기간</div>
-        <input id="vip-new-period" class="form-input" placeholder="예) 5/20 ~ 5/23" style="width:100%">
-      </div>
-    </div>
-    <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button class="btn btn-secondary" onclick="closeVipModal()">취소</button>
-      <button class="btn btn-primary" onclick="saveVipProduct()">추가하기</button>
-    </div>
-  </div>
-</div>
 </body>
 </html>
