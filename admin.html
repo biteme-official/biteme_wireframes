@@ -433,23 +433,19 @@ textarea.form-input{resize:vertical;min-height:80px}
       <div class="stat-grid">
         <div class="stat-card">
           <div class="stat-label">전체 캠페인</div>
-          <div class="stat-value">24</div>
-          <div class="stat-sub">이번달 5개 생성</div>
+          <div class="stat-value" id="seed-stat-total">0</div>
         </div>
         <div class="stat-card">
           <div class="stat-label">진행중</div>
-          <div class="stat-value">8</div>
-          <span class="stat-badge up">↑ 2 증가</span>
+          <div class="stat-value" id="seed-stat-active">0</div>
         </div>
         <div class="stat-card">
-          <div class="stat-label">선정 인플루언서</div>
-          <div class="stat-value">142<span style="font-size:16px;font-weight:500;color:var(--text2)">명</span></div>
-          <div class="stat-sub">평균 17.8명/캠페인</div>
+          <div class="stat-label">신청 대기</div>
+          <div class="stat-value" id="seed-stat-pending" style="color:#854F0B">0</div>
         </div>
         <div class="stat-card">
-          <div class="stat-label">평균 조회수</div>
-          <div class="stat-value">28,400</div>
-          <span class="stat-badge up">↑ 12%</span>
+          <div class="stat-label">완료</div>
+          <div class="stat-value" id="seed-stat-done">0</div>
         </div>
       </div>
 
@@ -1790,18 +1786,15 @@ textarea.form-input{resize:vertical;min-height:80px}
           <div class="page-sub">인플루언서의 협찬 신청을 검토하고 승인 또는 반려하세요</div>
         </div>
         <div style="display:flex;gap:8px;align-items:center">
-          <span class="chip chip-red">승인 대기 4건</span>
-          <select style="padding:7px 12px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);background:var(--bg);outline:none">
-            <option>전체 캠페인</option><option>봄 신상 스킨케어</option><option>여름 선크림</option>
-          </select>
+          <span class="chip chip-red" id="app-header-chip" style="display:none">승인 대기 0건</span>
         </div>
       </div>
 
       <div class="stat-grid">
-        <div class="stat-card"><div class="stat-label">승인 대기</div><div class="stat-value" style="color:#854F0B">4</div><div class="stat-sub">오늘 접수 2건 포함</div></div>
-        <div class="stat-card"><div class="stat-label">이번달 승인</div><div class="stat-value" style="color:var(--green)">38</div><span class="stat-badge up">↑ 승인율 87%</span></div>
-        <div class="stat-card"><div class="stat-label">이번달 반려</div><div class="stat-value" style="color:var(--red)">6</div><div class="stat-sub">주요 사유: 조건 미충족</div></div>
-        <div class="stat-card"><div class="stat-label">자동 선정</div><div class="stat-value">24</div><div class="stat-sub">수동 선정 20건</div></div>
+        <div class="stat-card"><div class="stat-label">승인 대기</div><div class="stat-value" id="app-stat-pending" style="color:#854F0B">0</div></div>
+        <div class="stat-card"><div class="stat-label">승인됨</div><div class="stat-value" id="app-stat-approved" style="color:var(--green)">0</div></div>
+        <div class="stat-card"><div class="stat-label">반려</div><div class="stat-value" id="app-stat-rejected" style="color:var(--red)">0</div></div>
+        <div class="stat-card"><div class="stat-label">전체 신청</div><div class="stat-value" id="app-stat-total">0</div></div>
       </div>
 
       <div class="table-wrap">
@@ -2797,6 +2790,8 @@ function goPage(id) {
   if (id === 'page-grade-criteria') initGradeCriteria();
   if (id === 'page-sales') initSalesPage();
   if (id === 'page-gb-home') initGbHome();
+  if (id === 'page-campaigns') initSeedCampaigns();
+  if (id === 'page-applications') initApplicationsPage();
 }
 
 const pipelineData = [
@@ -3353,6 +3348,77 @@ function switchSalesTab(tab) {
   showToast(tab === 'daily' ? '일간 매출 확인' : '공동구매 수익 정산');
 }
 
+function initSeedCampaigns() {
+  const camps = JSON.parse(localStorage.getItem('biteme_new_campaigns') || '[]');
+  const tbody = document.querySelector('#page-campaigns table tbody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  if (camps.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text3);font-size:13px;padding:24px">등록된 시딩 캠페인이 없습니다</td></tr>';
+  } else {
+    camps.forEach(c => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td><div class="td-name">${c.name}</div><div class="td-sub">${c.brand || ''} · ${c.cat || ''}</div></td>`
+        + `<td><span class="chip ${c.typeChip || 'chip-blue'}">${c.type || '단순협찬'}</span></td>`
+        + `<td><div style="font-size:12px">0 / ${c.count || 0}명</div><div class="prog-bar"><div class="prog-fill" style="width:0%"></div></div></td>`
+        + `<td><div style="font-size:12px">${c.deadline || '—'}</div></td>`
+        + `<td><div style="font-size:12px;color:var(--text3)">제출 0</div></td>`
+        + `<td><span class="chip chip-blue">모집중</span></td>`
+        + `<td><button class="btn btn-secondary btn-sm" onclick="goPage('page-campaign-detail')">상세</button></td>`;
+      tbody.appendChild(tr);
+    });
+  }
+  const total = camps.length;
+  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  set('seed-stat-total', total);
+  set('seed-stat-active', total);
+  set('seed-stat-pending', 0);
+  set('seed-stat-done', 0);
+}
+
+function initApplicationsPage() {
+  const apps = JSON.parse(localStorage.getItem('biteme_applications') || '[]');
+  const tbody = document.querySelector('#page-applications table tbody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  const pending = apps.filter(a => !a.status || a.status === 'pending').length;
+  const approved = apps.filter(a => a.status === 'approved').length;
+  const rejected = apps.filter(a => a.status === 'rejected').length;
+  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  set('app-stat-total', apps.length);
+  set('app-stat-pending', pending);
+  set('app-stat-approved', approved);
+  set('app-stat-rejected', rejected);
+  const chip = document.getElementById('app-header-chip');
+  if (chip) {
+    chip.style.display = pending > 0 ? '' : 'none';
+    chip.textContent = '승인 대기 ' + pending + '건';
+  }
+  if (apps.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text3);font-size:13px;padding:24px">접수된 신청이 없습니다</td></tr>';
+    return;
+  }
+  apps.forEach(a => {
+    const statusChip = a.status === 'approved' ? '<span class="chip chip-green">선정됨</span>'
+      : a.status === 'rejected' ? '<span class="chip chip-gray">미선정</span>'
+      : '<span class="chip chip-amber">승인 대기</span>';
+    const actionBtns = (!a.status || a.status === 'pending')
+      ? '<button class="btn btn-green btn-sm" onclick="approveItem(this)">선정</button>'
+        + '<button class="btn btn-secondary btn-sm" style="color:var(--red)" onclick="rejectItem(this)">미선정</button>'
+      : '<span style="font-size:12px;color:var(--text3)">처리 완료</span>';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><div style="display:flex;align-items:center;gap:8px"><div class="inf-avatar">신</div>`
+      + `<div><div class="td-name">${a.name}</div><div class="td-sub">@${a.handle}</div></div></div></td>`
+      + `<td><div class="td-name">${a.campaign}</div><div class="td-sub">협찬</div></td>`
+      + `<td><div style="font-size:13px">${a.date}</div></td>`
+      + `<td><div style="font-size:13px;font-weight:500">${a.followers || '—'}</div></td>`
+      + `<td><span class="chip chip-pink">인스타</span></td>`
+      + `<td>${statusChip}</td>`
+      + `<td><div style="display:flex;gap:5px">${actionBtns}</div></td>`;
+    tbody.appendChild(tr);
+  });
+}
+
 let _gbHomeTab = 'prep';
 function initGbHome() {
   const camps = JSON.parse(localStorage.getItem('biteme_gb_campaigns') || '[]');
@@ -3439,27 +3505,8 @@ function switchGbHomeTab(tab) {
 }
 
 // 사용자 신청 데이터 복원
-(function initAdminApplications() {
-  const apps = JSON.parse(localStorage.getItem('biteme_applications') || '[]');
-  if (!apps.length) return;
-  const tbody = document.querySelector('#page-applications table tbody');
-  if (!tbody) return;
-  apps.forEach(function(a) {
-    const tr = document.createElement('tr');
-    tr.innerHTML = '<td><div style="display:flex;align-items:center;gap:8px"><div class="inf-avatar">신</div>'
-      + '<div><div class="td-name">' + a.name + '</div><div class="td-sub">@' + a.handle + '</div></div></div></td>'
-      + '<td><div class="td-name">' + a.campaign + '</div><div class="td-sub">협찬</div></td>'
-      + '<td><div style="font-size:13px">' + a.date + '</div></td>'
-      + '<td><div style="font-size:13px;font-weight:500">' + (a.followers || '-') + '</div><div style="font-size:11px;color:var(--green)">신규 신청</div></td>'
-      + '<td><span class="chip chip-pink">인스타</span></td>'
-      + '<td><span class="chip chip-amber">승인 대기</span></td>'
-      + '<td><div style="display:flex;gap:5px">'
-      + '<button class="btn btn-green btn-sm" onclick="approveItem(this)">선정</button>'
-      + '<button class="btn btn-secondary btn-sm" style="color:var(--red)" onclick="rejectItem(this)">미선정</button>'
-      + '</div></td>';
-    tbody.insertBefore(tr, tbody.firstChild);
-  });
-})();
+initApplicationsPage();
+initSeedCampaigns();
 
 // 사용자 메시지 복원
 (function initAdminMessages() {
@@ -3482,24 +3529,8 @@ function switchGbHomeTab(tab) {
 window.addEventListener('storage', function(e) {
   if (e.key === 'biteme_applications') {
     const apps = JSON.parse(e.newValue || '[]');
-    if (!apps.length) return;
-    const tbody = document.querySelector('#page-applications table tbody');
-    if (!tbody) return;
-    const a = apps[0];
-    const tr = document.createElement('tr');
-    tr.innerHTML = '<td><div style="display:flex;align-items:center;gap:8px"><div class="inf-avatar">신</div>'
-      + '<div><div class="td-name">' + a.name + '</div><div class="td-sub">@' + a.handle + '</div></div></div></td>'
-      + '<td><div class="td-name">' + a.campaign + '</div><div class="td-sub">협찬</div></td>'
-      + '<td><div style="font-size:13px">' + a.date + '</div></td>'
-      + '<td><div style="font-size:13px;font-weight:500">' + (a.followers || '-') + '</div><div style="font-size:11px;color:var(--green)">신규 신청</div></td>'
-      + '<td><span class="chip chip-pink">인스타</span></td>'
-      + '<td><span class="chip chip-amber">승인 대기</span></td>'
-      + '<td><div style="display:flex;gap:5px">'
-      + '<button class="btn btn-green btn-sm" onclick="approveItem(this)">선정</button>'
-      + '<button class="btn btn-secondary btn-sm" style="color:var(--red)" onclick="rejectItem(this)">미선정</button>'
-      + '</div></td>';
-    tbody.insertBefore(tr, tbody.firstChild);
-    showToast('새 신청 접수: ' + a.name + ' · ' + a.campaign);
+    initApplicationsPage();
+    if (apps.length > 0) showToast('새 신청 접수: ' + apps[0].name + ' · ' + apps[0].campaign);
   }
   if (e.key === 'biteme_messages') {
     const msgs = JSON.parse(e.newValue || '[]');
