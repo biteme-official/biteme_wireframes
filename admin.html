@@ -655,7 +655,7 @@ textarea.form-input{resize:vertical;min-height:80px}
             </div>
             <div class="form-group">
               <label class="form-label">신청 마감일</label>
-              <input class="form-input" type="date" value="2026-04-25">
+              <input id="camp-apply-deadline" class="form-input" type="date" value="2026-04-25">
             </div>
             <div class="form-group">
               <label class="form-label">게시 마감일</label>
@@ -1826,7 +1826,8 @@ textarea.form-input{resize:vertical;min-height:80px}
             <button class="btn btn-secondary" onclick="gbNextStep(3)">← 이전</button>
             <div style="display:flex;gap:8px">
               <button class="btn btn-secondary" onclick="showToast('임시 저장되었습니다')">임시 저장</button>
-              <button class="btn btn-dark" onclick="gbOpenCampaign()">캠페인 개설 (미공개 상태)</button>
+              <button class="btn btn-dark" onclick="gbOpenCampaign()">개설만 (미공개)</button>
+              <button class="btn btn-primary" onclick="gbOpenAndStart()">개설 + 모집 시작 →</button>
             </div>
           </div>
         </div>
@@ -3725,9 +3726,11 @@ function addHashtag() {
   const list = document.getElementById('hashtag-list');
   if (!list) return;
   const item = document.createElement('div');
-  item.style.cssText = 'display:flex;align-items:center;gap:6px;margin-bottom:6px';
-  item.innerHTML = '<span style="background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 10px;display:flex;align-items:center;gap:6px"><input type="text" placeholder="#해시태그" style="border:none;background:transparent;font-size:13px;outline:none;width:80px"><span onclick="this.parentElement.parentElement.remove()" style="cursor:pointer;color:var(--text3);font-size:14px">×</span></span>';
-  list.appendChild(item);
+  item.style.cssText = 'display:flex;align-items:center;gap:6px';
+  item.innerHTML = '<input class="form-input" placeholder="#해시태그" style="flex:1;padding:6px 10px;font-size:12px">'
+    + '<button onclick="this.parentElement.remove()" style="width:26px;height:26px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);color:var(--text3);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0">×</button>';
+  const addBtn = list.querySelector('button');
+  list.insertBefore(item, addBtn);
   item.querySelector('input').focus();
 }
 
@@ -3814,6 +3817,7 @@ function createCampaign() {
   const cat      = document.getElementById('camp-cat')?.value || '뷰티';
   const count    = document.getElementById('camp-count')?.value || '0';
   const deadline = document.getElementById('camp-deadline')?.value || '';
+  const applyDeadline = document.getElementById('camp-apply-deadline')?.value || '';
   const isSimple = document.getElementById('camp-type-simple')?.classList.contains('on');
   const typeLabel    = isSimple ? '단순협찬' : '유가협찬';
   const typeChipCls  = isSimple ? 'chip chip-blue' : 'chip chip-amber';
@@ -3834,7 +3838,8 @@ function createCampaign() {
   }
   // 사용자 화면과 공유 (localStorage)
   const saved = JSON.parse(localStorage.getItem('biteme_new_campaigns') || '[]');
-  saved.unshift({ name, brand, cat, count, price, deadline: deadlineFmt, followers,
+  saved.unshift({ name, brand, cat, count, price, deadline: deadlineFmt,
+    applyDeadline: _fmtDate(applyDeadline), followers,
     type: typeLabel, typeChip: isSimple ? 'chip-teal' : 'chip-amber' });
   localStorage.setItem('biteme_new_campaigns', JSON.stringify(saved));
   showToast(name + ' 캠페인이 개설되었습니다');
@@ -3926,9 +3931,31 @@ function gbUpdateReview() {
   if (!isNaN(dep)) set('review-deposit', dep.toLocaleString() + '원');
 }
 
+function resetGbForm() {
+  gbCurrentStep = 1;
+  for (let i = 1; i <= 4; i++) {
+    const step = document.getElementById('gbstep-' + i);
+    if (step) step.style.display = i === 1 ? 'block' : 'none';
+    const num = document.getElementById('gbsn' + i);
+    const lbl = document.getElementById('gbsl' + i);
+    if (!num) continue;
+    if (i === 1) {
+      num.style.cssText = 'background:var(--text);color:#fff;border:none';
+      num.innerHTML = '1'; lbl.className = 'step-lbl on';
+    } else {
+      num.style.cssText = 'background:var(--bg2);color:var(--text3);border:1px solid var(--border2)';
+      num.innerHTML = i; lbl.className = 'step-lbl';
+    }
+    if (i < 4) {
+      const line = document.getElementById('gbsl-' + i);
+      if (line) line.className = 'step-line';
+    }
+  }
+}
+
 function gbOpenCampaign() {
   alert('캠페인 개설이 완료됐습니다.\n[모집 시작하기] 버튼을 눌러야 셀러에게 노출됩니다.');
-  gbNextStep(1);
+  resetGbForm();
   goPage('page-gb-home');
 }
 
