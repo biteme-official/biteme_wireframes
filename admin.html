@@ -472,6 +472,7 @@ textarea.form-input{resize:vertical;min-height:80px}
             </tr>
           </thead>
           <tbody>
+            <tr><td colspan="7" style="text-align:center;color:var(--text3);font-size:13px;padding:24px">등록된 시딩 캠페인이 없습니다</td></tr>
           </tbody>
         </table>
       </div>
@@ -1812,6 +1813,7 @@ textarea.form-input{resize:vertical;min-height:80px}
             <tr><th>인플루언서</th><th>캠페인</th><th>신청일</th><th>팔로워</th><th>채널 조건</th><th>상태</th><th>관리</th></tr>
           </thead>
           <tbody>
+            <tr><td colspan="7" style="text-align:center;color:var(--text3);font-size:13px;padding:24px">접수된 신청이 없습니다</td></tr>
           </tbody>
         </table>
       </div>
@@ -3549,24 +3551,6 @@ window.addEventListener('storage', function(e) {
   }
 });
 
-// 페이지 로드 시 localStorage에 저장된 캠페인 복원
-(function initSavedCampaigns() {
-  const saved = JSON.parse(localStorage.getItem('biteme_new_campaigns') || '[]');
-  if (!saved.length) return;
-  const tbody = document.querySelector('#page-campaigns table tbody');
-  if (!tbody) return;
-  saved.forEach(function(c) {
-    const tr = document.createElement('tr');
-    tr.innerHTML = '<td><div class="td-name">' + c.name + '</div><div class="td-sub">' + c.brand + ' · ' + c.cat + '</div></td>'
-      + '<td><span class="' + (c.typeChip === 'chip-teal' ? 'chip chip-blue' : 'chip chip-amber') + '">' + c.type + '</span></td>'
-      + '<td><div style="font-size:12px;margin-bottom:4px;font-weight:500">0 / ' + c.count + '명</div><div class="prog-bar"><div class="prog-fill" style="width:0%"></div></div></td>'
-      + '<td><div style="font-size:13px">' + c.deadline + '</div></td>'
-      + '<td><div style="font-size:12px;color:var(--text3)">제출 0</div></td>'
-      + '<td><span class="chip chip-blue">모집중</span></td>'
-      + '<td><div style="display:flex;gap:5px"><button class="btn btn-secondary btn-sm" onclick="goPage(\'page-campaign-detail\')">상세</button></div></td>';
-    tbody.insertBefore(tr, tbody.firstChild);
-  });
-})();
 
 // ===== 등급 기준 조정 =====
 function initGradeCriteria() {
