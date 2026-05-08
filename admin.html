@@ -2260,7 +2260,7 @@ textarea.form-input{resize:vertical;min-height:80px}
         </div>
         <div style="display:flex;gap:8px">
           <button class="btn btn-secondary" onclick="goPage('page-grade-mgmt')">← 뒤로</button>
-          <button class="btn btn-primary" onclick="showToast('기준이 저장되었습니다');goPage('page-grade-mgmt')">기준 저장</button>
+          <button class="btn btn-primary" onclick="saveGradeCriteria()">기준 저장</button>
         </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
@@ -2523,7 +2523,7 @@ textarea.form-input{resize:vertical;min-height:80px}
           <div class="page-title">VIP 상품관</div>
           <div class="page-sub">특정 등급 셀러에게만 노출되는 익스클루시브 상품을 관리하세요</div>
         </div>
-        <button class="btn btn-primary" onclick="showToast('VIP 상품 추가 폼을 엽니다')">+ VIP 상품 추가</button>
+        <button class="btn btn-primary" onclick="openVipModal()">+ VIP 상품 추가</button>
       </div>
 
       <div class="ai-box" style="margin-bottom:20px">
@@ -2822,6 +2822,9 @@ function goPage(id) {
   const navItems = document.querySelectorAll('.nav-item');
   if (navMap[id] !== undefined) navItems[navMap[id]].classList.add('on');
   if (id === 'page-campaign-new') resetCampaignForm();
+  if (id === 'page-grade-criteria') initGradeCriteria();
+  if (id === 'page-vip') initVipProducts();
+  if (id === 'page-sales') initSalesPage();
 }
 
 const pipelineData = [
@@ -3484,6 +3487,181 @@ window.addEventListener('storage', function(e) {
     tbody.insertBefore(tr, tbody.firstChild);
   });
 })();
+
+// ===== 등급 기준 조정 =====
+function initGradeCriteria() {
+  const saved = JSON.parse(localStorage.getItem('biteme_grade_criteria') || 'null');
+  if (!saved) return;
+  const nums = document.querySelectorAll('#page-grade-criteria input[type="number"]');
+  const keys = ['nanoMin','nanoMax','macroMin','macroMax','megaMin','megaMax','vipMin','vipMax','vvipMin',
+                 'nanoCoupon','macroCoupon','megaCoupon','vipCoupon','vvipCoupon'];
+  keys.forEach((k, i) => { if (nums[i] && saved[k] !== undefined) nums[i].value = saved[k]; });
+}
+function saveGradeCriteria() {
+  const nums = document.querySelectorAll('#page-grade-criteria input[type="number"]');
+  const keys = ['nanoMin','nanoMax','macroMin','macroMax','megaMin','megaMax','vipMin','vipMax','vvipMin',
+                 'nanoCoupon','macroCoupon','megaCoupon','vipCoupon','vvipCoupon'];
+  const obj = {};
+  keys.forEach((k, i) => { if (nums[i]) obj[k] = parseFloat(nums[i].value) || 0; });
+  localStorage.setItem('biteme_grade_criteria', JSON.stringify(obj));
+  showToast('등급 기준이 저장되었습니다');
+  goPage('page-grade-mgmt');
+}
+
+// ===== VIP 상품관 =====
+function openVipModal() { document.getElementById('vip-modal').style.display = 'flex'; }
+function closeVipModal() {
+  document.getElementById('vip-modal').style.display = 'none';
+  ['vip-new-name','vip-new-period','vip-new-orig','vip-new-sale'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+}
+function saveVipProduct() {
+  const name = document.getElementById('vip-new-name')?.value.trim();
+  const grade = document.getElementById('vip-new-grade')?.value;
+  const period = document.getElementById('vip-new-period')?.value;
+  const origPrice = parseFloat(document.getElementById('vip-new-orig')?.value) || 0;
+  const salePrice = parseFloat(document.getElementById('vip-new-sale')?.value) || 0;
+  if (!name) { showToast('상품명을 입력해주세요'); return; }
+  const products = JSON.parse(localStorage.getItem('biteme_vip_products') || '[]');
+  products.unshift({ id: Date.now(), name, grade, period, origPrice, salePrice, status: '모집중' });
+  localStorage.setItem('biteme_vip_products', JSON.stringify(products));
+  closeVipModal();
+  initVipProducts();
+  showToast('VIP 상품이 추가되었습니다');
+}
+function deleteVipProduct(id) {
+  if (!confirm('이 VIP 상품을 삭제하시겠습니까?')) return;
+  const products = JSON.parse(localStorage.getItem('biteme_vip_products') || '[]').filter(p => p.id !== id);
+  localStorage.setItem('biteme_vip_products', JSON.stringify(products));
+  initVipProducts();
+  showToast('상품이 삭제되었습니다');
+}
+function toggleVipStatus(btn, id) {
+  const products = JSON.parse(localStorage.getItem('biteme_vip_products') || '[]');
+  const p = products.find(p => p.id === id);
+  if (!p) return;
+  p.status = p.status === '모집중' ? '종료' : '모집중';
+  localStorage.setItem('biteme_vip_products', JSON.stringify(products));
+  initVipProducts();
+  showToast(p.name + ' 상태 변경: ' + p.status);
+}
+function initVipProducts() {
+  const tbody = document.querySelector('#page-vip table tbody');
+  if (!tbody) return;
+  const products = JSON.parse(localStorage.getItem('biteme_vip_products') || '[]');
+  if (products.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text3);font-size:13px;padding:24px">등록된 VIP 상품이 없습니다</td></tr>';
+    return;
+  }
+  tbody.innerHTML = '';
+  products.forEach(p => {
+    const discPct = (p.origPrice > 0 && p.salePrice > 0) ? Math.round((1 - p.salePrice / p.origPrice) * 100) : 0;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><div class="td-name">${p.name}</div>${discPct > 0 ? '<div class="td-sub">' + discPct + '% 할인</div>' : ''}</td>`
+      + `<td><span class="chip chip-amber">${p.grade}</span></td>`
+      + `<td><div style="font-size:12px">—</div></td>`
+      + `<td><div style="font-size:12px">${p.period || '—'}</div></td>`
+      + `<td><span class="chip ${p.status === '모집중' ? 'chip-green' : 'chip-gray'}">${p.status}</span></td>`
+      + `<td><div style="display:flex;gap:5px">
+           <button class="btn btn-secondary btn-sm" onclick="toggleVipStatus(this,${p.id})">${p.status === '모집중' ? '모집 종료' : '모집 시작'}</button>
+           <button class="btn btn-sm" style="background:#FCEBEB;color:#A32D2D;border:none" onclick="deleteVipProduct(${p.id})">삭제</button>
+         </div></td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+// ===== 판매/정산 관리 =====
+function initSalesPage() {
+  const camps = JSON.parse(localStorage.getItem('biteme_gb_campaigns') || '[]');
+  const tbody = document.querySelector('#page-sales .table-wrap tbody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  if (camps.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--text3);font-size:13px;padding:24px">등록된 공동구매 캠페인이 없습니다</td></tr>';
+    document.querySelectorAll('#page-sales .stat-value').forEach(el => { el.textContent = '—'; });
+    return;
+  }
+  let totalRev = 0, totalSettle = 0, pendingSettle = 0, pendingCount = 0;
+  camps.forEach(c => {
+    const salePrice = parseFloat(c.salePrice) || 0;
+    const commRate = parseFloat(c.commissionRate) || 15;
+    const mockOrders = c.mockOrders || Math.floor(Math.random() * 40 + 10);
+    c.mockOrders = mockOrders;
+    const revenue = salePrice * mockOrders;
+    const settleAmt = Math.round(revenue * commRate / 100);
+    const settled = c.settled || false;
+    totalRev += revenue; totalSettle += settleAmt;
+    if (!settled) { pendingSettle += settleAmt; pendingCount++; }
+    const tr = document.createElement('tr');
+    tr.dataset.campName = c.name;
+    tr.innerHTML = `<td><div class="td-name">${c.sellerName || '미지정'}</div></td>`
+      + `<td><div class="td-name">${c.name}</div></td>`
+      + `<td><div style="font-size:12px">${c.period || '—'}</div></td>`
+      + `<td><div style="font-size:12px">${mockOrders}건</div></td>`
+      + `<td><div style="font-size:12px">₩${revenue.toLocaleString()}</div></td>`
+      + `<td><div style="font-size:12px">${commRate}%</div></td>`
+      + `<td><div style="font-size:12px">₩${settleAmt.toLocaleString()}</div></td>`
+      + `<td><span class="chip ${settled ? 'chip-green' : 'chip-amber'}">${settled ? '정산 완료' : '정산 대기'}</span></td>`
+      + `<td><button class="btn btn-secondary btn-sm" onclick="processSalesSettle(this,${settleAmt},'${c.name}')" ${settled ? 'disabled style="opacity:.5"' : ''}>${settled ? '완료' : '정산 처리'}</button></td>`;
+    tbody.appendChild(tr);
+  });
+  localStorage.setItem('biteme_gb_campaigns', JSON.stringify(camps));
+  const vals = document.querySelectorAll('#page-sales .stat-card .stat-value');
+  if (vals[0]) vals[0].textContent = '₩' + totalRev.toLocaleString();
+  if (vals[2]) { vals[2].textContent = '₩' + pendingSettle.toLocaleString(); const sub = vals[2].closest('.stat-card').querySelector('.stat-sub'); if(sub) sub.textContent = '셀러 ' + pendingCount + '명'; }
+  if (vals[3]) vals[3].textContent = '₩' + (totalSettle - pendingSettle).toLocaleString();
+}
+function processSalesSettle(btn, settleAmt, campName) {
+  const row = btn.closest('tr');
+  const chip = row.querySelector('.chip-amber');
+  if (chip) { chip.className = 'chip chip-green'; chip.textContent = '정산 완료'; }
+  btn.textContent = '완료'; btn.disabled = true; btn.style.opacity = '.5';
+  const camps = JSON.parse(localStorage.getItem('biteme_gb_campaigns') || '[]');
+  const camp = camps.find(c => c.name === campName);
+  if (camp) { camp.settled = true; localStorage.setItem('biteme_gb_campaigns', JSON.stringify(camps)); }
+  showToast('정산 처리 완료: ₩' + settleAmt.toLocaleString());
+}
 </script>
+
+<!-- VIP 상품 추가 모달 -->
+<div id="vip-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;align-items:center;justify-content:center">
+  <div style="background:var(--bg);border-radius:16px;padding:24px;width:420px;max-width:90vw;display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div style="font-size:16px;font-weight:700;color:var(--text)">VIP 상품 추가</div>
+      <button onclick="closeVipModal()" style="background:none;border:none;font-size:20px;color:var(--text3);cursor:pointer">×</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:5px">상품명 *</div>
+        <input id="vip-new-name" class="form-input" placeholder="상품명을 입력하세요" style="width:100%">
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:5px">접근 등급</div>
+        <select id="vip-new-grade" class="form-input" style="width:100%">
+          <option value="VIP">VIP</option>
+          <option value="VVIP">VVIP</option>
+          <option value="VIP+VVIP">VIP + VVIP</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:10px">
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:5px">정가 (원)</div>
+          <input id="vip-new-orig" class="form-input" type="number" placeholder="0" style="width:100%">
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:5px">공구가 (원)</div>
+          <input id="vip-new-sale" class="form-input" type="number" placeholder="0" style="width:100%">
+        </div>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:5px">공구 기간</div>
+        <input id="vip-new-period" class="form-input" placeholder="예) 5/20 ~ 5/23" style="width:100%">
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn btn-secondary" onclick="closeVipModal()">취소</button>
+      <button class="btn btn-primary" onclick="saveVipProduct()">추가하기</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
