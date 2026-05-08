@@ -2818,6 +2818,7 @@ function goPage(id) {
   if (id === 'page-campaign-new') resetCampaignForm();
   if (id === 'page-grade-criteria') initGradeCriteria();
   if (id === 'page-sales') initSalesPage();
+  if (id === 'page-gb-home') initGbHome();
 }
 
 const pipelineData = [
@@ -3157,8 +3158,8 @@ function gbOpenAndStart() {
   const gbCamps = JSON.parse(localStorage.getItem('biteme_gb_campaigns') || '[]');
   gbCamps.unshift({ name: nameVal, brand: brandVal, cat: catVal, period, discRate, salePrice: sale, origPrice: orig, accessType });
   localStorage.setItem('biteme_gb_campaigns', JSON.stringify(gbCamps));
-  alert('캠페인 개설 및 모집이 시작됐습니다!\n셀러 앱에 공구가 공개됩니다.');
-  goPage('page-gb-pipeline');
+  showToast(nameVal + ' 캠페인이 개설되어 모집을 시작했습니다');
+  goPage('page-gb-home');
 }
 
 function calcDiscount() {
@@ -3374,14 +3375,52 @@ function switchSalesTab(tab) {
   showToast(tab === 'daily' ? '일간 매출 확인' : '공동구매 수익 정산');
 }
 
+let _gbHomeTab = 'prep';
+function initGbHome() {
+  const camps = JSON.parse(localStorage.getItem('biteme_gb_campaigns') || '[]');
+  const tbody = document.querySelector('#page-gb-home table tbody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  if (camps.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--text3);font-size:13px;padding:24px">등록된 공동구매 캠페인이 없습니다</td></tr>';
+    return;
+  }
+  // 탭 기준: prep=모집중, active=진행중(공구오픈), done=종료
+  const statusFor = c => c.done ? 'done' : c.active ? 'active' : 'prep';
+  camps.forEach(c => {
+    const s = statusFor(c);
+    const statusLabel = s === 'done' ? '종료' : s === 'active' ? '공구 진행중' : '모집중';
+    const statusChip = s === 'done' ? 'chip-gray' : s === 'active' ? 'chip-green' : 'chip-blue';
+    const accessBadge = c.accessType === 'vvip' ? '<span class="chip chip-amber" style="font-size:10px">VVIP</span>'
+      : c.accessType === 'vip' ? '<span class="chip" style="background:#EEEDFE;color:#534AB7;font-size:10px">VIP</span>' : '';
+    const tr = document.createElement('tr');
+    tr.dataset.tab = s;
+    tr.style.display = (s === _gbHomeTab || _gbHomeTab === 'all') ? '' : 'none';
+    tr.innerHTML = `<td><div class="td-name">${c.name}${accessBadge ? ' ' + accessBadge : ''}</div><div class="td-sub">${c.brand || ''} · ${c.cat || ''}</div></td>`
+      + `<td><div style="font-size:12px;color:var(--text3)">—</div></td>`
+      + `<td><div style="font-size:12px">${c.period || '—'}</div></td>`
+      + `<td><div style="font-size:12px">—</div></td>`
+      + `<td><span class="chip ${statusChip}">${statusLabel}</span></td>`
+      + `<td><span class="chip chip-green" style="font-size:10px">노출중</span></td>`
+      + `<td><span class="chip ${s === 'prep' ? 'chip-blue' : 'chip-gray'}" style="font-size:10px">${s === 'prep' ? '모집중' : '마감'}</span></td>`
+      + `<td><button class="btn btn-secondary btn-sm" onclick="goPage('page-gb-pipeline')">파이프라인</button></td>`;
+    tbody.appendChild(tr);
+  });
+  // 탭 활성화 적용
+  switchGbHomeTab(_gbHomeTab);
+}
+
 function switchGbHomeTab(tab) {
+  _gbHomeTab = tab;
   ['prep','active','done'].forEach(t => {
     const el = document.getElementById('gbtab-' + t);
     if (el) el.style.cssText = t === tab
       ? 'padding:10px 20px;font-size:13px;font-weight:600;color:var(--orange);border-bottom:2px solid var(--orange);cursor:pointer'
       : 'padding:10px 20px;font-size:13px;font-weight:500;color:var(--text3);cursor:pointer';
   });
-  showToast({ prep:'사전 준비 캠페인 보기', active:'진행중 캠페인 보기', done:'종료 캠페인 보기' }[tab]);
+  document.querySelectorAll('#page-gb-home table tbody tr[data-tab]').forEach(tr => {
+    tr.style.display = tr.dataset.tab === tab ? '' : 'none';
+  });
 }
 
 // 사용자 신청 데이터 복원
