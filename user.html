@@ -348,6 +348,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
           </div>
           <span style="background:var(--orange);color:#fff;font-size:12px;font-weight:700;padding:4px 10px;border-radius:10px">특가</span>
         </div>
+        <div id="new-gb-camps"></div>
         <div style="margin-top:4px">
           <div class="product-item" onclick="goScreen('screen-gb-product')">
             <div class="product-thumb" style="cursor:pointer">
@@ -593,7 +594,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
   <!-- ===================== 캠페인 상세 ===================== -->
   <div class="screen" id="screen-detail" style="position:relative">
     <div class="topbar">
-      <div class="topbar-back" onclick="history.back();goScreen('screen-explore')">
+      <div class="topbar-back" onclick="goScreen('screen-explore')">
         <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
       </div>
       <div class="topbar-title">캠페인 상세</div>
@@ -2045,6 +2046,13 @@ function submitApply() {
     // 모집 현황 업데이트
     const recruit = document.getElementById('detail-recruit');
     if (recruit) recruit.textContent = '9 / 10명';
+    // 어드민 화면과 공유 (localStorage)
+    const campName = document.querySelector('#screen-detail .camp-name')?.textContent
+      || document.querySelector('.camp-name')?.textContent || '캠페인';
+    const apps = JSON.parse(localStorage.getItem('biteme_applications') || '[]');
+    apps.unshift({ name: '나', handle: 'my.account', campaign: campName, followers: '12,400',
+      date: new Date().toLocaleDateString('ko-KR', {month:'long', day:'numeric'}) });
+    localStorage.setItem('biteme_applications', JSON.stringify(apps));
   }, 320);
 }
 
@@ -2123,7 +2131,24 @@ function toggleFav(btn) {
 }
 function sendUserMsg() {
   const inp = document.querySelector('#screen-message-thread input[placeholder="메시지 입력..."]');
-  if (inp && inp.value.trim()) { inp.value=''; showToast('메시지를 전송했습니다'); }
+  if (inp && inp.value.trim()) {
+    const text = inp.value.trim();
+    const fmtTime = new Date().toLocaleTimeString('ko-KR', {hour:'2-digit', minute:'2-digit'});
+    const msgs = JSON.parse(localStorage.getItem('biteme_messages') || '[]');
+    msgs.push({ from: 'user', text, ts: Date.now(), fmtTime });
+    localStorage.setItem('biteme_messages', JSON.stringify(msgs));
+    const thread = document.querySelector('#screen-message-thread .scroll-area');
+    if (thread) {
+      const div = document.createElement('div');
+      div.style.cssText = 'display:flex;justify-content:flex-end';
+      div.innerHTML = '<div style="max-width:75%"><div style="background:var(--text);border-radius:14px 0 14px 14px;padding:11px 14px;font-size:13px;color:#fff;line-height:1.5">' + text + '</div>'
+        + '<div style="font-size:10px;color:var(--text3);margin-top:3px;text-align:right">' + fmtTime + '</div></div>';
+      thread.appendChild(div);
+      thread.scrollTop = thread.scrollHeight;
+    }
+    inp.value = '';
+    showToast('메시지를 전송했습니다');
+  }
 }
 function switchMsgTab(type) {
   ['all','sponsor','gb'].forEach(t => {
@@ -2247,9 +2272,83 @@ function renderNewCampaigns() {
   });
 }
 
-// 다른 탭(admin)에서 캠페인 저장 시 자동 반영
+// 어드민에서 개설한 공동구매 캠페인 렌더링
+function renderGbCampaigns() {
+  const gbCamps = JSON.parse(localStorage.getItem('biteme_gb_campaigns') || '[]');
+  const container = document.getElementById('new-gb-camps');
+  if (!container) return;
+  container.innerHTML = '';
+  gbCamps.forEach(function(c) {
+    const div = document.createElement('div');
+    div.className = 'product-item';
+    div.style.cursor = 'pointer';
+    div.setAttribute('onclick', "goScreen('screen-gb-product')");
+    div.innerHTML = '<div class="product-thumb" style="background:linear-gradient(135deg,#FFE5D6,#F5C9A8);position:relative">'
+      + '<div class="product-badge">NEW</div></div>'
+      + '<div class="product-info">'
+      + '<div class="product-name">' + c.name + (c.brand ? ' · ' + c.brand : '') + '</div>'
+      + '<div class="product-price">'
+      + (c.discRate ? '<span class="product-discount">' + c.discRate + '%</span>' : '')
+      + (c.origPrice ? '<span class="product-original">' + c.origPrice.toLocaleString() + '원</span>' : '')
+      + (c.salePrice ? '<span class="product-current">' + c.salePrice.toLocaleString() + '원</span>' : '')
+      + '</div>'
+      + '<div style="font-size:11px;color:var(--text3);margin-bottom:8px">' + c.period + '</div>'
+      + '<div class="product-actions">'
+      + '<button class="btn btn-orange btn-sm" style="flex:1" onclick="event.stopPropagation();goScreen(\'screen-gb-product\')">공동구매 신청</button>'
+      + '<button class="btn-sm" style="width:34px;background:var(--bg2);border:0.5px solid var(--border2)" onclick="event.stopPropagation();toggleFav(this)">♡</button>'
+      + '</div></div>';
+    container.appendChild(div);
+  });
+}
+
+// 어드민 승인/미선정 결과 처리
+function handleStatusUpdate(statuses) {
+  const myKeys = Object.keys(statuses);
+  if (!myKeys.length) return;
+  const latest = statuses[myKeys[myKeys.length - 1]];
+  if (!latest) return;
+  if (latest.status === 'approved') {
+    showToast('🎉 선정됐어요! · ' + latest.campaign);
+    // 승인 대기 칩 → 선정됨으로 업데이트
+    document.querySelectorAll('#screen-status .chip-blue').forEach(function(chip) {
+      if (chip.textContent.trim() === '승인 대기') {
+        chip.className = 'chip chip-green';
+        chip.textContent = '선정됨';
+        const stepDot = chip.closest('[style*="border"]')?.querySelector('.tracker-dot');
+        if (stepDot) { stepDot.className = 'tracker-dot dot-done'; stepDot.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>'; }
+      }
+    });
+  } else if (latest.status === 'rejected') {
+    showToast('협찬 선정에서 아쉽게 제외됐어요 · ' + latest.campaign);
+    document.querySelectorAll('#screen-status .chip-blue').forEach(function(chip) {
+      if (chip.textContent.trim() === '승인 대기') {
+        chip.className = 'chip chip-red';
+        chip.textContent = '미선정';
+      }
+    });
+  }
+}
+
+// 다른 탭(admin)에서 변경 시 자동 반영
 window.addEventListener('storage', function(e) {
   if (e.key === 'biteme_new_campaigns') renderNewCampaigns();
+  if (e.key === 'biteme_gb_campaigns') renderGbCampaigns();
+  if (e.key === 'biteme_statuses') handleStatusUpdate(JSON.parse(e.newValue || '{}'));
+  if (e.key === 'biteme_messages') {
+    const msgs = JSON.parse(e.newValue || '[]');
+    const last = msgs[msgs.length - 1];
+    if (!last || last.from !== 'admin') return;
+    showToast('운영팀 메시지: ' + last.text.slice(0, 24) + (last.text.length > 24 ? '…' : ''));
+    const thread = document.querySelector('#screen-message-thread .scroll-area');
+    if (!thread) return;
+    const div = document.createElement('div');
+    div.style.cssText = 'display:flex;gap:8px;align-items:flex-end';
+    div.innerHTML = '<div style="width:28px;height:28px;border-radius:50%;background:var(--text);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">BM</div>'
+      + '<div style="max-width:75%"><div style="background:var(--bg2);border-radius:0 14px 14px 14px;padding:11px 14px;font-size:13px;color:var(--text);line-height:1.5">' + last.text + '</div>'
+      + '<div style="font-size:10px;color:var(--text3);margin-top:3px">' + last.fmtTime + ' · 운영팀</div></div>';
+    thread.appendChild(div);
+    thread.scrollTop = thread.scrollHeight;
+  }
 });
 
 // 초기화
@@ -2258,6 +2357,7 @@ document.getElementById('screen-home').style.display = 'flex';
 document.getElementById('screen-home').classList.add('active');
 document.getElementById('home-tab-gb').style.display = 'none';
 renderNewCampaigns();
+renderGbCampaigns();
 </script>
 </body>
 </html>

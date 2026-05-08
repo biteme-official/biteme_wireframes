@@ -3507,6 +3507,12 @@ function approveItem(btn) {
     if (chip) { chip.className='chip chip-green'; chip.textContent='선정됨'; }
     const wrap = btn.parentElement;
     if (wrap) wrap.innerHTML='<button class="btn btn-secondary btn-sm" onclick="goPage(\'page-seller-profile\')">상세 프로필</button>';
+    const cells = row.querySelectorAll('td');
+    const influencer = cells[0]?.querySelector('.td-name')?.textContent || '';
+    const campaign = cells[1]?.querySelector('.td-name')?.textContent || '';
+    const statuses = JSON.parse(localStorage.getItem('biteme_statuses') || '{}');
+    statuses[influencer + '_' + campaign] = { status: 'approved', campaign, ts: Date.now() };
+    localStorage.setItem('biteme_statuses', JSON.stringify(statuses));
   }
   showToast('선정 처리되었습니다');
 }
@@ -3518,6 +3524,12 @@ function rejectItem(btn) {
     if (chip) { chip.className='chip chip-red'; chip.textContent='미선정'; }
     const wrap = btn.parentElement;
     if (wrap) wrap.innerHTML='<button class="btn btn-secondary btn-sm" onclick="goPage(\'page-seller-profile\')">상세 프로필</button>';
+    const cells = row.querySelectorAll('td');
+    const influencer = cells[0]?.querySelector('.td-name')?.textContent || '';
+    const campaign = cells[1]?.querySelector('.td-name')?.textContent || '';
+    const statuses = JSON.parse(localStorage.getItem('biteme_statuses') || '{}');
+    statuses[influencer + '_' + campaign] = { status: 'rejected', campaign, ts: Date.now() };
+    localStorage.setItem('biteme_statuses', JSON.stringify(statuses));
   }
   showToast('미선정 처리되었습니다');
 }
@@ -3538,7 +3550,24 @@ function transferItem(btn) {
 }
 function sendAdminMsg() {
   const inp = document.querySelector('#page-messages input[placeholder="메시지 입력..."]');
-  if (inp && inp.value.trim()) { inp.value=''; showToast('메시지를 전송했습니다'); }
+  if (inp && inp.value.trim()) {
+    const text = inp.value.trim();
+    const fmtTime = new Date().toLocaleTimeString('ko-KR', {hour:'2-digit', minute:'2-digit'});
+    const msgs = JSON.parse(localStorage.getItem('biteme_messages') || '[]');
+    msgs.push({ from: 'admin', text, ts: Date.now(), fmtTime });
+    localStorage.setItem('biteme_messages', JSON.stringify(msgs));
+    const container = document.querySelector('#page-messages .scroll-area');
+    if (container) {
+      const div = document.createElement('div');
+      div.style.cssText = 'display:flex;justify-content:flex-end;margin-bottom:8px';
+      div.innerHTML = '<div style="max-width:70%"><div style="background:var(--text);color:#fff;border-radius:14px 0 14px 14px;padding:10px 14px;font-size:13px;line-height:1.5">' + text + '</div>'
+        + '<div style="font-size:11px;color:var(--text3);margin-top:3px;text-align:right">' + fmtTime + ' · 운영팀</div></div>';
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+    }
+    inp.value = '';
+    showToast('메시지를 전송했습니다');
+  }
 }
 function addRequirement(btn) {
   const div = document.createElement('div');
@@ -3598,10 +3627,12 @@ function goPage(id) {
   const navMap = {
     'page-home': 0,
     'page-campaigns': 1, 'page-campaign-new': 2, 'page-campaign-detail': 1, 'page-applications': 3,
-    'page-gb-home': 4, 'page-gb-new': 5, 'page-gb-pipeline': 6, 'page-schedule': 7, 'page-sales': 8, 'page-vip': 9, 'page-deposit': 10,
-    'page-grade-criteria': 10,
-    'page-review': 11, 'page-influencers': 12,
-    'page-notifications': 13, 'page-messages': 14
+    'page-gb-home': 4, 'page-gb-new': 5, 'page-gb-pipeline': 6, 'page-schedule': 7, 'page-sales': 8, 'page-vip': 9,
+    'page-grade-mgmt': 10, 'page-grade-criteria': 10,
+    'page-deposit': 11,
+    'page-review': 12, 'page-influencers': 13,
+    'page-notifications': 14, 'page-messages': 15,
+    'page-seller-profile': 1
   };
   const navItems = document.querySelectorAll('.nav-item');
   if (navMap[id] !== undefined) navItems[navMap[id]].classList.add('on');
@@ -3902,6 +3933,21 @@ function gbOpenCampaign() {
 }
 
 function gbOpenAndStart() {
+  const nameVal = document.getElementById('gb-product-name')?.value || '새 공동구매 상품';
+  const brandVal = document.getElementById('gb-brand-name')?.value || '';
+  const catVal = document.getElementById('gb-cat-main')?.value || '';
+  const dateInputs = document.querySelectorAll('#gbstep-1 input[type="date"]');
+  const priceInputs = document.querySelectorAll('#gbstep-2 input[type="number"]');
+  const fmt = v => v ? new Date(v).toLocaleDateString('ko-KR', {month:'numeric', day:'numeric'}).replace(/ /g,'') : null;
+  const start = fmt(dateInputs[0]?.value);
+  const end = fmt(dateInputs[1]?.value);
+  const period = (start && end) ? start + ' ~ ' + end : '일정 협의 중';
+  const orig = parseFloat(priceInputs[0]?.value) || 0;
+  const sale = parseFloat(priceInputs[1]?.value) || 0;
+  const discRate = (orig > 0 && sale > 0 && sale < orig) ? Math.round((1 - sale / orig) * 100) : 0;
+  const gbCamps = JSON.parse(localStorage.getItem('biteme_gb_campaigns') || '[]');
+  gbCamps.unshift({ name: nameVal, brand: brandVal, cat: catVal, period, discRate, salePrice: sale, origPrice: orig });
+  localStorage.setItem('biteme_gb_campaigns', JSON.stringify(gbCamps));
   alert('캠페인 개설 및 모집이 시작됐습니다!\n셀러 앱에 공구가 공개됩니다.');
   goPage('page-gb-pipeline');
 }
@@ -4128,6 +4174,86 @@ function switchGbHomeTab(tab) {
   });
   showToast({ prep:'사전 준비 캠페인 보기', active:'진행중 캠페인 보기', done:'종료 캠페인 보기' }[tab]);
 }
+
+// 사용자 신청 데이터 복원
+(function initAdminApplications() {
+  const apps = JSON.parse(localStorage.getItem('biteme_applications') || '[]');
+  if (!apps.length) return;
+  const tbody = document.querySelector('#page-applications table tbody');
+  if (!tbody) return;
+  apps.forEach(function(a) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = '<td><div style="display:flex;align-items:center;gap:8px"><div class="inf-avatar">신</div>'
+      + '<div><div class="td-name">' + a.name + '</div><div class="td-sub">@' + a.handle + '</div></div></div></td>'
+      + '<td><div class="td-name">' + a.campaign + '</div><div class="td-sub">협찬</div></td>'
+      + '<td><div style="font-size:13px">' + a.date + '</div></td>'
+      + '<td><div style="font-size:13px;font-weight:500">' + (a.followers || '-') + '</div><div style="font-size:11px;color:var(--green)">신규 신청</div></td>'
+      + '<td><span class="chip chip-pink">인스타</span></td>'
+      + '<td><span class="chip chip-amber">승인 대기</span></td>'
+      + '<td><div style="display:flex;gap:5px">'
+      + '<button class="btn btn-green btn-sm" onclick="approveItem(this)">선정</button>'
+      + '<button class="btn btn-secondary btn-sm" style="color:var(--red)" onclick="rejectItem(this)">미선정</button>'
+      + '</div></td>';
+    tbody.insertBefore(tr, tbody.firstChild);
+  });
+})();
+
+// 사용자 메시지 복원
+(function initAdminMessages() {
+  const msgs = JSON.parse(localStorage.getItem('biteme_messages') || '[]');
+  const userMsgs = msgs.filter(function(m) { return m.from === 'user'; });
+  if (!userMsgs.length) return;
+  const container = document.querySelector('#page-messages .scroll-area');
+  if (!container) return;
+  userMsgs.forEach(function(m) {
+    const div = document.createElement('div');
+    div.style.cssText = 'display:flex;gap:8px;align-items:flex-end;margin-bottom:8px';
+    div.innerHTML = '<div style="width:28px;height:28px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--text2);flex-shrink:0">셀</div>'
+      + '<div style="max-width:70%"><div style="background:var(--bg2);border-radius:0 14px 14px 14px;padding:10px 14px;font-size:13px;color:var(--text);line-height:1.5">' + m.text + '</div>'
+      + '<div style="font-size:11px;color:var(--text3);margin-top:3px">' + m.fmtTime + ' · 셀러</div></div>';
+    container.appendChild(div);
+  });
+})();
+
+// 크로스탭 실시간 동기화
+window.addEventListener('storage', function(e) {
+  if (e.key === 'biteme_applications') {
+    const apps = JSON.parse(e.newValue || '[]');
+    if (!apps.length) return;
+    const tbody = document.querySelector('#page-applications table tbody');
+    if (!tbody) return;
+    const a = apps[0];
+    const tr = document.createElement('tr');
+    tr.innerHTML = '<td><div style="display:flex;align-items:center;gap:8px"><div class="inf-avatar">신</div>'
+      + '<div><div class="td-name">' + a.name + '</div><div class="td-sub">@' + a.handle + '</div></div></div></td>'
+      + '<td><div class="td-name">' + a.campaign + '</div><div class="td-sub">협찬</div></td>'
+      + '<td><div style="font-size:13px">' + a.date + '</div></td>'
+      + '<td><div style="font-size:13px;font-weight:500">' + (a.followers || '-') + '</div><div style="font-size:11px;color:var(--green)">신규 신청</div></td>'
+      + '<td><span class="chip chip-pink">인스타</span></td>'
+      + '<td><span class="chip chip-amber">승인 대기</span></td>'
+      + '<td><div style="display:flex;gap:5px">'
+      + '<button class="btn btn-green btn-sm" onclick="approveItem(this)">선정</button>'
+      + '<button class="btn btn-secondary btn-sm" style="color:var(--red)" onclick="rejectItem(this)">미선정</button>'
+      + '</div></td>';
+    tbody.insertBefore(tr, tbody.firstChild);
+    showToast('새 신청 접수: ' + a.name + ' · ' + a.campaign);
+  }
+  if (e.key === 'biteme_messages') {
+    const msgs = JSON.parse(e.newValue || '[]');
+    const last = msgs[msgs.length - 1];
+    if (!last || last.from !== 'user') return;
+    showToast('새 메시지: ' + last.text.slice(0, 24) + (last.text.length > 24 ? '…' : ''));
+    const container = document.querySelector('#page-messages .scroll-area');
+    if (!container) return;
+    const div = document.createElement('div');
+    div.style.cssText = 'display:flex;gap:8px;align-items:flex-end;margin-bottom:8px';
+    div.innerHTML = '<div style="width:28px;height:28px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--text2);flex-shrink:0">셀</div>'
+      + '<div style="max-width:70%"><div style="background:var(--bg2);border-radius:0 14px 14px 14px;padding:10px 14px;font-size:13px;color:var(--text);line-height:1.5">' + last.text + '</div>'
+      + '<div style="font-size:11px;color:var(--text3);margin-top:3px">' + last.fmtTime + ' · 셀러</div></div>';
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+  }
+});
 
 // 페이지 로드 시 localStorage에 저장된 캠페인 복원
 (function initSavedCampaigns() {
