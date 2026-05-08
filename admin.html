@@ -191,7 +191,7 @@ textarea.form-input{resize:vertical;min-height:80px}
   </div>
   <div class="sidebar-scroll">
     <div class="nav-section">개요</div>
-    <div class="nav-item" onclick="goPage('page-home')">
+    <div class="nav-item" style="display:none" onclick="goPage('page-home')">
       <div class="nav-dot"></div>
       대시보드 홈
     </div>
@@ -240,7 +240,7 @@ textarea.form-input{resize:vertical;min-height:80px}
       <div class="nav-dot"></div>
       셀러등급관리
     </div>
-    <div class="nav-item" onclick="goPage('page-deposit')">
+    <div class="nav-item" style="display:none" onclick="goPage('page-deposit')">
       <div class="nav-dot"></div>
       보증금 관리
     </div>
@@ -256,7 +256,7 @@ textarea.form-input{resize:vertical;min-height:80px}
       인플루언서 목록
     </div>
     <div class="nav-section">운영</div>
-    <div class="nav-item" onclick="goPage('page-notifications')">
+    <div class="nav-item" style="display:none" onclick="goPage('page-notifications')">
       <div class="nav-dot"></div>
       알림 자동화
     </div>
@@ -290,7 +290,7 @@ textarea.form-input{resize:vertical;min-height:80px}
   <div class="content">
 
     <!-- ===================== 대시보드 홈 ===================== -->
-    <div class="page" id="page-home">
+    <div class="page" id="page-home" style="display:none">
       <div class="page-header">
         <div>
           <div class="page-title">대시보드 홈</div>
@@ -406,7 +406,7 @@ textarea.form-input{resize:vertical;min-height:80px}
             <div style="display:flex;flex-direction:column;gap:6px">
               <button class="btn btn-primary" onclick="goPage('page-campaign-new')" style="padding:10px;font-size:13px">+ 시딩 캠페인 생성</button>
               <button class="btn btn-secondary" onclick="goPage('page-gb-new')" style="padding:10px;font-size:13px">+ 공구 캠페인 생성</button>
-              <button class="btn btn-secondary" onclick="goPage('page-notifications')" style="padding:10px;font-size:13px">알림 자동화 설정</button>
+              <button class="btn btn-secondary" onclick="goPage('page-notifications')" style="display:none;padding:10px;font-size:13px">알림 자동화 설정</button>
             </div>
           </div>
           <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:16px">
@@ -2638,7 +2638,7 @@ textarea.form-input{resize:vertical;min-height:80px}
     </div>
 
     <!-- ===================== 알림 자동화 ===================== -->
-    <div class="page" id="page-notifications">
+    <div class="page" id="page-notifications" style="display:none">
       <div class="page-header">
         <div>
           <div class="page-title">알림 자동화</div>
@@ -2763,7 +2763,7 @@ textarea.form-input{resize:vertical;min-height:80px}
     </div>
 
     <!-- ===================== 보증금 관리 ===================== -->
-    <div class="page" id="page-deposit">
+    <div class="page" id="page-deposit" style="display:none">
       <div class="page-header">
         <div>
           <div class="page-title">보증금 관리</div>

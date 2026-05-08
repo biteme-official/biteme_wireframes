@@ -337,7 +337,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
             <div style="flex-shrink:0;padding:11px 16px;font-size:14px;color:var(--text3);cursor:pointer" onclick="switchGbHomeCat(this)">의류</div>
             <div style="flex-shrink:0;padding:11px 16px;font-size:14px;color:var(--text3);cursor:pointer" onclick="switchGbHomeCat(this)">용품</div>
           </div>
-          <div style="font-size:12px;color:var(--orange);font-weight:600;cursor:pointer;white-space:nowrap;padding-right:4px" onclick="goScreen('screen-favorites')">관심 ♥</div>
+          <div style="display:none;font-size:12px;color:var(--orange);font-weight:600;cursor:pointer;white-space:nowrap;padding-right:4px" onclick="goScreen('screen-favorites')">관심 ♥</div>
         </div>
       </div>
       <div class="scroll-area" style="padding:0 20px;flex:1">
@@ -507,7 +507,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
       <div class="scroll-area" style="padding:0 20px 20px">
 
         <!-- VIP 전용 상품관 배너 -->
-        <div style="background:linear-gradient(135deg,#2D1B69,#534AB7);border-radius:14px;padding:16px;margin-bottom:14px;cursor:pointer;position:relative;overflow:hidden" onclick="goScreen('screen-vip')">
+        <div style="display:none;background:linear-gradient(135deg,#2D1B69,#534AB7);border-radius:14px;padding:16px;margin-bottom:14px;cursor:pointer;position:relative;overflow:hidden" onclick="goScreen('screen-vip')">
           <div style="position:absolute;top:-10px;right:-10px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.06)"></div>
           <div style="position:absolute;bottom:-20px;right:20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,0.04)"></div>
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
@@ -895,8 +895,8 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
       </div>
       <!-- 등급별 쿠폰/적립금 현황 -->
       <div style="background:var(--bg2);border-radius:14px;padding:14px 16px">
-        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px">내 쿠폰 · 적립금</div>
-        <div style="display:flex;gap:10px;margin-bottom:12px">
+        <div style="display:none;font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px">내 쿠폰 · 적립금</div>
+        <div style="display:none;gap:10px;margin-bottom:12px">
           <div style="flex:1;background:var(--bg);border-radius:10px;padding:10px 12px;text-align:center;cursor:pointer" onclick="goScreen('screen-coupon')">
             <div style="font-size:11px;color:var(--text3);margin-bottom:4px">보유 쿠폰</div>
             <div style="font-size:18px;font-weight:700;color:var(--orange)">2장</div>
@@ -1407,7 +1407,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
           <div class="input-label" style="font-size:12px">정산 계좌</div>
           <div style="padding:11px 14px;background:rgba(255,255,255,.8);border-radius:10px;font-size:13px;color:var(--text);border:1px solid var(--border2)">카카오뱅크 3333-15-****1234 · 유이</div>
         </div>
-        <button class="btn btn-orange" onclick="goScreen('screen-gb-settlement-done')">정산 신청하기</button>
+        <button class="btn btn-orange" style="display:none" onclick="goScreen('screen-gb-settlement-done')">정산 신청하기</button>
       </div>
     </div>
   </div>
@@ -1743,7 +1743,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
   </div>
 
   <!-- ===================== 정산 신청 완료 ===================== -->
-  <div class="screen" id="screen-gb-settlement-done">
+  <div class="screen" id="screen-gb-settlement-done" style="display:none">
     <div class="scroll-area" style="padding:40px 28px;display:flex;flex-direction:column;align-items:center;gap:20px">
       <div style="width:80px;height:80px;border-radius:50%;background:#EAF3DE;display:flex;align-items:center;justify-content:center">
         <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
@@ -1906,7 +1906,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
   </div>
 
   <!-- ===================== 관심 목록 ===================== -->
-  <div class="screen" id="screen-favorites">
+  <div class="screen" id="screen-favorites" style="display:none">
     <div class="topbar">
       <div class="topbar-back" onclick="goScreen('screen-home')"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
       <div class="topbar-title">관심 목록 ♥</div>
@@ -1928,7 +1928,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
   </div>
 
   <!-- ===================== 쿠폰 ===================== -->
-  <div class="screen" id="screen-coupon">
+  <div class="screen" id="screen-coupon" style="display:none">
     <div class="topbar">
       <div class="topbar-back" onclick="goScreen('screen-mypage')"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
       <div class="topbar-title">내 쿠폰</div>
@@ -1953,7 +1953,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
   </div>
 
   <!-- ===================== 적립금 ===================== -->
-  <div class="screen" id="screen-mileage">
+  <div class="screen" id="screen-mileage" style="display:none">
     <div class="topbar">
       <div class="topbar-back" onclick="goScreen('screen-mypage')"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
       <div class="topbar-title">적립금</div>
