@@ -831,48 +831,28 @@ textarea.form-input{resize:vertical;min-height:80px}
       <div class="stat-grid">
         <div class="stat-card" style="border-left:3px solid var(--orange)">
           <div class="stat-label">진행중 공구</div>
-          <div class="stat-value">3</div>
-          <span class="stat-badge up">↑ 1 이번주</span>
+          <div class="stat-value" id="gbstat-active">0</div>
         </div>
         <div class="stat-card" style="border-left:3px solid var(--blue)">
-          <div class="stat-label">신청 승인 대기</div>
-          <div class="stat-value" style="color:#854F0B">2</div>
-          <div class="stat-sub">평균 대기 0.8일</div>
+          <div class="stat-label">모집중 공구</div>
+          <div class="stat-value" id="gbstat-prep">0</div>
         </div>
         <div class="stat-card" style="border-left:3px solid var(--green)">
-          <div class="stat-label">이달 공구 매출</div>
-          <div class="stat-value">₩8,400,000</div>
-          <span class="stat-badge up">↑ 18%</span>
+          <div class="stat-label">전체 공구</div>
+          <div class="stat-value" id="gbstat-total">0</div>
         </div>
         <div class="stat-card" style="border-left:3px solid #EF9F27">
           <div class="stat-label">정산 대기</div>
-          <div class="stat-value" style="color:#854F0B">₩1,200,000</div>
-          <div class="stat-sub">셀러 3명</div>
+          <div class="stat-value" id="gbstat-settle" style="color:#854F0B">0건</div>
         </div>
       </div>
 
       <div style="display:grid;grid-template-columns:1fr 1fr 300px;gap:16px;margin-bottom:20px">
         <!-- 진행중 공구 -->
         <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:18px">
-          <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:14px">진행중 공구</div>
-          <div style="display:flex;flex-direction:column;gap:8px">
-            <div style="padding:12px;background:#EAF3DE;border-radius:10px">
-              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
-                <div style="font-size:13px;font-weight:600;color:var(--text)">BAS 닭목라벨</div>
-                <span class="chip chip-green" style="font-size:10px">D-1</span>
-              </div>
-              <div style="font-size:12px;color:var(--text2)">@daily_jini · 4/16~19</div>
-              <div style="margin-top:6px;background:rgba(0,0,0,.06);border-radius:4px;height:4px"><div style="height:100%;background:var(--green);border-radius:4px;width:75%"></div></div>
-              <div style="font-size:11px;color:var(--text3);margin-top:3px">진행률 75%</div>
-            </div>
-            <div style="padding:12px;background:#FAEEDA;border-radius:10px">
-              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
-                <div style="font-size:13px;font-weight:600;color:var(--text)">BAS 칼취채 핑크</div>
-                <span class="chip chip-amber" style="font-size:10px">D+24</span>
-              </div>
-              <div style="font-size:12px;color:var(--text2)">@yui.beauty · 5/13~16</div>
-              <div style="font-size:11px;color:var(--text3);margin-top:4px">준비중 — 셀러 승인 완료</div>
-            </div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:14px">최근 공구</div>
+          <div id="gb-active-list" style="display:flex;flex-direction:column;gap:8px">
+            <div style="text-align:center;padding:24px 0;color:var(--text3);font-size:13px">등록된 공구가 없습니다</div>
           </div>
         </div>
 
@@ -881,16 +861,16 @@ textarea.form-input{resize:vertical;min-height:80px}
           <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:14px">단계별 현황</div>
           <div style="display:flex;flex-direction:column;gap:8px">
             <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--bg2);border-radius:8px">
-              <span style="font-size:12px;color:var(--text2)">셀러 신청 접수</span><span style="font-size:13px;font-weight:600;color:#854F0B">2건</span>
+              <span style="font-size:12px;color:var(--text2)">모집중</span><span id="gbstage-prep" style="font-size:13px;font-weight:600;color:#854F0B">0건</span>
             </div>
             <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--bg2);border-radius:8px">
-              <span style="font-size:12px;color:var(--text2)">조건 협의 중</span><span style="font-size:13px;font-weight:600">1건</span>
-            </div>
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:#EAF3DE;border-radius:8px">
-              <span style="font-size:12px;color:var(--text2)">공구 진행중</span><span style="font-size:13px;font-weight:600;color:var(--green)">3건</span>
+              <span style="font-size:12px;color:var(--text2)">공구 진행중</span><span id="gbstage-active" style="font-size:13px;font-weight:600;color:var(--green)">0건</span>
             </div>
             <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--bg2);border-radius:8px">
-              <span style="font-size:12px;color:var(--text2)">정산 대기</span><span style="font-size:13px;font-weight:600;color:#854F0B">2건</span>
+              <span style="font-size:12px;color:var(--text2)">정산 대기</span><span id="gbstage-settle" style="font-size:13px;font-weight:600;color:#854F0B">0건</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--bg2);border-radius:8px">
+              <span style="font-size:12px;color:var(--text2)">종료</span><span id="gbstage-done" style="font-size:13px;font-weight:600">0건</span>
             </div>
           </div>
         </div>
@@ -3378,14 +3358,52 @@ function switchSalesTab(tab) {
 let _gbHomeTab = 'prep';
 function initGbHome() {
   const camps = JSON.parse(localStorage.getItem('biteme_gb_campaigns') || '[]');
+
+  // 스탯 카드 업데이트
+  const prepCount = camps.filter(c => !c.done && !c.active).length;
+  const activeCount = camps.filter(c => c.active && !c.done).length;
+  const settleCount = camps.filter(c => c.settled === false && c.done).length;
+  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  set('gbstat-active', activeCount);
+  set('gbstat-prep', prepCount);
+  set('gbstat-total', camps.length);
+  set('gbstat-settle', settleCount + '건');
+  set('gbstage-prep', prepCount + '건');
+  set('gbstage-active', activeCount + '건');
+  set('gbstage-settle', settleCount + '건');
+  set('gbstage-done', camps.filter(c => c.done).length + '건');
+
+  // 최근 공구 위젯
+  const activeList = document.getElementById('gb-active-list');
+  if (activeList) {
+    if (camps.length === 0) {
+      activeList.innerHTML = '<div style="text-align:center;padding:24px 0;color:var(--text3);font-size:13px">등록된 공구가 없습니다</div>';
+    } else {
+      activeList.innerHTML = camps.slice(0, 3).map(c => {
+        const s = c.done ? 'done' : c.active ? 'active' : 'prep';
+        const bg = s === 'active' ? '#EAF3DE' : s === 'done' ? 'var(--bg2)' : '#FAEEDA';
+        const chip = s === 'active' ? '<span class="chip chip-green" style="font-size:10px">진행중</span>'
+          : s === 'done' ? '<span class="chip chip-gray" style="font-size:10px">종료</span>'
+          : '<span class="chip chip-blue" style="font-size:10px">모집중</span>';
+        return `<div style="padding:12px;background:${bg};border-radius:10px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+            <div style="font-size:13px;font-weight:600;color:var(--text)">${c.name}</div>${chip}
+          </div>
+          <div style="font-size:12px;color:var(--text2)">${c.brand || '—'} · ${c.period || '일정 협의'}</div>
+        </div>`;
+      }).join('');
+    }
+  }
+
+  // 테이블
   const tbody = document.querySelector('#page-gb-home table tbody');
   if (!tbody) return;
   tbody.innerHTML = '';
   if (camps.length === 0) {
     tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--text3);font-size:13px;padding:24px">등록된 공동구매 캠페인이 없습니다</td></tr>';
+    switchGbHomeTab(_gbHomeTab);
     return;
   }
-  // 탭 기준: prep=모집중, active=진행중(공구오픈), done=종료
   const statusFor = c => c.done ? 'done' : c.active ? 'active' : 'prep';
   camps.forEach(c => {
     const s = statusFor(c);
@@ -3395,7 +3413,7 @@ function initGbHome() {
       : c.accessType === 'vip' ? '<span class="chip" style="background:#EEEDFE;color:#534AB7;font-size:10px">VIP</span>' : '';
     const tr = document.createElement('tr');
     tr.dataset.tab = s;
-    tr.style.display = (s === _gbHomeTab || _gbHomeTab === 'all') ? '' : 'none';
+    tr.style.display = s === _gbHomeTab ? '' : 'none';
     tr.innerHTML = `<td><div class="td-name">${c.name}${accessBadge ? ' ' + accessBadge : ''}</div><div class="td-sub">${c.brand || ''} · ${c.cat || ''}</div></td>`
       + `<td><div style="font-size:12px;color:var(--text3)">—</div></td>`
       + `<td><div style="font-size:12px">${c.period || '—'}</div></td>`
@@ -3406,7 +3424,6 @@ function initGbHome() {
       + `<td><button class="btn btn-secondary btn-sm" onclick="goPage('page-gb-pipeline')">파이프라인</button></td>`;
     tbody.appendChild(tr);
   });
-  // 탭 활성화 적용
   switchGbHomeTab(_gbHomeTab);
 }
 
