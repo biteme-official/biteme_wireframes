@@ -273,55 +273,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
           <div style="font-size:15px;font-weight:700;color:var(--text)">지금 신청 가능한 캠페인</div>
           <div style="font-size:13px;color:var(--orange);font-weight:600;cursor:pointer" onclick="goScreen('screen-explore')">전체보기</div>
         </div>
-        <div id="new-camps-home"></div>
-        <div class="camp-card" onclick="goScreen('screen-detail')">
-          <div class="camp-thumb"></div>
-          <div class="camp-body">
-            <div class="camp-name">봄 신상 스킨케어 세트</div>
-            <div class="camp-meta">바잇미 코스메틱 · 협찬가 ₩32,000 · 마감 4월 25일</div>
-            <div class="camp-tags">
-              <span class="chip chip-teal">단순협찬</span>
-              <span class="chip chip-gray">뷰티</span>
-              <span class="chip chip-blue">3,000명+</span>
-            </div>
-          </div>
-          <div class="camp-footer">
-            <span class="camp-footer-label">8/10명 모집</span>
-            <span class="camp-footer-action">상세보기 →</span>
-          </div>
-        </div>
-        <div class="camp-card" style="margin-top:10px" onclick="goScreen('screen-detail')">
-          <div class="camp-thumb green"></div>
-          <div class="camp-body">
-            <div class="camp-name">여름 선크림 신제품 체험단</div>
-            <div class="camp-meta">선케어랩 · 협찬가 ₩55,000 · 마감 5월 1일</div>
-            <div class="camp-tags">
-              <span class="chip chip-amber">유가협찬</span>
-              <span class="chip chip-gray">뷰티</span>
-              <span class="chip chip-blue">10,000명+</span>
-            </div>
-          </div>
-          <div class="camp-footer">
-            <span class="camp-footer-label">3/5명 모집</span>
-            <span class="camp-footer-action">상세보기 →</span>
-          </div>
-        </div>
-        <div class="camp-card" style="margin-top:10px" onclick="goScreen('screen-detail')">
-          <div class="camp-thumb blue"></div>
-          <div class="camp-body">
-            <div class="camp-name">고메잇 강남 브런치 체험</div>
-            <div class="camp-meta">고메잇 · 시식체험 · 마감 5월 15일</div>
-            <div class="camp-tags">
-              <span class="chip chip-purple">시식체험</span>
-              <span class="chip chip-gray">푸드</span>
-              <span class="chip chip-blue">5,000명+</span>
-            </div>
-          </div>
-          <div class="camp-footer">
-            <span class="camp-footer-label">1/3명 모집</span>
-            <span class="camp-footer-action">상세보기 →</span>
-          </div>
-        </div>
+        <div id="new-seeding-camps"></div>
       </div>
     </div>
 
@@ -349,55 +301,6 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
           <span style="background:var(--orange);color:#fff;font-size:12px;font-weight:700;padding:4px 10px;border-radius:10px">특가</span>
         </div>
         <div id="new-gb-camps"></div>
-        <div style="margin-top:4px">
-          <div class="product-item" onclick="goScreen('screen-gb-product')">
-            <div class="product-thumb" style="cursor:pointer">
-              <div class="product-badge">NEW</div>
-            </div>
-            <div class="product-info">
-              <div class="product-name">BAS 칼취채 핑크에디션 / BAS 닭목라벨</div>
-              <div class="product-price">
-                <span class="product-discount">20%</span>
-                <span class="product-original">13,700원</span>
-                <span class="product-current">10,900원</span>
-              </div>
-              <div class="product-actions">
-                <button class="btn btn-orange btn-sm" style="flex:1" onclick="event.stopPropagation();goScreen('screen-gb-product')">공동구매 신청</button>
-                <button class="btn-sm" style="width:34px;background:var(--bg2);border:0.5px solid var(--border2)" onclick="event.stopPropagation();toggleFav(this)">♡</button>
-              </div>
-            </div>
-          </div>
-          <div class="product-item" style="cursor:pointer" onclick="goScreen('screen-gb-product')">
-            <div class="product-thumb" style="background:linear-gradient(135deg,#D6EAD6,#C2DCC2)"></div>
-            <div class="product-info">
-              <div class="product-name">고메잇 강남 브런치 세트 패키지</div>
-              <div class="product-price">
-                <span class="product-discount">15%</span>
-                <span class="product-original">48,000원</span>
-                <span class="product-current">40,800원</span>
-              </div>
-              <div class="product-actions">
-                <button class="btn btn-orange btn-sm" style="flex:1" onclick="event.stopPropagation();goScreen('screen-gb-product')">공동구매 신청</button>
-                <button class="btn-sm" style="width:34px;background:var(--bg2);border:0.5px solid var(--border2)" onclick="event.stopPropagation();toggleFav(this)">♡</button>
-              </div>
-            </div>
-          </div>
-          <div class="product-item" style="cursor:pointer" onclick="goScreen('screen-gb-product')">
-            <div class="product-thumb" style="background:linear-gradient(135deg,#E6F1FB,#C0D8EC)"></div>
-            <div class="product-info">
-              <div class="product-name">봄 신상 립밤 3종 기획세트</div>
-              <div class="product-price">
-                <span class="product-discount">25%</span>
-                <span class="product-original">32,000원</span>
-                <span class="product-current">24,000원</span>
-              </div>
-              <div class="product-actions">
-                <button class="btn btn-orange btn-sm" style="flex:1" onclick="event.stopPropagation();goScreen('screen-gb-product')">공동구매 신청</button>
-                <button class="btn-sm" style="width:34px;background:var(--bg2);border:0.5px solid var(--border2)" onclick="event.stopPropagation();toggleFav(this)">♡</button>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -458,33 +361,6 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
       </div>
       <div class="scroll-area" style="padding:0 20px 20px;display:flex;flex-direction:column;gap:10px">
         <div id="new-camps-explore"></div>
-        <div class="camp-card" onclick="goScreen('screen-detail')">
-          <div class="camp-thumb"></div>
-          <div class="camp-body">
-            <div class="camp-name">봄 신상 스킨케어 세트</div>
-            <div class="camp-meta">바잇미 코스메틱 · 협찬가 ₩32,000 · 마감 4/25 · 10명 모집</div>
-            <div class="camp-tags"><span class="chip chip-teal">단순협찬</span><span class="chip chip-gray">뷰티</span><span class="chip chip-blue">3,000명+</span></div>
-          </div>
-          <div class="camp-footer"><span class="camp-footer-label">8/10명</span><span class="camp-footer-action">상세보기 →</span></div>
-        </div>
-        <div class="camp-card" onclick="goScreen('screen-detail')">
-          <div class="camp-thumb green"></div>
-          <div class="camp-body">
-            <div class="camp-name">여름 선크림 신제품 체험단</div>
-            <div class="camp-meta">선케어랩 · 협찬가 ₩55,000 · 마감 5/1 · 5명 모집</div>
-            <div class="camp-tags"><span class="chip chip-amber">유가협찬</span><span class="chip chip-gray">뷰티</span><span class="chip chip-blue">10,000명+</span></div>
-          </div>
-          <div class="camp-footer"><span class="camp-footer-label">3/5명</span><span class="camp-footer-action">상세보기 →</span></div>
-        </div>
-        <div class="camp-card">
-          <div class="camp-thumb blue"></div>
-          <div class="camp-body">
-            <div class="camp-name">고메잇 강남 브런치 체험</div>
-            <div class="camp-meta">고메잇 · 협찬가 ₩80,000 · 마감 5/15 · 3명 모집</div>
-            <div class="camp-tags"><span class="chip chip-purple">시식체험</span><span class="chip chip-gray">푸드</span><span class="chip chip-blue">5,000명+</span></div>
-          </div>
-          <div class="camp-footer"><span class="camp-footer-label">1/3명</span><span class="camp-footer-action">상세보기 →</span></div>
-        </div>
       </div>
     </div>
 
@@ -519,51 +395,6 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
           <div style="margin-top:10px;font-size:12px;font-weight:600;color:#FFC107">VIP 상품 보러가기 →</div>
         </div>
 
-        <div class="product-item" onclick="goScreen('screen-gb-product')" style="cursor:pointer">
-          <div class="product-thumb" style="cursor:pointer"><div class="product-badge">NEW</div></div>
-          <div class="product-info">
-            <div class="product-name">BAS 칼취채 핑크에디션 / BAS 닭목라벨</div>
-            <div class="product-price">
-              <span class="product-discount">20%</span>
-              <span class="product-original">13,700원</span>
-              <span class="product-current">10,900원</span>
-            </div>
-            <div style="display:flex;gap:6px;margin-top:4px;flex-wrap:wrap">
-              <span class="chip chip-amber">선착순 특가</span>
-              <span class="chip chip-gray">사료</span>
-            </div>
-          </div>
-        </div>
-        <div class="product-item">
-          <div class="product-thumb" style="background:linear-gradient(135deg,#D6EAD6,#C2DCC2)"></div>
-          <div class="product-info">
-            <div class="product-name">고메잇 강남 브런치 세트 패키지</div>
-            <div class="product-price">
-              <span class="product-discount">15%</span>
-              <span class="product-original">48,000원</span>
-              <span class="product-current">40,800원</span>
-            </div>
-            <div style="display:flex;gap:6px;margin-top:4px;flex-wrap:wrap">
-              <span class="chip chip-purple">콜라보 기획전</span>
-              <span class="chip chip-gray">푸드</span>
-            </div>
-          </div>
-        </div>
-        <div class="product-item">
-          <div class="product-thumb" style="background:linear-gradient(135deg,#E6F1FB,#C0D8EC)"></div>
-          <div class="product-info">
-            <div class="product-name">봄 신상 립밤 3종 기획세트</div>
-            <div class="product-price">
-              <span class="product-discount">25%</span>
-              <span class="product-original">32,000원</span>
-              <span class="product-current">24,000원</span>
-            </div>
-            <div style="display:flex;gap:6px;margin-top:4px;flex-wrap:wrap">
-              <span class="chip chip-teal">무료배송</span>
-              <span class="chip chip-gray">뷰티</span>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 
