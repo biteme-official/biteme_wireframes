@@ -195,7 +195,7 @@ textarea.form-input{resize:vertical;min-height:80px}
       <div class="nav-dot"></div>
       대시보드 홈
     </div>
-    <div class="nav-section">캠페인 관리</div>
+    <div class="nav-section">시딩</div>
     <div class="nav-item on" onclick="goPage('page-campaigns')">
       <div class="nav-dot on"></div>
       시딩 캠페인
@@ -203,25 +203,30 @@ textarea.form-input{resize:vertical;min-height:80px}
     </div>
     <div class="nav-item" onclick="goPage('page-campaign-new')">
       <div class="nav-dot"></div>
-      캠페인 생성
+      시딩 개설
     </div>
     <div class="nav-item" onclick="goPage('page-applications')">
       <div class="nav-dot"></div>
       신청 관리
       <span class="nav-badge red">4</span>
     </div>
+    <div class="nav-item" onclick="goPage('page-review')">
+      <div class="nav-dot"></div>
+      콘텐츠 검수
+      <span class="nav-badge red">7</span>
+    </div>
     <div class="nav-section">공동구매</div>
     <div class="nav-item" onclick="goPage('page-gb-home')">
       <div class="nav-dot"></div>
-      공동구매 홈
+      공구 홈
     </div>
     <div class="nav-item" onclick="goPage('page-gb-new')">
       <div class="nav-dot"></div>
-      캠페인 생성
+      공구 개설
     </div>
     <div class="nav-item" onclick="goPage('page-gb-pipeline')">
       <div class="nav-dot"></div>
-      캠페인 파이프라인
+      공구 파이프라인
     </div>
     <div class="nav-item" onclick="goPage('page-schedule')">
       <div class="nav-dot"></div>
@@ -231,20 +236,13 @@ textarea.form-input{resize:vertical;min-height:80px}
       <div class="nav-dot"></div>
       판매/정산 관리
     </div>
-
     <div class="nav-item" onclick="goPage('page-grade-mgmt')">
       <div class="nav-dot"></div>
-      셀러등급관리
+      셀러 등급 관리
     </div>
     <div class="nav-item" style="display:none" onclick="goPage('page-deposit')">
       <div class="nav-dot"></div>
       보증금 관리
-    </div>
-    <div class="nav-section">콘텐츠</div>
-    <div class="nav-item" onclick="goPage('page-review')">
-      <div class="nav-dot"></div>
-      콘텐츠 검수
-      <span class="nav-badge red">7</span>
     </div>
     <div class="nav-section">인플루언서</div>
     <div class="nav-item" onclick="goPage('page-influencers')">
@@ -2757,22 +2755,21 @@ function calNext() {
 
 const breadcrumbs = {
   'page-home': '개요 › <strong>대시보드 홈</strong>',
-  'page-campaigns': '캠페인 › <strong>시딩 캠페인</strong>',
-  'page-campaign-new': '캠페인 › <strong>신규 생성</strong>',
-  'page-applications': '캠페인 › <strong>신청 관리</strong>',
-  'page-gb-home': '공동구매 › <strong>공동구매 홈</strong>',
-  'page-gb-new': '공동구매 › <strong>캠페인 생성</strong>',
-  'page-gb-pipeline': '공동구매 › <strong>캠페인 파이프라인</strong>',
+  'page-campaigns': '시딩 › <strong>시딩 캠페인</strong>',
+  'page-campaign-new': '시딩 › <strong>시딩 개설</strong>',
+  'page-campaign-detail': '시딩 › <strong>캠페인 상세</strong>',
+  'page-applications': '시딩 › <strong>신청 관리</strong>',
+  'page-review': '시딩 › <strong>콘텐츠 검수</strong>',
+  'page-gb-home': '공동구매 › <strong>공구 홈</strong>',
+  'page-gb-new': '공동구매 › <strong>공구 개설</strong>',
+  'page-gb-pipeline': '공동구매 › <strong>공구 파이프라인</strong>',
   'page-schedule': '공동구매 › <strong>신청자 관리</strong>',
   'page-sales': '공동구매 › <strong>판매/정산 관리</strong>',
-
-  'page-grade-mgmt': '공동구매 › <strong>셀러등급관리</strong>',
-  'page-grade-criteria': '공동구매 › 셀러등급관리 › <strong>등급 기준 조정</strong>',
-  'page-seller-profile': '공동구매 › 셀러등급관리 › <strong>셀러 상세프로필</strong>',
+  'page-grade-mgmt': '공동구매 › <strong>셀러 등급 관리</strong>',
+  'page-grade-criteria': '공동구매 › 셀러 등급 관리 › <strong>등급 기준 조정</strong>',
+  'page-seller-profile': '공동구매 › 셀러 등급 관리 › <strong>셀러 상세프로필</strong>',
   'page-deposit': '공동구매 › <strong>보증금 관리</strong>',
-  'page-review': '콘텐츠 › <strong>검수</strong>',
   'page-influencers': '인플루언서 › <strong>목록</strong>',
-  'page-campaign-detail': '캠페인 › <strong>상세 관리</strong>',
   'page-notifications': '운영 › <strong>알림 자동화</strong>',
   'page-messages': '운영 › <strong>협의 게시판</strong>',
 };
@@ -2786,10 +2783,11 @@ function goPage(id) {
   const navMap = {
     'page-home': 0,
     'page-campaigns': 1, 'page-campaign-new': 2, 'page-campaign-detail': 1, 'page-applications': 3,
-    'page-gb-home': 4, 'page-gb-new': 5, 'page-gb-pipeline': 6, 'page-schedule': 7, 'page-sales': 8,
-    'page-grade-mgmt': 9, 'page-grade-criteria': 9,
-    'page-deposit': 10,
-    'page-review': 11, 'page-influencers': 12,
+    'page-review': 4,
+    'page-gb-home': 5, 'page-gb-new': 6, 'page-gb-pipeline': 7, 'page-schedule': 8, 'page-sales': 9,
+    'page-grade-mgmt': 10, 'page-grade-criteria': 10,
+    'page-deposit': 11,
+    'page-influencers': 12,
     'page-notifications': 13, 'page-messages': 14,
     'page-seller-profile': 10
   };
