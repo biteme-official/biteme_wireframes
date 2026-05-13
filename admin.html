@@ -508,11 +508,11 @@ textarea.form-input{resize:vertical;min-height:80px}
             </div>
             <div class="form-group">
               <label class="form-label">브랜드명</label>
-              <input id="camp-brand" class="form-input" value="바잇미 코스메틱">
+              <select id="camp-brand" class="form-input"><option>바잇미</option></select>
             </div>
             <div class="form-group">
               <label class="form-label">카테고리</label>
-              <select id="camp-cat" class="form-input"><option>뷰티</option><option>푸드</option><option>라이프</option><option>반려동물</option></select>
+              <select id="camp-cat" class="form-input"><option>식품</option><option>용품</option><option>장난감</option><option>의류</option></select>
             </div>
             <div class="form-group">
               <label class="form-label">협찬 유형</label>
@@ -1206,11 +1206,11 @@ textarea.form-input{resize:vertical;min-height:80px}
             </div>
             <div class="form-group">
               <label class="form-label">브랜드명</label>
-              <input class="form-input" id="gb-brand-name" placeholder="예) BAS펫푸드">
+              <select class="form-input" id="gb-brand-name"><option>바잇미</option></select>
             </div>
             <div class="form-group">
               <label class="form-label">카테고리</label>
-              <input class="form-input" id="gb-cat-main" placeholder="예) 사료/간식, 용품/장난감, 케어/위생">
+              <select class="form-input" id="gb-cat-main"><option>식품</option><option>용품</option><option>장난감</option><option>의류</option></select>
             </div>
             <div class="form-group">
               <label class="form-label">세부 카테고리</label>
@@ -3110,9 +3110,34 @@ function resetGbForm() {
 }
 
 function gbOpenCampaign() {
-  alert('캠페인 개설이 완료됐습니다.\n[모집 시작하기] 버튼을 눌러야 셀러에게 노출됩니다.');
+  const nameVal = document.getElementById('gb-product-name')?.value || '새 공동구매 상품';
+  const brandVal = document.getElementById('gb-brand-name')?.value || '';
+  const catVal = document.getElementById('gb-cat-main')?.value || '';
+  const dateInputs = document.querySelectorAll('#gbstep-1 input[type="date"]');
+  const priceInputs = document.querySelectorAll('#gbstep-2 input[type="number"]');
+  const fmt = v => v ? new Date(v).toLocaleDateString('ko-KR', {month:'numeric', day:'numeric'}).replace(/ /g,'') : null;
+  const start = fmt(dateInputs[0]?.value);
+  const end = fmt(dateInputs[1]?.value);
+  const period = (start && end) ? start + ' ~ ' + end : '일정 협의 중';
+  const orig = parseFloat(priceInputs[0]?.value) || 0;
+  const sale = parseFloat(priceInputs[1]?.value) || 0;
+  const discRate = (orig > 0 && sale > 0 && sale < orig) ? Math.round((1 - sale / orig) * 100) : 0;
+  const accessType = document.getElementById('access-vvip')?.classList.contains('on') ? 'vvip'
+    : document.getElementById('access-vip')?.classList.contains('on') ? 'vip' : 'all';
+  const gbCamps = JSON.parse(localStorage.getItem('biteme_gb_campaigns') || '[]');
+  gbCamps.unshift({ name: nameVal, brand: brandVal, cat: catVal, period, discRate, salePrice: sale, origPrice: orig, accessType, draft: true });
+  localStorage.setItem('biteme_gb_campaigns', JSON.stringify(gbCamps));
+  showToast(nameVal + ' 캠페인이 미공개 상태로 개설됐습니다. 공구 홈에서 모집을 시작할 수 있어요.');
   resetGbForm();
   goPage('page-gb-home');
+}
+
+function gbStartDraft(name) {
+  const gbCamps = JSON.parse(localStorage.getItem('biteme_gb_campaigns') || '[]');
+  const camp = gbCamps.find(c => c.name === name);
+  if (camp) { delete camp.draft; localStorage.setItem('biteme_gb_campaigns', JSON.stringify(gbCamps)); }
+  showToast(name + ' 모집이 시작됐습니다. 셀러에게 노출됩니다.');
+  initGbHome();
 }
 
 function gbOpenAndStart() {
@@ -3450,6 +3475,7 @@ function initGbHome() {
         const bg = s === 'active' ? '#EAF3DE' : s === 'done' ? 'var(--bg2)' : '#FAEEDA';
         const chip = s === 'active' ? '<span class="chip chip-green" style="font-size:10px">진행중</span>'
           : s === 'done' ? '<span class="chip chip-gray" style="font-size:10px">종료</span>'
+          : c.draft ? '<span class="chip chip-gray" style="font-size:10px">미공개</span>'
           : '<span class="chip chip-blue" style="font-size:10px">모집중</span>';
         return `<div style="padding:12px;background:${bg};border-radius:10px">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
@@ -3473,10 +3499,20 @@ function initGbHome() {
   const statusFor = c => c.done ? 'done' : c.active ? 'active' : 'prep';
   camps.forEach(c => {
     const s = statusFor(c);
-    const statusLabel = s === 'done' ? '종료' : s === 'active' ? '공구 진행중' : '모집중';
-    const statusChip = s === 'done' ? 'chip-gray' : s === 'active' ? 'chip-green' : 'chip-blue';
+    const isDraft = !c.active && !c.done && c.draft;
+    const statusLabel = s === 'done' ? '종료' : s === 'active' ? '공구 진행중' : isDraft ? '미공개' : '모집중';
+    const statusChip = s === 'done' ? 'chip-gray' : s === 'active' ? 'chip-green' : isDraft ? 'chip-gray' : 'chip-blue';
     const accessBadge = c.accessType === 'vvip' ? '<span class="chip chip-amber" style="font-size:10px">VVIP</span>'
       : c.accessType === 'vip' ? '<span class="chip" style="background:#EEEDFE;color:#534AB7;font-size:10px">VIP</span>' : '';
+    const exposeChip = isDraft
+      ? '<span class="chip chip-gray" style="font-size:10px">미노출</span>'
+      : '<span class="chip chip-green" style="font-size:10px">노출중</span>';
+    const recruitChip = isDraft
+      ? '<span class="chip chip-gray" style="font-size:10px">미개시</span>'
+      : `<span class="chip ${s === 'prep' ? 'chip-blue' : 'chip-gray'}" style="font-size:10px">${s === 'prep' ? '모집중' : '마감'}</span>`;
+    const actionBtn = isDraft
+      ? `<button class="btn btn-primary btn-sm" onclick="gbStartDraft('${c.name.replace(/'/g,"\\'")}')">모집 시작</button>`
+      : `<button class="btn btn-secondary btn-sm" onclick="goPage('page-gb-pipeline')">파이프라인</button>`;
     const tr = document.createElement('tr');
     tr.dataset.tab = s;
     tr.style.display = s === _gbHomeTab ? '' : 'none';
@@ -3485,9 +3521,9 @@ function initGbHome() {
       + `<td><div style="font-size:12px">${c.period || '—'}</div></td>`
       + `<td><div style="font-size:12px">—</div></td>`
       + `<td><span class="chip ${statusChip}">${statusLabel}</span></td>`
-      + `<td><span class="chip chip-green" style="font-size:10px">노출중</span></td>`
-      + `<td><span class="chip ${s === 'prep' ? 'chip-blue' : 'chip-gray'}" style="font-size:10px">${s === 'prep' ? '모집중' : '마감'}</span></td>`
-      + `<td><button class="btn btn-secondary btn-sm" onclick="goPage('page-gb-pipeline')">파이프라인</button></td>`;
+      + `<td>${exposeChip}</td>`
+      + `<td>${recruitChip}</td>`
+      + `<td>${actionBtn}</td>`;
     tbody.appendChild(tr);
   });
   switchGbHomeTab(_gbHomeTab);
