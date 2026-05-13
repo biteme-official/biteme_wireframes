@@ -2066,7 +2066,7 @@ function renderNewCampaigns() {
 
 // 어드민에서 개설한 공동구매 캠페인 렌더링
 function renderGbCampaigns() {
-  const gbCamps = JSON.parse(localStorage.getItem('biteme_gb_campaigns') || '[]');
+  const gbCamps = JSON.parse(localStorage.getItem('biteme_gb_campaigns') || '[]').filter(c => !c.draft);
   const container = document.getElementById('new-gb-camps');
   if (!container) return;
   container.innerHTML = '';
@@ -2193,7 +2193,7 @@ function renderVipProducts() {
   const list = document.getElementById('vip-product-list');
   if (!list) return;
   const allCamps = JSON.parse(localStorage.getItem('biteme_gb_campaigns') || '[]');
-  const products = allCamps.filter(c => c.accessType === 'vip' || c.accessType === 'vvip');
+  const products = allCamps.filter(c => !c.draft && (c.accessType === 'vip' || c.accessType === 'vvip'));
   if (products.length === 0) {
     list.innerHTML = '<div style="text-align:center;padding:32px 0;color:var(--text3);font-size:13px">현재 오픈된 익스클루시브 공구가 없습니다</div>';
     return;
