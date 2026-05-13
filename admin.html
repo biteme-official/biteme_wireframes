@@ -968,20 +968,36 @@ textarea.form-input{resize:vertical;min-height:80px}
     <div class="page" id="page-gb-pipeline">
       <div class="page-header">
         <div>
-          <div class="page-title">캠페인 파이프라인</div>
-          <div class="page-sub">진행중인 모든 캠페인 현황</div>
+          <div class="page-title" id="pipeline-page-title">공구 파이프라인</div>
+          <div class="page-sub" id="pipeline-page-sub">캠페인을 선택하면 파이프라인을 확인할 수 있어요</div>
         </div>
         <div style="display:flex;gap:8px">
-          <button class="btn btn-secondary" onclick="goPage('page-gb-home')">← 목록으로</button>
-          <button class="btn btn-secondary" onclick="editCurrentPipelineCampaign()">캠페인 수정</button>
-          <button class="btn btn-primary" onclick="showToast('알림톡을 발송했습니다')">알림 발송</button>
+          <button id="pipeline-back-btn" class="btn btn-secondary" style="display:none" onclick="showPipelineList()">← 목록으로</button>
+          <button class="btn btn-secondary" onclick="goPage('page-gb-home')">공구 홈</button>
+          <button id="pipeline-edit-btn" class="btn btn-secondary" style="display:none" onclick="editCurrentPipelineCampaign()">캠페인 수정</button>
+          <button id="pipeline-noti-btn" class="btn btn-primary" style="display:none" onclick="showToast('알림톡을 발송했습니다')">알림 발송</button>
         </div>
       </div>
 
-      <!-- 진행중 캠페인 리스트 -->
-      <div style="display:flex;gap:10px;margin-bottom:20px;overflow-x:auto;padding-bottom:4px">
+      <!-- ── 리스트 뷰 ── -->
+      <div id="pipeline-list-view">
+        <div class="table-wrap">
+          <div class="table-header">
+            <div class="table-title">전체 공구 캠페인</div>
+          </div>
+          <table>
+            <thead>
+              <tr><th>상품명</th><th>브랜드</th><th>공구 기간</th><th>현재 단계</th><th>상태</th><th>파이프라인</th></tr>
+            </thead>
+            <tbody id="pipeline-list-tbody">
+            </tbody>
+          </table>
+        </div>
       </div>
-      <div id="pipeline-title" style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px">BAS 칼취채 핑크에디션 상세 파이프라인 · @yui.beauty</div>
+
+      <!-- ── 상세 뷰 ── -->
+      <div id="pipeline-detail-view" style="display:none">
+      <div id="pipeline-title" style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px"></div>
 
       <!-- 파이프라인 스테이지 -->
       <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:24px;margin-bottom:20px">
@@ -1230,6 +1246,7 @@ textarea.form-input{resize:vertical;min-height:80px}
           </div>
         </div>
       </div>
+      </div><!-- /pipeline-detail-view -->
     </div>
 
     <!-- ===================== 공구 일정 관리 ===================== -->
@@ -2907,6 +2924,7 @@ function goPage(id) {
   if (id === 'page-sales') initSalesPage();
   if (id === 'page-gb-home') initGbHome();
   if (id === 'page-gb-detail') renderGbDetail();
+  if (id === 'page-gb-pipeline') initPipelinePage();
   if (id === 'page-campaigns') initSeedCampaigns();
   if (id === 'page-applications') initApplicationsPage();
 }
@@ -3635,9 +3653,62 @@ function advancePipelineStage() {
   }
 }
 
+function initPipelinePage() {
+  showPipelineList();
+}
+
+function showPipelineList() {
+  document.getElementById('pipeline-list-view').style.display = '';
+  document.getElementById('pipeline-detail-view').style.display = 'none';
+  document.getElementById('pipeline-back-btn').style.display = 'none';
+  document.getElementById('pipeline-edit-btn').style.display = 'none';
+  document.getElementById('pipeline-noti-btn').style.display = 'none';
+  document.getElementById('pipeline-page-title').textContent = '공구 파이프라인';
+  document.getElementById('pipeline-page-sub').textContent = '캠페인을 선택하면 파이프라인을 확인할 수 있어요';
+
+  const camps = JSON.parse(localStorage.getItem('biteme_gb_campaigns') || '[]');
+  const tbody = document.getElementById('pipeline-list-tbody');
+  if (!tbody) return;
+
+  if (camps.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text3);font-size:13px;padding:32px">등록된 공구 캠페인이 없습니다</td></tr>';
+    return;
+  }
+
+  const stageLabel = c => c.done ? '9단계 · 정산 처리' : c.active ? '7단계 · 공구 진행중' : c.draft ? '—' : '2단계 · 셀러 모집';
+  const statusChip = c => c.done ? '<span class="chip chip-gray">종료</span>' : c.active ? '<span class="chip chip-green">진행중</span>' : c.draft ? '<span class="chip chip-gray">미공개</span>' : '<span class="chip chip-blue">모집중</span>';
+
+  tbody.innerHTML = camps.map(c => `
+    <tr>
+      <td><div class="td-name">${c.name}</div><div class="td-sub">${c.brand || ''} · ${c.cat || ''}</div></td>
+      <td style="font-size:12px">${c.brand || '—'}</td>
+      <td style="font-size:12px">${c.period || '—'}</td>
+      <td style="font-size:12px;color:var(--text2)">${stageLabel(c)}</td>
+      <td>${statusChip(c)}</td>
+      <td><button class="btn btn-secondary btn-sm" onclick="openPipelineDetail('${c.name.replace(/'/g,"\\'")}')">파이프라인 보기</button></td>
+    </tr>`).join('');
+}
+
+function openPipelineDetail(campName) {
+  document.getElementById('pipeline-list-view').style.display = 'none';
+  document.getElementById('pipeline-detail-view').style.display = '';
+  document.getElementById('pipeline-back-btn').style.display = '';
+  document.getElementById('pipeline-edit-btn').style.display = '';
+  document.getElementById('pipeline-noti-btn').style.display = '';
+  document.getElementById('pipeline-page-title').textContent = campName;
+  document.getElementById('pipeline-page-sub').textContent = '캠페인 파이프라인 상세';
+  const titleEl = document.getElementById('pipeline-title');
+  if (titleEl) titleEl.textContent = campName + ' 파이프라인';
+}
+
+function goToPipelineDetail(campName) {
+  goPage('page-gb-pipeline');
+  openPipelineDetail(campName);
+}
+
 function editCurrentPipelineCampaign() {
   const title = document.getElementById('pipeline-title');
-  const name = title ? title.textContent.split(' 상세')[0] : '선택된 캠페인';
+  const name = title ? title.textContent.replace(' 파이프라인','') : '선택된 캠페인';
   showToast(name + ' 수정 중...');
   goPage('page-gb-new');
 }
@@ -3860,7 +3931,7 @@ function initGbHome() {
       : `<span class="chip ${s === 'prep' ? 'chip-blue' : 'chip-gray'}" style="font-size:10px">${s === 'prep' ? '모집중' : '마감'}</span>`;
     const actionBtn = isDraft
       ? `<button class="btn btn-primary btn-sm" onclick="gbStartDraft('${c.name.replace(/'/g,"\\'")}')">모집 시작</button>`
-      : `<button class="btn btn-secondary btn-sm" onclick="goPage('page-gb-pipeline')">파이프라인</button>`;
+      : `<button class="btn btn-secondary btn-sm" onclick="goToPipelineDetail('${c.name.replace(/'/g,"\\'")}')">파이프라인</button>`;
     const tr = document.createElement('tr');
     tr.dataset.tab = s;
     tr.style.display = s === _gbHomeTab ? '' : 'none';
