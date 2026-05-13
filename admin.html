@@ -1461,7 +1461,7 @@ textarea.form-input{resize:vertical;min-height:80px}
               <div style="display:flex;flex-direction:column;gap:14px">
                 <div class="form-group">
                   <label class="form-label">허용 플랫폼 및 최소 팔로워/구독자</label>
-                  <div style="display:flex;flex-direction:column;gap:8px">
+                  <div id="gb-platform-list" style="display:flex;flex-direction:column;gap:8px">
                     <div style="display:flex;align-items:center;gap:8px">
                       <input type="checkbox" checked style="accent-color:var(--orange);flex-shrink:0;width:15px;height:15px">
                       <span style="font-size:13px;width:96px;color:var(--text2);flex-shrink:0">인스타그램</span>
@@ -1556,20 +1556,20 @@ textarea.form-input{resize:vertical;min-height:80px}
             <div>
               <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px">상품 기본 정보</div>
               <div style="background:var(--bg2);border-radius:10px;overflow:hidden">
-                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">상품명</span><span id="review-product-name" style="font-size:12px;font-weight:500;color:var(--text)">BAS 칼취채 핑크에디션</span></div>
-                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">브랜드</span><span id="review-brand-name" style="font-size:12px;font-weight:500;color:var(--text)">BAS펫푸드</span></div>
-                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">카테고리</span><span id="review-category" style="font-size:12px;font-weight:500;color:var(--text)">사료/간식</span></div>
-                <div style="display:flex;justify-content:space-between;padding:10px 14px"><span style="font-size:12px;color:var(--text3)">공구 일정</span><span id="review-period" style="font-size:12px;font-weight:500;color:var(--text)">5/13 ~ 5/16</span></div>
+                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">상품명</span><span id="review-product-name" style="font-size:12px;font-weight:500;color:var(--text)">—</span></div>
+                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">브랜드</span><span id="review-brand-name" style="font-size:12px;font-weight:500;color:var(--text)">—</span></div>
+                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">카테고리</span><span id="review-category" style="font-size:12px;font-weight:500;color:var(--text)">—</span></div>
+                <div style="display:flex;justify-content:space-between;padding:10px 14px"><span style="font-size:12px;color:var(--text3)">공구 일정</span><span id="review-period" style="font-size:12px;font-weight:500;color:var(--text)">—</span></div>
               </div>
             </div>
             <div>
               <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px">공구 스킴</div>
               <div style="background:var(--bg2);border-radius:10px;overflow:hidden">
-                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">기존 판매가</span><span id="review-orig-price" style="font-size:12px;font-weight:500;color:var(--text)">13,700원</span></div>
-                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">공구 판매가</span><span id="review-sale-price" style="font-size:12px;font-weight:700;color:var(--orange)">10,900원</span></div>
-                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">할인율</span><span id="review-discount" style="font-size:12px;font-weight:700;color:var(--orange)">20%</span></div>
-                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">수수료율</span><span id="review-commission" style="font-size:12px;font-weight:500;color:var(--text)">15%</span></div>
-                <div style="display:flex;justify-content:space-between;padding:10px 14px"><span style="font-size:12px;color:var(--text3)">보증금</span><span id="review-deposit" style="font-size:12px;font-weight:500;color:var(--text)">100,000원</span></div>
+                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">기존 판매가</span><span id="review-orig-price" style="font-size:12px;font-weight:500;color:var(--text)">—</span></div>
+                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">공구 판매가</span><span id="review-sale-price" style="font-size:12px;font-weight:700;color:var(--orange)">—</span></div>
+                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">할인율</span><span id="review-discount" style="font-size:12px;font-weight:700;color:var(--orange)">—</span></div>
+                <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">수수료율</span><span id="review-commission" style="font-size:12px;font-weight:500;color:var(--text)">—</span></div>
+                <div style="display:flex;justify-content:space-between;padding:10px 14px"><span style="font-size:12px;color:var(--text3)">보증금</span><span id="review-deposit" style="font-size:12px;font-weight:500;color:var(--text)">—</span></div>
               </div>
             </div>
             <div>
@@ -1577,19 +1577,17 @@ textarea.form-input{resize:vertical;min-height:80px}
               <div style="background:var(--bg2);border-radius:10px;overflow:hidden">
                 <div style="padding:10px 14px;border-bottom:0.5px solid var(--border)">
                   <div style="font-size:11px;color:var(--text3);margin-bottom:6px">혜택</div>
-                  <div style="display:flex;flex-direction:column;gap:4px">
-                    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text)"><div style="width:5px;height:5px;border-radius:50%;background:var(--orange);flex-shrink:0"></div>공구 전용 20% 할인</div>
-                    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text)"><div style="width:5px;height:5px;border-radius:50%;background:var(--orange);flex-shrink:0"></div>사은품 동봉</div>
+                  <div id="review-benefit-list" style="display:flex;flex-direction:column;gap:4px">
+                    <span style="font-size:12px;color:var(--text3)">—</span>
                   </div>
                 </div>
                 <div style="padding:10px 14px;border-bottom:0.5px solid var(--border)">
                   <div style="font-size:11px;color:var(--text3);margin-bottom:6px">이벤트</div>
-                  <div style="display:flex;gap:4px;flex-wrap:wrap">
-                    <span class="chip chip-amber" style="font-size:10px">선착순 특가</span>
-                    <span class="chip chip-purple" style="font-size:10px">콜라보 기획전</span>
+                  <div id="review-event-chips" style="display:flex;gap:4px;flex-wrap:wrap">
+                    <span style="font-size:12px;color:var(--text3)">—</span>
                   </div>
                 </div>
-                <div style="padding:10px 14px"><span style="font-size:12px;color:var(--text3)">셀러 조건</span><div style="font-size:12px;font-weight:500;color:var(--text);margin-top:3px">팔로워 1,000+명 · 인스타·유튜브</div></div>
+                <div style="padding:10px 14px"><span style="font-size:12px;color:var(--text3)">셀러 조건</span><div id="review-seller-cond" style="font-size:12px;font-weight:500;color:var(--text);margin-top:3px">—</div></div>
               </div>
             </div>
           </div>
@@ -3059,33 +3057,72 @@ function gbNextStep(n) {
 }
 
 function gbUpdateReview() {
-  const nameVal = document.getElementById('gb-product-name')?.value;
-  const brandVal = document.getElementById('gb-brand-name')?.value;
-  const catVal = document.getElementById('gb-cat-main')?.value;
-  const dateInputs = document.querySelectorAll('#gbstep-1 input[type="date"]');
-  const priceInputs = document.querySelectorAll('#gbstep-2 input[type="number"]');
+  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = (v !== undefined && v !== null && v !== '') ? v : '—'; };
 
+  // Step 1: 상품 기본 정보
+  set('review-product-name', document.getElementById('gb-product-name')?.value);
+  set('review-brand-name', document.getElementById('gb-brand-name')?.value);
+  set('review-category', document.getElementById('gb-cat-main')?.value);
+  const dateInputs = document.querySelectorAll('#gbstep-1 input[type="date"]');
   const fmt = v => v ? new Date(v).toLocaleDateString('ko-KR', {month:'numeric', day:'numeric'}).replace(/ /g,'') : null;
   const start = fmt(dateInputs[0]?.value);
   const end = fmt(dateInputs[1]?.value);
-  const period = (start || end) ? `${start || '?'} ~ ${end || '?'}` : '5/13 ~ 5/16';
+  set('review-period', (start || end) ? `${start || '?'} ~ ${end || '?'}` : '');
 
+  // Step 2: 공구 스킴 (가격)
+  const priceInputs = document.querySelectorAll('#gbstep-2 input[type="number"]');
   const orig = parseFloat(priceInputs[0]?.value);
   const sale = parseFloat(priceInputs[1]?.value);
   const comm = parseFloat(priceInputs[2]?.value);
-  const dep = parseFloat(priceInputs[3]?.value);
-  const disc = (orig > 0 && sale > 0 && sale < orig) ? Math.round((1 - sale/orig)*100) : 20;
+  const dep  = parseFloat(priceInputs[3]?.value);
+  const disc = (orig > 0 && sale > 0 && sale < orig) ? Math.round((1 - sale/orig)*100) : null;
+  set('review-orig-price', !isNaN(orig) ? orig.toLocaleString() + '원' : '');
+  set('review-sale-price', !isNaN(sale) ? sale.toLocaleString() + '원' : '');
+  set('review-discount',   disc !== null ? disc + '%' : '');
+  set('review-commission', !isNaN(comm) ? comm + '%' : '');
+  set('review-deposit',    !isNaN(dep)  ? dep.toLocaleString() + '원' : '');
 
-  const set = (id, v) => { const el = document.getElementById(id); if (el && v !== undefined && v !== null && v !== '') el.textContent = v; };
-  set('review-product-name', nameVal);
-  set('review-brand-name', brandVal);
-  set('review-category', catVal);
-  set('review-period', period);
-  if (!isNaN(orig)) set('review-orig-price', orig.toLocaleString() + '원');
-  if (!isNaN(sale)) set('review-sale-price', sale.toLocaleString() + '원');
-  set('review-discount', disc + '%');
-  if (!isNaN(comm)) set('review-commission', comm + '%');
-  if (!isNaN(dep)) set('review-deposit', dep.toLocaleString() + '원');
+  // Step 2: 혜택
+  const benefitEl = document.getElementById('review-benefit-list');
+  if (benefitEl) {
+    const rows = document.querySelectorAll('#benefit-list .benefit-row');
+    const items = [];
+    rows.forEach(row => {
+      const type = row.querySelector('select')?.value || '';
+      const text = (row.querySelector('input')?.value || '').trim();
+      if (text) items.push(`[${type}] ${text}`);
+    });
+    benefitEl.innerHTML = items.length > 0
+      ? items.map(t => `<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text)"><div style="width:5px;height:5px;border-radius:50%;background:var(--orange);flex-shrink:0"></div>${t}</div>`).join('')
+      : '<span style="font-size:12px;color:var(--text3)">없음</span>';
+  }
+
+  // Step 2: 이벤트
+  const eventEl = document.getElementById('review-event-chips');
+  if (eventEl) {
+    const checked = document.querySelectorAll('#gbstep-2 input[type="checkbox"]:checked');
+    const eventNames = Array.from(checked).map(cb => cb.closest('label')?.textContent.trim()).filter(Boolean);
+    eventEl.innerHTML = eventNames.length > 0
+      ? eventNames.map(n => `<span class="chip chip-amber" style="font-size:10px">${n}</span>`).join('')
+      : '<span style="font-size:12px;color:var(--text3)">없음</span>';
+  }
+
+  // Step 3: 셀러 조건 (플랫폼 + 등급)
+  const sellerEl = document.getElementById('review-seller-cond');
+  if (sellerEl) {
+    const platParts = [];
+    document.querySelectorAll('#gb-platform-list > div').forEach(row => {
+      const cb = row.querySelector('input[type="checkbox"]');
+      if (!cb?.checked) return;
+      const name = row.querySelector('span')?.textContent.trim() || '';
+      const count = row.querySelector('input[type="number"]')?.value;
+      platParts.push(count ? `${name} ${parseInt(count).toLocaleString()}명+` : name);
+    });
+    const accessEl = document.querySelector('#gbstep-3 .toggle-opt.on[id^="access-"]');
+    const accessText = accessEl?.id === 'access-vvip' ? 'VVIP 전용' : accessEl?.id === 'access-vip' ? 'VIP 이상' : '';
+    const parts = [...platParts, accessText].filter(Boolean);
+    sellerEl.textContent = parts.length > 0 ? parts.join(' · ') : '—';
+  }
 }
 
 function resetGbForm() {
