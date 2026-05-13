@@ -802,11 +802,12 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
       </div>
     </div>
     <div class="scroll-area" style="padding:0 0 100px">
-      <div style="height:220px;background:linear-gradient(135deg,#F5E6D3,#E8D5C0);display:flex;align-items:center;justify-content:center">
-        <div style="text-align:center">
+      <div id="gb-prod-thumb-wrap" style="height:220px;background:linear-gradient(135deg,#F5E6D3,#E8D5C0);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0">
+        <div id="gb-prod-thumb-placeholder" style="text-align:center">
           <div style="font-size:48px">🐾</div>
           <div id="gb-prod-brand-thumb" style="font-size:12px;color:var(--text3);margin-top:4px"></div>
         </div>
+        <img id="gb-prod-thumb-img" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover">
       </div>
       <div style="padding:20px">
         <div style="display:flex;gap:8px;margin-bottom:8px">
@@ -2094,6 +2095,18 @@ function openGbProductDetail(campName) {
   const camps = JSON.parse(localStorage.getItem('biteme_gb_campaigns') || '[]');
   const c = camps.find(function(x){ return x.name === campName; });
   if (!c) { goScreen('screen-gb-product'); return; }
+
+  // 썸네일 이미지
+  var thumbImg = document.getElementById('gb-prod-thumb-img');
+  var thumbPh  = document.getElementById('gb-prod-thumb-placeholder');
+  if (c.thumbImg) {
+    thumbImg.src = c.thumbImg;
+    thumbImg.style.display = '';
+    thumbPh.style.display = 'none';
+  } else {
+    thumbImg.style.display = 'none';
+    thumbPh.style.display = '';
+  }
 
   document.getElementById('gb-prod-brand-thumb').textContent = c.brand || '';
   document.getElementById('gb-prod-cat-chip').textContent = c.cat || '';

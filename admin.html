@@ -828,6 +828,10 @@ textarea.form-input{resize:vertical;min-height:80px}
         </div>
       </div>
 
+      <div id="gbdetail-thumb-wrap" style="margin-bottom:16px;display:none">
+        <img id="gbdetail-thumb-img" src="" alt="상품 이미지" style="width:200px;height:200px;object-fit:cover;border-radius:12px;border:0.5px solid var(--border)">
+      </div>
+
       <div class="stat-grid">
         <div class="stat-card"><div class="stat-label">상태</div><div id="gbdetail-status" style="margin-top:6px">—</div></div>
         <div class="stat-card"><div class="stat-label">공구 판매가</div><div class="stat-value" id="gbdetail-sale-price">—</div></div>
@@ -1389,11 +1393,13 @@ textarea.form-input{resize:vertical;min-height:80px}
             <!-- 우측: 대표 이미지 (공백 하단) -->
             <div>
               <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px;padding-bottom:10px;border-bottom:0.5px solid var(--border)">대표 이미지</div>
-              <input type="file" id="gb-thumb-input" accept="image/*" style="display:none" onchange="if(this.files[0]){document.getElementById('gb-thumb-preview').textContent='✓ '+this.files[0].name;document.getElementById('gb-thumb-preview').style.color='var(--green)'}">
-              <div onclick="document.getElementById('gb-thumb-input').click()" style="border:2px dashed var(--border2);border-radius:10px;aspect-ratio:1/1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:var(--bg2);transition:border-color .15s" onmouseover="this.style.borderColor='var(--orange)'" onmouseout="this.style.borderColor='var(--border2)'">
-                <div style="font-size:24px;color:var(--text3);margin-bottom:8px">+</div>
-                <div style="font-size:12px;color:var(--text2);font-weight:500">이미지 업로드</div>
-                <div id="gb-thumb-preview" style="font-size:10px;color:var(--text3);margin-top:4px">JPG, PNG, WEBP · 1:1 권장</div>
+              <input type="file" id="gb-thumb-input" accept="image/*" style="display:none" onchange="gbThumbChange(this)">
+              <div id="gb-thumb-area" onclick="document.getElementById('gb-thumb-input').click()" style="border:2px dashed var(--border2);border-radius:10px;aspect-ratio:1/1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:var(--bg2);transition:border-color .15s;overflow:hidden;position:relative" onmouseover="this.style.borderColor='var(--orange)'" onmouseout="this.style.borderColor='var(--border2)'">
+                <div id="gb-thumb-placeholder" style="display:flex;flex-direction:column;align-items:center">
+                  <div style="font-size:24px;color:var(--text3);margin-bottom:8px">+</div>
+                  <div style="font-size:12px;color:var(--text2);font-weight:500">이미지 업로드</div>
+                  <div style="font-size:10px;color:var(--text3);margin-top:4px">JPG, PNG, WEBP · 1:1 권장</div>
+                </div>
               </div>
             </div>
           </div>
@@ -3374,6 +3380,21 @@ function gbCalNext() {
   gbCalRender();
 }
 
+let _gbThumbDataUrl = '';
+
+function gbThumbChange(input) {
+  if (!input.files || !input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    _gbThumbDataUrl = e.target.result;
+    const area = document.getElementById('gb-thumb-area');
+    if (!area) return;
+    area.innerHTML = '<img src="' + _gbThumbDataUrl + '" style="width:100%;height:100%;object-fit:cover;border-radius:8px">'
+      + '<div onclick="document.getElementById(\'gb-thumb-input\').click()" style="position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,.45);color:#fff;font-size:10px;padding:3px 7px;border-radius:4px;cursor:pointer">변경</div>';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
 function resetGbForm() {
   gbCurrentStep = 1;
   for (let i = 1; i <= 4; i++) {
@@ -3395,6 +3416,12 @@ function resetGbForm() {
     }
   }
   gbCalInit();
+  _gbThumbDataUrl = '';
+  const area = document.getElementById('gb-thumb-area');
+  if (area) area.innerHTML = '<div id="gb-thumb-placeholder" style="display:flex;flex-direction:column;align-items:center">'
+    + '<div style="font-size:24px;color:var(--text3);margin-bottom:8px">+</div>'
+    + '<div style="font-size:12px;color:var(--text2);font-weight:500">이미지 업로드</div>'
+    + '<div style="font-size:10px;color:var(--text3);margin-top:4px">JPG, PNG, WEBP · 1:1 권장</div></div>';
 }
 
 function collectGbFormData() {
@@ -3430,6 +3457,7 @@ function collectGbFormData() {
     catSub: document.getElementById('gb-cat-sub')?.value || '',
     desc: document.getElementById('gb-product-desc')?.value || '',
     productUrl: document.getElementById('gb-product-url')?.value || '',
+    thumbImg: _gbThumbDataUrl || '',
     period: (start && end) ? start + ' ~ ' + end : '일정 협의 중',
     origPrice: orig, salePrice: sale,
     discRate: (orig > 0 && sale > 0 && sale < orig) ? Math.round((1 - sale / orig) * 100) : 0,
@@ -3483,6 +3511,18 @@ function renderGbDetail() {
   const statusLabel = c.done ? '종료' : isActive ? '공구 진행중' : isDraft ? '미공개' : '모집중';
   const statusChip = c.done ? 'chip-gray' : isActive ? 'chip-green' : isDraft ? 'chip-gray' : 'chip-blue';
   const accessLabel = c.accessType === 'vvip' ? 'VVIP 전용' : c.accessType === 'vip' ? 'VIP 이상' : '전체 공개';
+
+  // 대표 이미지
+  const thumbWrap = document.getElementById('gbdetail-thumb-wrap');
+  const thumbImg = document.getElementById('gbdetail-thumb-img');
+  if (thumbWrap && thumbImg) {
+    if (c.thumbImg) {
+      thumbImg.src = c.thumbImg;
+      thumbWrap.style.display = '';
+    } else {
+      thumbWrap.style.display = 'none';
+    }
+  }
 
   // 헤더
   const titleEl = document.getElementById('gbdetail-title');
