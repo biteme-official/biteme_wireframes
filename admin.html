@@ -1290,23 +1290,62 @@ textarea.form-input{resize:vertical;min-height:80px}
           </div>
 
           <div style="border-top:0.5px solid var(--border);padding-top:24px;margin-bottom:24px">
-            <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:16px">공구 일정</div>
+            <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:14px">공구 일정</div>
+
+            <!-- 선택 현황 표시줄 -->
+            <div style="display:flex;align-items:stretch;gap:0;margin-bottom:14px;background:var(--bg2);border-radius:12px;border:1px solid var(--border2);overflow:hidden">
+              <div style="flex:1;padding:14px 20px;border-right:0.5px solid var(--border)">
+                <div style="font-size:11px;color:var(--text3);margin-bottom:4px">공구 시작일</div>
+                <div id="gb-cal-start-display" style="font-size:15px;font-weight:700;color:var(--text3)">날짜를 선택하세요</div>
+              </div>
+              <div style="display:flex;align-items:center;padding:0 14px;color:var(--text3);font-size:18px">→</div>
+              <div style="flex:1;padding:14px 20px;border-left:0.5px solid var(--border);border-right:0.5px solid var(--border)">
+                <div style="font-size:11px;color:var(--text3);margin-bottom:4px">공구 종료일</div>
+                <div id="gb-cal-end-display" style="font-size:15px;font-weight:700;color:var(--text3)">날짜를 선택하세요</div>
+              </div>
+              <div style="padding:14px 20px">
+                <div style="font-size:11px;color:var(--text3);margin-bottom:4px">총 기간</div>
+                <div id="gb-cal-duration" style="font-size:15px;font-weight:700;color:var(--orange)">—</div>
+              </div>
+            </div>
+
+            <!-- 2-month 캘린더 -->
+            <div style="background:var(--bg);border:1px solid var(--border2);border-radius:12px;overflow:hidden;margin-bottom:14px">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-bottom:0.5px solid var(--border);background:var(--bg2)">
+                <button type="button" onclick="gbCalPrev()" style="padding:5px 12px;border-radius:7px;border:1px solid var(--border2);background:var(--bg);cursor:pointer;font-size:15px;color:var(--text);line-height:1">‹</button>
+                <span id="gb-cal-header" style="font-size:13px;font-weight:600;color:var(--text)"></span>
+                <button type="button" onclick="gbCalNext()" style="padding:5px 12px;border-radius:7px;border:1px solid var(--border2);background:var(--bg);cursor:pointer;font-size:15px;color:var(--text);line-height:1">›</button>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr">
+                <div style="padding:16px 18px;border-right:0.5px solid var(--border)">
+                  <div id="gb-cal-m1-title" style="text-align:center;font-size:12px;font-weight:600;color:var(--text);margin-bottom:10px"></div>
+                  <div id="gb-cal-m1" style="display:grid;grid-template-columns:repeat(7,1fr);gap:1px"></div>
+                </div>
+                <div style="padding:16px 18px">
+                  <div id="gb-cal-m2-title" style="text-align:center;font-size:12px;font-weight:600;color:var(--text);margin-bottom:10px"></div>
+                  <div id="gb-cal-m2" style="display:grid;grid-template-columns:repeat(7,1fr);gap:1px"></div>
+                </div>
+              </div>
+              <div style="padding:8px 20px;border-top:0.5px solid var(--border);background:var(--bg2);display:flex;gap:16px;font-size:11px;color:var(--text3)">
+                <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--orange);margin-right:4px;vertical-align:middle"></span>시작/종료일</span>
+                <span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:#FAEEDA;border:1px solid #EF9F27;margin-right:4px;vertical-align:middle"></span>공구 기간</span>
+                <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:none;border:2px solid var(--orange);margin-right:4px;vertical-align:middle"></span>오늘</span>
+              </div>
+            </div>
+
+            <!-- 시간 & 신청마감일 & 셀러수 -->
             <div class="form-grid">
               <div class="form-group">
-                <label class="form-label">공구 시작일</label>
-                <div style="display:flex;gap:8px">
-                  <input class="form-input" type="date" style="flex:1">
-                  <input class="form-input" type="text" placeholder="00:00" maxlength="5" style="width:90px" pattern="\d{2}:\d{2}" oninput="autoColon(this)">
-                </div>
-                <span style="font-size:11px;color:var(--text3)">숫자 4자리 입력 시 자동으로 : 삽입 (예: 1100 → 11:00)</span>
+                <label class="form-label">시작 시간</label>
+                <select id="gb-start-time" class="form-input">
+                  <option>00:00</option><option>06:00</option><option>07:00</option><option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option><option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option><option>19:00</option><option>20:00</option><option>21:00</option><option>22:00</option><option>23:00</option><option>23:59</option>
+                </select>
               </div>
               <div class="form-group">
-                <label class="form-label">공구 종료일</label>
-                <div style="display:flex;gap:8px">
-                  <input class="form-input" type="date" style="flex:1">
-                  <input class="form-input" type="text" value="23:59" maxlength="5" style="width:90px" pattern="\d{2}:\d{2}" oninput="autoColon(this)">
-                </div>
-                <span style="font-size:11px;color:var(--text3)">종료 시간 기본값 23:59</span>
+                <label class="form-label">종료 시간</label>
+                <select id="gb-end-time" class="form-input">
+                  <option>00:00</option><option>06:00</option><option>07:00</option><option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option><option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option><option>19:00</option><option>20:00</option><option>21:00</option><option>22:00</option><option>23:00</option><option selected>23:59</option>
+                </select>
               </div>
               <div class="form-group">
                 <label class="form-label">신청 마감일</label>
@@ -1317,6 +1356,10 @@ textarea.form-input{resize:vertical;min-height:80px}
                 <input class="form-input" type="number" placeholder="예) 20">
               </div>
             </div>
+
+            <!-- 숨겨진 date inputs (data collection 호환) -->
+            <input type="date" id="gb-start-date" style="display:none">
+            <input type="date" id="gb-end-date" style="display:none">
           </div>
 
           <div style="display:flex;justify-content:flex-end;padding-top:20px;border-top:0.5px solid var(--border)">
@@ -2848,6 +2891,7 @@ function goPage(id) {
   const navItems = document.querySelectorAll('.nav-item');
   if (navMap[id] !== undefined) navItems[navMap[id]].classList.add('on');
   if (id === 'page-campaign-new') resetCampaignForm();
+  if (id === 'page-gb-new') gbCalInit();
   if (id === 'page-grade-criteria') initGradeCriteria();
   if (id === 'page-sales') initSalesPage();
   if (id === 'page-gb-home') initGbHome();
@@ -3124,10 +3168,9 @@ function gbUpdateReview() {
   set('review-product-name', document.getElementById('gb-product-name')?.value);
   set('review-brand-name', document.getElementById('gb-brand-name')?.value);
   set('review-category', document.getElementById('gb-cat-main')?.value);
-  const dateInputs = document.querySelectorAll('#gbstep-1 input[type="date"]');
   const fmt = v => v ? new Date(v).toLocaleDateString('ko-KR', {month:'numeric', day:'numeric'}).replace(/ /g,'') : null;
-  const start = fmt(dateInputs[0]?.value);
-  const end = fmt(dateInputs[1]?.value);
+  const start = fmt(document.getElementById('gb-start-date')?.value);
+  const end   = fmt(document.getElementById('gb-end-date')?.value);
   set('review-period', (start || end) ? `${start || '?'} ~ ${end || '?'}` : '');
 
   // Step 2: 공구 스킴 (가격)
@@ -3186,6 +3229,114 @@ function gbUpdateReview() {
   }
 }
 
+// ===== 공구 일정 캘린더 =====
+let _gbCal = { year: 2026, month: 4, startDate: null, endDate: null };
+
+function gbCalInit() {
+  const now = new Date();
+  _gbCal = { year: now.getFullYear(), month: now.getMonth(), startDate: null, endDate: null };
+  const st = document.getElementById('gb-start-time');
+  const et = document.getElementById('gb-end-time');
+  if (st) st.value = '00:00';
+  if (et) et.value = '23:59';
+  gbCalRender();
+}
+
+function gbCalRender() {
+  const { year, month, startDate, endDate } = _gbCal;
+  const m2y = month === 11 ? year + 1 : year;
+  const m2m = month === 11 ? 0 : month + 1;
+
+  const hdr = document.getElementById('gb-cal-header');
+  if (hdr) hdr.textContent = `${year}년 ${month + 1}월 · ${m2y}년 ${m2m + 1}월`;
+
+  const t1 = document.getElementById('gb-cal-m1-title');
+  if (t1) t1.textContent = `${year}년 ${month + 1}월`;
+  const t2 = document.getElementById('gb-cal-m2-title');
+  if (t2) t2.textContent = `${m2y}년 ${m2m + 1}월`;
+
+  renderGbCalMonth('gb-cal-m1', year, month, startDate, endDate);
+  renderGbCalMonth('gb-cal-m2', m2y, m2m, startDate, endDate);
+
+  const fmt = d => d ? `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일` : null;
+  const sd = document.getElementById('gb-cal-start-display');
+  const ed = document.getElementById('gb-cal-end-display');
+  const dur = document.getElementById('gb-cal-duration');
+  if (sd) { sd.textContent = fmt(startDate) || '날짜를 선택하세요'; sd.style.color = startDate ? 'var(--text)' : 'var(--text3)'; }
+  if (ed) { ed.textContent = fmt(endDate) || '날짜를 선택하세요'; ed.style.color = endDate ? 'var(--text)' : 'var(--text3)'; }
+  if (dur) {
+    if (startDate && endDate) {
+      const days = Math.round((endDate - startDate) / 86400000) + 1;
+      dur.textContent = days + '일';
+    } else {
+      dur.textContent = startDate ? '종료일 선택' : '—';
+      dur.style.color = startDate ? 'var(--text2)' : 'var(--orange)';
+    }
+  }
+
+  const fmtVal = d => d ? `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}` : '';
+  const si = document.getElementById('gb-start-date');
+  const ei = document.getElementById('gb-end-date');
+  if (si) si.value = fmtVal(startDate);
+  if (ei) ei.value = fmtVal(endDate);
+}
+
+function renderGbCalMonth(containerId, year, month, startDate, endDate) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const DOW = ['일','월','화','수','목','금','토'];
+  const today = new Date(); today.setHours(0,0,0,0);
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const ts = d => d ? d.getTime() : null;
+
+  let html = DOW.map((d, i) => `<div style="text-align:center;font-size:11px;font-weight:600;padding:4px 0;color:${i===0?'#E53E3E':i===6?'#3B82F6':'var(--text3)'}">${d}</div>`).join('');
+  for (let i = 0; i < firstDay; i++) html += '<div></div>';
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(year, month, d);
+    const dt = date.getTime();
+    const isStart = startDate && dt === ts(startDate);
+    const isEnd = endDate && dt === ts(endDate);
+    const inRange = startDate && endDate && dt > ts(startDate) && dt < ts(endDate);
+    const isToday = dt === today.getTime();
+    const dow = date.getDay();
+    const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+
+    let bg = 'transparent', color = dow===0?'#E53E3E':dow===6?'#3B82F6':'var(--text)', border = 'none', fontWeight = '400', borderRadius = '6px';
+    if (isStart || isEnd) { bg = 'var(--orange)'; color = '#fff'; fontWeight = '700'; }
+    else if (inRange) { bg = '#FAEEDA'; color = 'var(--orange)'; borderRadius = '0'; }
+    else if (isToday) { border = '2px solid var(--orange)'; color = 'var(--orange)'; }
+
+    if (inRange && (d === 1 || firstDay + d - 1 === firstDay || dow === 0)) borderRadius = '6px 0 0 6px';
+    if (inRange && (d === daysInMonth || dow === 6)) borderRadius = borderRadius === '6px 0 0 6px' ? '6px' : '0 6px 6px 0';
+
+    html += `<div onclick="gbCalSelect('${dateStr}')" style="text-align:center;font-size:13px;padding:7px 2px;cursor:pointer;background:${bg};color:${color};border:${border};border-radius:${borderRadius};font-weight:${fontWeight};transition:opacity .1s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">${d}</div>`;
+  }
+  container.innerHTML = html;
+}
+
+function gbCalSelect(dateStr) {
+  const date = new Date(dateStr + 'T00:00:00');
+  const { startDate, endDate } = _gbCal;
+  if (!startDate || (startDate && endDate)) {
+    _gbCal.startDate = date; _gbCal.endDate = null;
+  } else {
+    if (date >= startDate) { _gbCal.endDate = date; }
+    else { _gbCal.endDate = startDate; _gbCal.startDate = date; }
+  }
+  gbCalRender();
+}
+
+function gbCalPrev() {
+  if (_gbCal.month === 0) { _gbCal.year--; _gbCal.month = 11; } else _gbCal.month--;
+  gbCalRender();
+}
+function gbCalNext() {
+  if (_gbCal.month === 11) { _gbCal.year++; _gbCal.month = 0; } else _gbCal.month++;
+  gbCalRender();
+}
+
 function resetGbForm() {
   gbCurrentStep = 1;
   for (let i = 1; i <= 4; i++) {
@@ -3206,16 +3357,16 @@ function resetGbForm() {
       if (line) line.className = 'step-line';
     }
   }
+  gbCalInit();
 }
 
 function collectGbFormData() {
   const fmt = v => v ? new Date(v).toLocaleDateString('ko-KR', {month:'numeric', day:'numeric'}).replace(/ /g,'') : null;
-  const dateInputs = document.querySelectorAll('#gbstep-1 input[type="date"]');
   const priceInputs = document.querySelectorAll('#gbstep-2 input[type="number"]');
   const orig = parseFloat(priceInputs[0]?.value) || 0;
   const sale = parseFloat(priceInputs[1]?.value) || 0;
-  const start = fmt(dateInputs[0]?.value);
-  const end   = fmt(dateInputs[1]?.value);
+  const start = fmt(document.getElementById('gb-start-date')?.value);
+  const end   = fmt(document.getElementById('gb-end-date')?.value);
   const benefits = [];
   document.querySelectorAll('#benefit-list .benefit-row').forEach(row => {
     const type = row.querySelector('select')?.value || '';
