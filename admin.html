@@ -814,6 +814,65 @@ textarea.form-input{resize:vertical;min-height:80px}
       </div>
     </div>
 
+    <!-- ===================== 공구 캠페인 상세 ===================== -->
+    <div class="page" id="page-gb-detail">
+      <div class="page-header">
+        <div>
+          <div class="page-title" id="gbdetail-title">—</div>
+          <div class="page-sub" id="gbdetail-sub">—</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-secondary" onclick="goPage('page-gb-home')">← 목록으로</button>
+          <div id="gbdetail-action" style="display:flex;gap:8px"></div>
+        </div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-label">상태</div><div id="gbdetail-status" style="margin-top:6px">—</div></div>
+        <div class="stat-card"><div class="stat-label">공구 판매가</div><div class="stat-value" id="gbdetail-sale-price">—</div></div>
+        <div class="stat-card"><div class="stat-label">할인율</div><div class="stat-value" id="gbdetail-disc" style="color:var(--orange)">—</div></div>
+        <div class="stat-card"><div class="stat-label">수수료율</div><div class="stat-value" id="gbdetail-comm">—</div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+        <div class="table-wrap" style="margin-bottom:0">
+          <div class="table-header"><div class="table-title">상품 기본 정보</div></div>
+          <div>
+            <div style="display:flex;justify-content:space-between;padding:10px 16px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">상품명</span><span id="gbd-name" style="font-size:12px;font-weight:500;color:var(--text)">—</span></div>
+            <div style="display:flex;justify-content:space-between;padding:10px 16px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">브랜드</span><span id="gbd-brand" style="font-size:12px;font-weight:500;color:var(--text)">—</span></div>
+            <div style="display:flex;justify-content:space-between;padding:10px 16px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">카테고리</span><span id="gbd-cat" style="font-size:12px;font-weight:500;color:var(--text)">—</span></div>
+            <div style="display:flex;justify-content:space-between;padding:10px 16px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">공구 기간</span><span id="gbd-period" style="font-size:12px;font-weight:500;color:var(--text)">—</span></div>
+            <div style="display:flex;justify-content:space-between;padding:10px 16px"><span style="font-size:12px;color:var(--text3)">접근 등급</span><span id="gbd-access" style="font-size:12px;font-weight:500;color:var(--text)">—</span></div>
+          </div>
+        </div>
+        <div class="table-wrap" style="margin-bottom:0">
+          <div class="table-header"><div class="table-title">공구 스킴</div></div>
+          <div>
+            <div style="display:flex;justify-content:space-between;padding:10px 16px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">기존 판매가</span><span id="gbd-orig" style="font-size:12px;font-weight:500;color:var(--text)">—</span></div>
+            <div style="display:flex;justify-content:space-between;padding:10px 16px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">공구 판매가</span><span id="gbd-sale" style="font-size:12px;font-weight:700;color:var(--orange)">—</span></div>
+            <div style="display:flex;justify-content:space-between;padding:10px 16px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">할인율</span><span id="gbd-disc2" style="font-size:12px;font-weight:700;color:var(--orange)">—</span></div>
+            <div style="display:flex;justify-content:space-between;padding:10px 16px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">수수료율</span><span id="gbd-comm2" style="font-size:12px;font-weight:500;color:var(--text)">—</span></div>
+            <div style="display:flex;justify-content:space-between;padding:10px 16px"><span style="font-size:12px;color:var(--text3)">보증금</span><span id="gbd-deposit" style="font-size:12px;font-weight:500;color:var(--text)">—</span></div>
+          </div>
+        </div>
+        <div class="table-wrap" style="margin-bottom:0">
+          <div class="table-header"><div class="table-title">혜택 & 셀러 조건</div></div>
+          <div style="padding:12px 16px;border-bottom:0.5px solid var(--border)">
+            <div style="font-size:11px;color:var(--text3);margin-bottom:6px">혜택</div>
+            <div id="gbd-benefits" style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;color:var(--text3)">—</span></div>
+          </div>
+          <div style="padding:12px 16px;border-bottom:0.5px solid var(--border)">
+            <div style="font-size:11px;color:var(--text3);margin-bottom:6px">이벤트</div>
+            <div id="gbd-events" style="display:flex;gap:4px;flex-wrap:wrap"><span style="font-size:12px;color:var(--text3)">—</span></div>
+          </div>
+          <div style="padding:12px 16px">
+            <div style="font-size:11px;color:var(--text3);margin-bottom:6px">셀러 조건</div>
+            <div id="gbd-seller" style="font-size:12px;font-weight:500;color:var(--text)">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ===================== 공동구매 홈 ===================== -->
     <div class="page" id="page-gb-home">
       <div class="page-header">
@@ -2754,6 +2813,7 @@ const breadcrumbs = {
   'page-applications': '시딩 › <strong>신청 관리</strong>',
   'page-review': '시딩 › <strong>콘텐츠 검수</strong>',
   'page-gb-home': '공동구매 › <strong>공구 홈</strong>',
+  'page-gb-detail': '공동구매 › 공구 홈 › <strong>캠페인 상세</strong>',
   'page-gb-new': '공동구매 › <strong>공구 개설</strong>',
   'page-gb-pipeline': '공동구매 › <strong>공구 파이프라인</strong>',
   'page-schedule': '공동구매 › <strong>신청자 관리</strong>',
@@ -2778,7 +2838,7 @@ function goPage(id) {
     'page-home': 0,
     'page-campaigns': 1, 'page-campaign-new': 2, 'page-campaign-detail': 1, 'page-applications': 3,
     'page-review': 4,
-    'page-gb-home': 5, 'page-gb-new': 6, 'page-gb-pipeline': 7, 'page-schedule': 8, 'page-sales': 9,
+    'page-gb-home': 5, 'page-gb-detail': 5, 'page-gb-new': 6, 'page-gb-pipeline': 7, 'page-schedule': 8, 'page-sales': 9,
     'page-grade-mgmt': 10, 'page-grade-criteria': 10,
     'page-deposit': 11,
     'page-influencers': 12,
@@ -2791,6 +2851,7 @@ function goPage(id) {
   if (id === 'page-grade-criteria') initGradeCriteria();
   if (id === 'page-sales') initSalesPage();
   if (id === 'page-gb-home') initGbHome();
+  if (id === 'page-gb-detail') renderGbDetail();
   if (id === 'page-campaigns') initSeedCampaigns();
   if (id === 'page-applications') initApplicationsPage();
 }
@@ -3147,25 +3208,53 @@ function resetGbForm() {
   }
 }
 
-function gbOpenCampaign() {
-  const nameVal = document.getElementById('gb-product-name')?.value || '새 공동구매 상품';
-  const brandVal = document.getElementById('gb-brand-name')?.value || '';
-  const catVal = document.getElementById('gb-cat-main')?.value || '';
+function collectGbFormData() {
+  const fmt = v => v ? new Date(v).toLocaleDateString('ko-KR', {month:'numeric', day:'numeric'}).replace(/ /g,'') : null;
   const dateInputs = document.querySelectorAll('#gbstep-1 input[type="date"]');
   const priceInputs = document.querySelectorAll('#gbstep-2 input[type="number"]');
-  const fmt = v => v ? new Date(v).toLocaleDateString('ko-KR', {month:'numeric', day:'numeric'}).replace(/ /g,'') : null;
-  const start = fmt(dateInputs[0]?.value);
-  const end = fmt(dateInputs[1]?.value);
-  const period = (start && end) ? start + ' ~ ' + end : '일정 협의 중';
   const orig = parseFloat(priceInputs[0]?.value) || 0;
   const sale = parseFloat(priceInputs[1]?.value) || 0;
-  const discRate = (orig > 0 && sale > 0 && sale < orig) ? Math.round((1 - sale / orig) * 100) : 0;
-  const accessType = document.getElementById('access-vvip')?.classList.contains('on') ? 'vvip'
-    : document.getElementById('access-vip')?.classList.contains('on') ? 'vip' : 'all';
+  const start = fmt(dateInputs[0]?.value);
+  const end   = fmt(dateInputs[1]?.value);
+  const benefits = [];
+  document.querySelectorAll('#benefit-list .benefit-row').forEach(row => {
+    const type = row.querySelector('select')?.value || '';
+    const text = (row.querySelector('input')?.value || '').trim();
+    if (text) benefits.push({ type, text });
+  });
+  const events = Array.from(document.querySelectorAll('#gbstep-2 input[type="checkbox"]:checked'))
+    .map(cb => cb.closest('label')?.textContent.trim()).filter(Boolean);
+  const platParts = [];
+  document.querySelectorAll('#gb-platform-list > div').forEach(row => {
+    const cb = row.querySelector('input[type="checkbox"]');
+    if (!cb?.checked) return;
+    const platName = row.querySelector('span')?.textContent.trim() || '';
+    const cnt = row.querySelector('input[type="number"]')?.value;
+    platParts.push(cnt ? `${platName} ${parseInt(cnt).toLocaleString()}명+` : platName);
+  });
+  const accessEl = document.querySelector('#gbstep-3 .toggle-opt.on[id^="access-"]');
+  const accessType = accessEl?.id === 'access-vvip' ? 'vvip' : accessEl?.id === 'access-vip' ? 'vip' : 'all';
+  const accessText = accessType === 'vvip' ? 'VVIP 전용' : accessType === 'vip' ? 'VIP 이상' : '';
+  return {
+    name: document.getElementById('gb-product-name')?.value || '새 공동구매 상품',
+    brand: document.getElementById('gb-brand-name')?.value || '',
+    cat: document.getElementById('gb-cat-main')?.value || '',
+    period: (start && end) ? start + ' ~ ' + end : '일정 협의 중',
+    origPrice: orig, salePrice: sale,
+    discRate: (orig > 0 && sale > 0 && sale < orig) ? Math.round((1 - sale / orig) * 100) : 0,
+    commRate: parseFloat(priceInputs[2]?.value) || 0,
+    deposit: parseFloat(priceInputs[3]?.value) || 0,
+    accessType, accessText, benefits, events,
+    sellerCond: [...platParts, accessText].filter(Boolean).join(' · ') || '제한 없음'
+  };
+}
+
+function gbOpenCampaign() {
+  const d = collectGbFormData();
   const gbCamps = JSON.parse(localStorage.getItem('biteme_gb_campaigns') || '[]');
-  gbCamps.unshift({ name: nameVal, brand: brandVal, cat: catVal, period, discRate, salePrice: sale, origPrice: orig, accessType, draft: true });
+  gbCamps.unshift({ ...d, draft: true });
   localStorage.setItem('biteme_gb_campaigns', JSON.stringify(gbCamps));
-  showToast(nameVal + ' 캠페인이 미공개 상태로 개설됐습니다. 공구 홈에서 모집을 시작할 수 있어요.');
+  showToast(d.name + ' 캠페인이 미공개 상태로 개설됐습니다. 공구 홈에서 모집을 시작할 수 있어요.');
   resetGbForm();
   goPage('page-gb-home');
 }
@@ -3179,25 +3268,84 @@ function gbStartDraft(name) {
 }
 
 function gbOpenAndStart() {
-  const nameVal = document.getElementById('gb-product-name')?.value || '새 공동구매 상품';
-  const brandVal = document.getElementById('gb-brand-name')?.value || '';
-  const catVal = document.getElementById('gb-cat-main')?.value || '';
-  const dateInputs = document.querySelectorAll('#gbstep-1 input[type="date"]');
-  const priceInputs = document.querySelectorAll('#gbstep-2 input[type="number"]');
-  const fmt = v => v ? new Date(v).toLocaleDateString('ko-KR', {month:'numeric', day:'numeric'}).replace(/ /g,'') : null;
-  const start = fmt(dateInputs[0]?.value);
-  const end = fmt(dateInputs[1]?.value);
-  const period = (start && end) ? start + ' ~ ' + end : '일정 협의 중';
-  const orig = parseFloat(priceInputs[0]?.value) || 0;
-  const sale = parseFloat(priceInputs[1]?.value) || 0;
-  const discRate = (orig > 0 && sale > 0 && sale < orig) ? Math.round((1 - sale / orig) * 100) : 0;
-  const accessType = document.getElementById('access-vvip')?.classList.contains('on') ? 'vvip'
-    : document.getElementById('access-vip')?.classList.contains('on') ? 'vip' : 'all';
+  const d = collectGbFormData();
   const gbCamps = JSON.parse(localStorage.getItem('biteme_gb_campaigns') || '[]');
-  gbCamps.unshift({ name: nameVal, brand: brandVal, cat: catVal, period, discRate, salePrice: sale, origPrice: orig, accessType });
+  gbCamps.unshift({ ...d });
   localStorage.setItem('biteme_gb_campaigns', JSON.stringify(gbCamps));
-  showToast(nameVal + ' 캠페인이 개설되어 모집을 시작했습니다');
+  showToast(d.name + ' 캠페인이 개설되어 모집을 시작했습니다');
   goPage('page-gb-home');
+}
+
+let _gbDetailName = null;
+function openGbDetail(name) {
+  _gbDetailName = name;
+  goPage('page-gb-detail');
+}
+
+function renderGbDetail() {
+  const camps = JSON.parse(localStorage.getItem('biteme_gb_campaigns') || '[]');
+  const c = camps.find(camp => camp.name === _gbDetailName) || camps[0];
+  if (!c) return;
+  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v || '—'; };
+  const isDraft = !!c.draft;
+  const isActive = !!c.active && !c.done;
+  const statusLabel = c.done ? '종료' : isActive ? '공구 진행중' : isDraft ? '미공개' : '모집중';
+  const statusChip = c.done ? 'chip-gray' : isActive ? 'chip-green' : isDraft ? 'chip-gray' : 'chip-blue';
+  const accessLabel = c.accessType === 'vvip' ? 'VVIP 전용' : c.accessType === 'vip' ? 'VIP 이상' : '전체 공개';
+
+  // 헤더
+  const titleEl = document.getElementById('gbdetail-title');
+  if (titleEl) titleEl.textContent = c.name;
+  const subEl = document.getElementById('gbdetail-sub');
+  if (subEl) subEl.textContent = [c.brand, c.cat, c.period].filter(Boolean).join(' · ');
+
+  // 액션 버튼
+  const actionEl = document.getElementById('gbdetail-action');
+  if (actionEl) {
+    actionEl.innerHTML = isDraft
+      ? `<button class="btn btn-primary" onclick="gbStartDraft('${c.name.replace(/'/g,"\\'")}');goPage('page-gb-home')">모집 시작하기</button>`
+      : '';
+  }
+
+  // 상태 카드
+  const statusEl = document.getElementById('gbdetail-status');
+  if (statusEl) statusEl.innerHTML = `<span class="chip ${statusChip}">${statusLabel}</span>`;
+  set('gbdetail-sale-price', c.salePrice ? parseInt(c.salePrice).toLocaleString() + '원' : '');
+  set('gbdetail-disc', c.discRate ? c.discRate + '%' : '');
+  set('gbdetail-comm', c.commRate ? c.commRate + '%' : '');
+
+  // 상품 기본 정보
+  set('gbd-name', c.name);
+  set('gbd-brand', c.brand);
+  set('gbd-cat', c.cat);
+  set('gbd-period', c.period);
+  set('gbd-access', accessLabel);
+
+  // 공구 스킴
+  set('gbd-orig', c.origPrice ? parseInt(c.origPrice).toLocaleString() + '원' : '');
+  set('gbd-sale', c.salePrice ? parseInt(c.salePrice).toLocaleString() + '원' : '');
+  set('gbd-disc2', c.discRate ? c.discRate + '%' : '');
+  set('gbd-comm2', c.commRate ? c.commRate + '%' : '');
+  set('gbd-deposit', c.deposit ? parseInt(c.deposit).toLocaleString() + '원' : '');
+
+  // 혜택
+  const benefitsEl = document.getElementById('gbd-benefits');
+  if (benefitsEl) {
+    benefitsEl.innerHTML = (c.benefits && c.benefits.length > 0)
+      ? c.benefits.map(b => `<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text)"><div style="width:5px;height:5px;border-radius:50%;background:var(--orange);flex-shrink:0"></div>[${b.type}] ${b.text}</div>`).join('')
+      : '<span style="font-size:12px;color:var(--text3)">없음</span>';
+  }
+
+  // 이벤트
+  const eventsEl = document.getElementById('gbd-events');
+  if (eventsEl) {
+    eventsEl.innerHTML = (c.events && c.events.length > 0)
+      ? c.events.map(e => `<span class="chip chip-amber" style="font-size:10px">${e}</span>`).join('')
+      : '<span style="font-size:12px;color:var(--text3)">없음</span>';
+  }
+
+  // 셀러 조건
+  set('gbd-seller', c.sellerCond);
 }
 
 function calcDiscount() {
@@ -3554,7 +3702,7 @@ function initGbHome() {
     const tr = document.createElement('tr');
     tr.dataset.tab = s;
     tr.style.display = s === _gbHomeTab ? '' : 'none';
-    tr.innerHTML = `<td><div class="td-name">${c.name}${accessBadge ? ' ' + accessBadge : ''}</div><div class="td-sub">${c.brand || ''} · ${c.cat || ''}</div></td>`
+    tr.innerHTML = `<td><div class="td-name" style="cursor:pointer;color:var(--text);text-decoration:underline;text-underline-offset:2px" onclick="openGbDetail('${c.name.replace(/'/g,"\\'")}')">${c.name}${accessBadge ? ' ' + accessBadge : ''}</div><div class="td-sub">${c.brand || ''} · ${c.cat || ''}</div></td>`
       + `<td><div style="font-size:12px;color:var(--text3)">—</div></td>`
       + `<td><div style="font-size:12px">${c.period || '—'}</div></td>`
       + `<td><div style="font-size:12px">—</div></td>`
