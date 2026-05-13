@@ -1292,44 +1292,46 @@ textarea.form-input{resize:vertical;min-height:80px}
           <div style="border-top:0.5px solid var(--border);padding-top:24px;margin-bottom:24px">
             <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:14px">공구 일정</div>
 
-            <!-- 선택 현황 표시줄 -->
-            <div style="display:flex;align-items:stretch;gap:0;margin-bottom:14px;background:var(--bg2);border-radius:12px;border:1px solid var(--border2);overflow:hidden">
-              <div style="flex:1;padding:14px 20px;border-right:0.5px solid var(--border)">
-                <div style="font-size:11px;color:var(--text3);margin-bottom:4px">공구 시작일</div>
-                <div id="gb-cal-start-display" style="font-size:15px;font-weight:700;color:var(--text3)">날짜를 선택하세요</div>
+            <div style="max-width:520px">
+              <!-- 선택 현황 표시줄 -->
+              <div style="display:flex;align-items:stretch;gap:0;margin-bottom:12px;background:var(--bg2);border-radius:10px;border:1px solid var(--border2);overflow:hidden">
+                <div style="flex:1;padding:10px 14px;border-right:0.5px solid var(--border)">
+                  <div style="font-size:10px;color:var(--text3);margin-bottom:3px">공구 시작일</div>
+                  <div id="gb-cal-start-display" style="font-size:13px;font-weight:700;color:var(--text3)">날짜를 선택하세요</div>
+                </div>
+                <div style="display:flex;align-items:center;padding:0 10px;color:var(--text3);font-size:16px">→</div>
+                <div style="flex:1;padding:10px 14px;border-left:0.5px solid var(--border);border-right:0.5px solid var(--border)">
+                  <div style="font-size:10px;color:var(--text3);margin-bottom:3px">공구 종료일</div>
+                  <div id="gb-cal-end-display" style="font-size:13px;font-weight:700;color:var(--text3)">날짜를 선택하세요</div>
+                </div>
+                <div style="padding:10px 14px">
+                  <div style="font-size:10px;color:var(--text3);margin-bottom:3px">총 기간</div>
+                  <div id="gb-cal-duration" style="font-size:13px;font-weight:700;color:var(--orange)">—</div>
+                </div>
               </div>
-              <div style="display:flex;align-items:center;padding:0 14px;color:var(--text3);font-size:18px">→</div>
-              <div style="flex:1;padding:14px 20px;border-left:0.5px solid var(--border);border-right:0.5px solid var(--border)">
-                <div style="font-size:11px;color:var(--text3);margin-bottom:4px">공구 종료일</div>
-                <div id="gb-cal-end-display" style="font-size:15px;font-weight:700;color:var(--text3)">날짜를 선택하세요</div>
-              </div>
-              <div style="padding:14px 20px">
-                <div style="font-size:11px;color:var(--text3);margin-bottom:4px">총 기간</div>
-                <div id="gb-cal-duration" style="font-size:15px;font-weight:700;color:var(--orange)">—</div>
-              </div>
-            </div>
 
-            <!-- 2-month 캘린더 -->
-            <div style="background:var(--bg);border:1px solid var(--border2);border-radius:12px;overflow:hidden;margin-bottom:14px">
-              <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-bottom:0.5px solid var(--border);background:var(--bg2)">
-                <button type="button" onclick="gbCalPrev()" style="padding:5px 12px;border-radius:7px;border:1px solid var(--border2);background:var(--bg);cursor:pointer;font-size:15px;color:var(--text);line-height:1">‹</button>
-                <span id="gb-cal-header" style="font-size:13px;font-weight:600;color:var(--text)"></span>
-                <button type="button" onclick="gbCalNext()" style="padding:5px 12px;border-radius:7px;border:1px solid var(--border2);background:var(--bg);cursor:pointer;font-size:15px;color:var(--text);line-height:1">›</button>
-              </div>
-              <div style="display:grid;grid-template-columns:1fr 1fr">
-                <div style="padding:16px 18px;border-right:0.5px solid var(--border)">
-                  <div id="gb-cal-m1-title" style="text-align:center;font-size:12px;font-weight:600;color:var(--text);margin-bottom:10px"></div>
-                  <div id="gb-cal-m1" style="display:grid;grid-template-columns:repeat(7,1fr);gap:1px"></div>
+              <!-- 2-month 캘린더 -->
+              <div style="background:var(--bg);border:1px solid var(--border2);border-radius:10px;overflow:hidden;margin-bottom:12px">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 14px;border-bottom:0.5px solid var(--border);background:var(--bg2)">
+                  <button type="button" onclick="gbCalPrev()" style="padding:4px 10px;border-radius:6px;border:1px solid var(--border2);background:var(--bg);cursor:pointer;font-size:14px;color:var(--text);line-height:1">‹</button>
+                  <span id="gb-cal-header" style="font-size:12px;font-weight:600;color:var(--text)"></span>
+                  <button type="button" onclick="gbCalNext()" style="padding:4px 10px;border-radius:6px;border:1px solid var(--border2);background:var(--bg);cursor:pointer;font-size:14px;color:var(--text);line-height:1">›</button>
                 </div>
-                <div style="padding:16px 18px">
-                  <div id="gb-cal-m2-title" style="text-align:center;font-size:12px;font-weight:600;color:var(--text);margin-bottom:10px"></div>
-                  <div id="gb-cal-m2" style="display:grid;grid-template-columns:repeat(7,1fr);gap:1px"></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr">
+                  <div style="padding:12px 10px;border-right:0.5px solid var(--border)">
+                    <div id="gb-cal-m1-title" style="text-align:center;font-size:11px;font-weight:600;color:var(--text);margin-bottom:8px"></div>
+                    <div id="gb-cal-m1" style="display:grid;grid-template-columns:repeat(7,1fr);gap:1px"></div>
+                  </div>
+                  <div style="padding:12px 10px">
+                    <div id="gb-cal-m2-title" style="text-align:center;font-size:11px;font-weight:600;color:var(--text);margin-bottom:8px"></div>
+                    <div id="gb-cal-m2" style="display:grid;grid-template-columns:repeat(7,1fr);gap:1px"></div>
+                  </div>
                 </div>
-              </div>
-              <div style="padding:8px 20px;border-top:0.5px solid var(--border);background:var(--bg2);display:flex;gap:16px;font-size:11px;color:var(--text3)">
-                <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--orange);margin-right:4px;vertical-align:middle"></span>시작/종료일</span>
-                <span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:#FAEEDA;border:1px solid #EF9F27;margin-right:4px;vertical-align:middle"></span>공구 기간</span>
-                <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:none;border:2px solid var(--orange);margin-right:4px;vertical-align:middle"></span>오늘</span>
+                <div style="padding:6px 14px;border-top:0.5px solid var(--border);background:var(--bg2);display:flex;gap:12px;font-size:10px;color:var(--text3)">
+                  <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--orange);margin-right:3px;vertical-align:middle"></span>시작/종료일</span>
+                  <span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#FAEEDA;border:1px solid #EF9F27;margin-right:3px;vertical-align:middle"></span>공구 기간</span>
+                  <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:none;border:2px solid var(--orange);margin-right:3px;vertical-align:middle"></span>오늘</span>
+                </div>
               </div>
             </div>
 
@@ -3311,7 +3313,7 @@ function renderGbCalMonth(containerId, year, month, startDate, endDate) {
     if (inRange && (d === 1 || firstDay + d - 1 === firstDay || dow === 0)) borderRadius = '6px 0 0 6px';
     if (inRange && (d === daysInMonth || dow === 6)) borderRadius = borderRadius === '6px 0 0 6px' ? '6px' : '0 6px 6px 0';
 
-    html += `<div onclick="gbCalSelect('${dateStr}')" style="text-align:center;font-size:13px;padding:7px 2px;cursor:pointer;background:${bg};color:${color};border:${border};border-radius:${borderRadius};font-weight:${fontWeight};transition:opacity .1s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">${d}</div>`;
+    html += `<div onclick="gbCalSelect('${dateStr}')" style="text-align:center;font-size:12px;padding:5px 1px;cursor:pointer;background:${bg};color:${color};border:${border};border-radius:${borderRadius};font-weight:${fontWeight};transition:opacity .1s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">${d}</div>`;
   }
   container.innerHTML = html;
 }
