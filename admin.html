@@ -2774,6 +2774,7 @@ function goPage(id) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('on'));
   document.getElementById(id).classList.add('active');
   document.getElementById('breadcrumb').innerHTML = breadcrumbs[id] || '';
+  localStorage.setItem('biteme_admin_page', id);
   // nav 동기화
   const navMap = {
     'page-home': 0,
@@ -3545,6 +3546,16 @@ function switchGbHomeTab(tab) {
 // 사용자 신청 데이터 복원
 initApplicationsPage();
 initSeedCampaigns();
+
+// 마지막 방문 페이지 복원
+(function restoreLastPage() {
+  const saved = localStorage.getItem('biteme_admin_page');
+  const validPages = document.querySelectorAll('.page[id]');
+  const validIds = Array.from(validPages).map(p => p.id);
+  if (saved && validIds.includes(saved) && saved !== 'page-campaigns') {
+    goPage(saved);
+  }
+})();
 
 // 사용자 메시지 복원
 (function initAdminMessages() {
