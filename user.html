@@ -805,38 +805,34 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
       <div style="height:220px;background:linear-gradient(135deg,#F5E6D3,#E8D5C0);display:flex;align-items:center;justify-content:center">
         <div style="text-align:center">
           <div style="font-size:48px">🐾</div>
-          <div style="font-size:12px;color:var(--text3);margin-top:4px">BAS 펫푸드</div>
+          <div id="gb-prod-brand-thumb" style="font-size:12px;color:var(--text3);margin-top:4px"></div>
         </div>
       </div>
       <div style="padding:20px">
         <div style="display:flex;gap:8px;margin-bottom:8px">
           <span class="chip chip-amber">선착순 특가</span>
-          <span class="chip chip-gray">사료</span>
+          <span id="gb-prod-cat-chip" class="chip chip-gray"></span>
         </div>
-        <div style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px">BAS 칼취채 핑크에디션</div>
+        <div id="gb-prod-name" style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px"></div>
         <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:16px">
-          <span style="font-size:15px;font-weight:700;color:var(--orange)">20%</span>
-          <span style="font-size:13px;color:var(--text3);text-decoration:line-through">13,700원</span>
-          <span style="font-size:20px;font-weight:700;color:var(--text)">10,900원</span>
+          <span id="gb-prod-disc-rate" style="font-size:15px;font-weight:700;color:var(--orange)"></span>
+          <span id="gb-prod-orig-price" style="font-size:13px;color:var(--text3);text-decoration:line-through"></span>
+          <span id="gb-prod-sale-price" style="font-size:20px;font-weight:700;color:var(--text)"></span>
         </div>
         <div class="summary-card" style="margin-bottom:16px">
-          <div class="summary-row"><span class="summary-label">브랜드</span><span class="summary-value">BAS 펫푸드</span></div>
-          <div class="summary-row"><span class="summary-label">셀러 수수료율</span><span class="summary-value">최대 20%</span></div>
-          <div class="summary-row"><span class="summary-label">재고</span><span class="summary-value">500개 이상</span></div>
-          <div class="summary-row"><span class="summary-label">카테고리</span><span class="summary-value">반려동물 · 사료</span></div>
-          <div class="summary-row"><span class="summary-label">배송</span><span class="summary-value">무료배송</span></div>
+          <div class="summary-row"><span class="summary-label">브랜드</span><span id="gb-prod-brand-val" class="summary-value"></span></div>
+          <div class="summary-row"><span class="summary-label">셀러 수수료율</span><span id="gb-prod-comm-val" class="summary-value"></span></div>
+          <div class="summary-row"><span class="summary-label">공구 기간</span><span id="gb-prod-period-val" class="summary-value"></span></div>
+          <div class="summary-row"><span class="summary-label">카테고리</span><span id="gb-prod-cat-val" class="summary-value"></span></div>
         </div>
         <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px">상품 설명</div>
-        <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px">
-          BAS 칼취채 핑크에디션은 국내산 닭고기와 연어를 주원료로 한 프리미엄 반려견 사료입니다.<br><br>
-          칼슘과 오메가-3가 풍부하며, 유통기한이 길어 공동구매에 최적화된 상품입니다.
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--bg2);border-radius:10px;margin-bottom:14px">
+        <div id="gb-prod-desc" style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px"></div>
+        <div id="gb-prod-url-row" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--bg2);border-radius:10px;margin-bottom:14px">
           <div style="display:flex;align-items:center;gap:8px">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2.5" stroke-linecap="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             <span style="font-size:13px;font-weight:500;color:var(--text)">상품 페이지 바로가기</span>
           </div>
-          <a href="#" style="font-size:12px;color:var(--orange);font-weight:600;text-decoration:none" onclick="event.preventDefault();showToast('상품 페이지를 새 창에서 엽니다')">보기 →</a>
+          <a id="gb-prod-url-link" href="#" style="font-size:12px;color:var(--orange);font-weight:600;text-decoration:none">보기 →</a>
         </div>
         <div class="alert alert-amber">
           공동구매 셀러 전용 상품입니다. 신청 후 운영팀이 일정을 검토하여 확정합니다.
@@ -2074,7 +2070,8 @@ function renderGbCampaigns() {
     const div = document.createElement('div');
     div.className = 'product-item';
     div.style.cursor = 'pointer';
-    div.setAttribute('onclick', "goScreen('screen-gb-product')");
+    const esc = c.name.replace(/'/g, "\\'");
+    div.setAttribute('onclick', "openGbProductDetail('" + esc + "')");
     div.innerHTML = '<div class="product-thumb" style="background:linear-gradient(135deg,#FFE5D6,#F5C9A8);position:relative">'
       + '<div class="product-badge">NEW</div></div>'
       + '<div class="product-info">'
@@ -2086,11 +2083,48 @@ function renderGbCampaigns() {
       + '</div>'
       + '<div style="font-size:11px;color:var(--text3);margin-bottom:8px">' + c.period + '</div>'
       + '<div class="product-actions">'
-      + '<button class="btn btn-orange btn-sm" style="flex:1" onclick="event.stopPropagation();goScreen(\'screen-gb-product\')">공동구매 신청</button>'
+      + '<button class="btn btn-orange btn-sm" style="flex:1" onclick="event.stopPropagation();openGbProductDetail(\'' + esc + '\')">공동구매 신청</button>'
       + '<button class="btn-sm" style="width:34px;background:var(--bg2);border:0.5px solid var(--border2)" onclick="event.stopPropagation();toggleFav(this)">♡</button>'
       + '</div></div>';
     container.appendChild(div);
   });
+}
+
+function openGbProductDetail(campName) {
+  const camps = JSON.parse(localStorage.getItem('biteme_gb_campaigns') || '[]');
+  const c = camps.find(function(x){ return x.name === campName; });
+  if (!c) { goScreen('screen-gb-product'); return; }
+
+  document.getElementById('gb-prod-brand-thumb').textContent = c.brand || '';
+  document.getElementById('gb-prod-cat-chip').textContent = c.cat || '';
+  document.getElementById('gb-prod-name').textContent = c.name;
+
+  const discEl = document.getElementById('gb-prod-disc-rate');
+  const origEl = document.getElementById('gb-prod-orig-price');
+  const saleEl = document.getElementById('gb-prod-sale-price');
+  discEl.textContent = c.discRate ? c.discRate + '%' : '';
+  origEl.textContent = c.origPrice ? c.origPrice.toLocaleString() + '원' : '';
+  saleEl.textContent = c.salePrice ? c.salePrice.toLocaleString() + '원' : (c.origPrice ? c.origPrice.toLocaleString() + '원' : '');
+
+  document.getElementById('gb-prod-brand-val').textContent = c.brand || '—';
+  document.getElementById('gb-prod-comm-val').textContent = c.commRate ? '최대 ' + c.commRate + '%' : '—';
+  document.getElementById('gb-prod-period-val').textContent = c.period || '—';
+  document.getElementById('gb-prod-cat-val').textContent = [c.cat, c.catSub].filter(Boolean).join(' · ') || '—';
+
+  const descEl = document.getElementById('gb-prod-desc');
+  descEl.textContent = c.desc || '상품 설명이 등록되지 않았습니다.';
+
+  const urlRow = document.getElementById('gb-prod-url-row');
+  const urlLink = document.getElementById('gb-prod-url-link');
+  if (c.productUrl) {
+    urlRow.style.display = '';
+    urlLink.href = c.productUrl;
+    urlLink.onclick = function(e) { e.preventDefault(); window.open(c.productUrl, '_blank'); };
+  } else {
+    urlRow.style.display = 'none';
+  }
+
+  goScreen('screen-gb-product');
 }
 
 // 어드민 승인/미선정 결과 처리

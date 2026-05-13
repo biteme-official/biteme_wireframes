@@ -1303,7 +1303,11 @@ textarea.form-input{resize:vertical;min-height:80px}
                 </div>
                 <div class="form-group">
                   <label class="form-label">상품 설명</label>
-                  <textarea class="form-input" rows="5" placeholder="상품 특징, 주요 성분, 사용법 등을 입력하세요"></textarea>
+                  <textarea class="form-input" id="gb-product-desc" rows="5" placeholder="상품 특징, 주요 성분, 사용법 등을 입력하세요"></textarea>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">상품 페이지 URL</label>
+                  <input class="form-input" id="gb-product-url" placeholder="예) https://biteme.co.jp/products/xxx">
                 </div>
               </div>
 
@@ -3423,6 +3427,9 @@ function collectGbFormData() {
     name: document.getElementById('gb-product-name')?.value || '새 공동구매 상품',
     brand: document.getElementById('gb-brand-name')?.value || '',
     cat: document.getElementById('gb-cat-main')?.value || '',
+    catSub: document.getElementById('gb-cat-sub')?.value || '',
+    desc: document.getElementById('gb-product-desc')?.value || '',
+    productUrl: document.getElementById('gb-product-url')?.value || '',
     period: (start && end) ? start + ' ~ ' + end : '일정 협의 중',
     origPrice: orig, salePrice: sale,
     discRate: (orig > 0 && sale > 0 && sale < orig) ? Math.round((1 - sale / orig) * 100) : 0,
