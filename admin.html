@@ -1257,114 +1257,123 @@ textarea.form-input{resize:vertical;min-height:80px}
 
         <!-- Step 1 · 상품 기본 정보 -->
         <div id="gbstep-1" style="padding:28px">
-          <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:16px">상품 정보</div>
-          <div class="form-grid" style="margin-bottom:24px">
-            <div class="form-group" style="grid-column:1/-1">
-              <label class="form-label">상품명</label>
-              <input class="form-input" id="gb-product-name" placeholder="예) BAS 칼취채 핑크에디션">
-            </div>
-            <div class="form-group">
-              <label class="form-label">브랜드명</label>
-              <select class="form-input" id="gb-brand-name"><option>바잇미</option></select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">카테고리</label>
-              <select class="form-input" id="gb-cat-main"><option>식품</option><option>용품</option><option>장난감</option><option>의류</option></select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">세부 카테고리</label>
-              <input class="form-input" id="gb-cat-sub" placeholder="예) 건식사료, 습식사료, 유기농">
-            </div>
-            <div class="form-group" style="grid-column:1/-1">
-              <label class="form-label">상품 설명</label>
-              <textarea class="form-input" rows="3" placeholder="상품 특징, 주요 성분, 사용법 등을 입력하세요"></textarea>
-            </div>
-            <div class="form-group" style="grid-column:1/-1">
-              <label class="form-label">대표 이미지</label>
-              <input type="file" id="gb-thumb-input" accept="image/*" style="display:none" onchange="if(this.files[0]){document.getElementById('gb-thumb-preview').textContent='✓ '+this.files[0].name;document.getElementById('gb-thumb-preview').style.color='var(--green)'}">
-              <div style="border:2px dashed var(--border2);border-radius:10px;padding:18px;text-align:center;cursor:pointer" onclick="document.getElementById('gb-thumb-input').click()">
-                <div style="font-size:13px;color:var(--text2);font-weight:500">+ 이미지 업로드</div>
-                <div id="gb-thumb-preview" style="font-size:11px;color:var(--text3);margin-top:4px">JPG, PNG, WEBP · 권장 1:1 비율</div>
+          <div style="display:grid;grid-template-columns:1fr 360px;gap:32px;align-items:start">
+
+            <!-- 좌측: 상품 정보 -->
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:14px;padding-bottom:10px;border-bottom:0.5px solid var(--border)">상품 정보</div>
+              <div style="display:flex;flex-direction:column;gap:14px">
+                <div class="form-group">
+                  <label class="form-label">상품명</label>
+                  <input class="form-input" id="gb-product-name" placeholder="예) BAS 칼취채 핑크에디션">
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                  <div class="form-group">
+                    <label class="form-label">브랜드명</label>
+                    <select class="form-input" id="gb-brand-name"><option>바잇미</option></select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">카테고리</label>
+                    <select class="form-input" id="gb-cat-main"><option>식품</option><option>용품</option><option>장난감</option><option>의류</option></select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">세부 카테고리</label>
+                  <input class="form-input" id="gb-cat-sub" placeholder="예) 건식사료, 습식사료, 유기농">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">상품 설명</label>
+                  <textarea class="form-input" rows="5" placeholder="상품 특징, 주요 성분, 사용법 등을 입력하세요"></textarea>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div style="border-top:0.5px solid var(--border);padding-top:24px;margin-bottom:24px">
-            <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:14px">공구 일정</div>
+            <!-- 우측: 이미지 + 일정 -->
+            <div>
+              <!-- 대표 이미지 -->
+              <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px;padding-bottom:10px;border-bottom:0.5px solid var(--border)">대표 이미지</div>
+              <input type="file" id="gb-thumb-input" accept="image/*" style="display:none" onchange="if(this.files[0]){document.getElementById('gb-thumb-preview').textContent='✓ '+this.files[0].name;document.getElementById('gb-thumb-preview').style.color='var(--green)'}">
+              <div onclick="document.getElementById('gb-thumb-input').click()" style="border:2px dashed var(--border2);border-radius:10px;aspect-ratio:1/1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:var(--bg2);transition:border-color .15s;margin-bottom:20px" onmouseover="this.style.borderColor='var(--orange)'" onmouseout="this.style.borderColor='var(--border2)'">
+                <div style="font-size:24px;color:var(--text3);margin-bottom:8px">+</div>
+                <div style="font-size:12px;color:var(--text2);font-weight:500">이미지 업로드</div>
+                <div id="gb-thumb-preview" style="font-size:10px;color:var(--text3);margin-top:4px">JPG, PNG, WEBP · 1:1 권장</div>
+              </div>
 
-            <div style="max-width:520px">
+              <!-- 공구 일정 -->
+              <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px;padding-bottom:10px;border-bottom:0.5px solid var(--border)">공구 일정</div>
+
               <!-- 선택 현황 표시줄 -->
-              <div style="display:flex;align-items:stretch;gap:0;margin-bottom:12px;background:var(--bg2);border-radius:10px;border:1px solid var(--border2);overflow:hidden">
-                <div style="flex:1;padding:10px 14px;border-right:0.5px solid var(--border)">
-                  <div style="font-size:10px;color:var(--text3);margin-bottom:3px">공구 시작일</div>
-                  <div id="gb-cal-start-display" style="font-size:13px;font-weight:700;color:var(--text3)">날짜를 선택하세요</div>
+              <div style="display:flex;align-items:stretch;margin-bottom:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border2);overflow:hidden">
+                <div style="flex:1;padding:8px 12px;border-right:0.5px solid var(--border)">
+                  <div style="font-size:10px;color:var(--text3);margin-bottom:2px">시작</div>
+                  <div id="gb-cal-start-display" style="font-size:12px;font-weight:700;color:var(--text3)">—</div>
                 </div>
-                <div style="display:flex;align-items:center;padding:0 10px;color:var(--text3);font-size:16px">→</div>
-                <div style="flex:1;padding:10px 14px;border-left:0.5px solid var(--border);border-right:0.5px solid var(--border)">
-                  <div style="font-size:10px;color:var(--text3);margin-bottom:3px">공구 종료일</div>
-                  <div id="gb-cal-end-display" style="font-size:13px;font-weight:700;color:var(--text3)">날짜를 선택하세요</div>
+                <div style="display:flex;align-items:center;padding:0 8px;color:var(--text3);font-size:14px">→</div>
+                <div style="flex:1;padding:8px 12px;border-left:0.5px solid var(--border);border-right:0.5px solid var(--border)">
+                  <div style="font-size:10px;color:var(--text3);margin-bottom:2px">종료</div>
+                  <div id="gb-cal-end-display" style="font-size:12px;font-weight:700;color:var(--text3)">—</div>
                 </div>
-                <div style="padding:10px 14px">
-                  <div style="font-size:10px;color:var(--text3);margin-bottom:3px">총 기간</div>
-                  <div id="gb-cal-duration" style="font-size:13px;font-weight:700;color:var(--orange)">—</div>
+                <div style="padding:8px 12px">
+                  <div style="font-size:10px;color:var(--text3);margin-bottom:2px">기간</div>
+                  <div id="gb-cal-duration" style="font-size:12px;font-weight:700;color:var(--orange)">—</div>
                 </div>
               </div>
 
               <!-- 2-month 캘린더 -->
-              <div style="background:var(--bg);border:1px solid var(--border2);border-radius:10px;overflow:hidden;margin-bottom:12px">
-                <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 14px;border-bottom:0.5px solid var(--border);background:var(--bg2)">
-                  <button type="button" onclick="gbCalPrev()" style="padding:4px 10px;border-radius:6px;border:1px solid var(--border2);background:var(--bg);cursor:pointer;font-size:14px;color:var(--text);line-height:1">‹</button>
-                  <span id="gb-cal-header" style="font-size:12px;font-weight:600;color:var(--text)"></span>
-                  <button type="button" onclick="gbCalNext()" style="padding:4px 10px;border-radius:6px;border:1px solid var(--border2);background:var(--bg);cursor:pointer;font-size:14px;color:var(--text);line-height:1">›</button>
+              <div style="background:var(--bg);border:1px solid var(--border2);border-radius:10px;overflow:hidden;margin-bottom:10px">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 12px;border-bottom:0.5px solid var(--border);background:var(--bg2)">
+                  <button type="button" onclick="gbCalPrev()" style="padding:3px 9px;border-radius:5px;border:1px solid var(--border2);background:var(--bg);cursor:pointer;font-size:13px;color:var(--text);line-height:1">‹</button>
+                  <span id="gb-cal-header" style="font-size:11px;font-weight:600;color:var(--text)"></span>
+                  <button type="button" onclick="gbCalNext()" style="padding:3px 9px;border-radius:5px;border:1px solid var(--border2);background:var(--bg);cursor:pointer;font-size:13px;color:var(--text);line-height:1">›</button>
                 </div>
                 <div style="display:grid;grid-template-columns:1fr 1fr">
-                  <div style="padding:12px 10px;border-right:0.5px solid var(--border)">
-                    <div id="gb-cal-m1-title" style="text-align:center;font-size:11px;font-weight:600;color:var(--text);margin-bottom:8px"></div>
+                  <div style="padding:10px 8px;border-right:0.5px solid var(--border)">
+                    <div id="gb-cal-m1-title" style="text-align:center;font-size:10px;font-weight:600;color:var(--text);margin-bottom:6px"></div>
                     <div id="gb-cal-m1" style="display:grid;grid-template-columns:repeat(7,1fr);gap:1px"></div>
                   </div>
-                  <div style="padding:12px 10px">
-                    <div id="gb-cal-m2-title" style="text-align:center;font-size:11px;font-weight:600;color:var(--text);margin-bottom:8px"></div>
+                  <div style="padding:10px 8px">
+                    <div id="gb-cal-m2-title" style="text-align:center;font-size:10px;font-weight:600;color:var(--text);margin-bottom:6px"></div>
                     <div id="gb-cal-m2" style="display:grid;grid-template-columns:repeat(7,1fr);gap:1px"></div>
                   </div>
                 </div>
-                <div style="padding:6px 14px;border-top:0.5px solid var(--border);background:var(--bg2);display:flex;gap:12px;font-size:10px;color:var(--text3)">
-                  <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--orange);margin-right:3px;vertical-align:middle"></span>시작/종료일</span>
-                  <span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#FAEEDA;border:1px solid #EF9F27;margin-right:3px;vertical-align:middle"></span>공구 기간</span>
-                  <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:none;border:2px solid var(--orange);margin-right:3px;vertical-align:middle"></span>오늘</span>
+                <div style="padding:5px 12px;border-top:0.5px solid var(--border);background:var(--bg2);display:flex;gap:10px;font-size:10px;color:var(--text3)">
+                  <span><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--orange);margin-right:3px;vertical-align:middle"></span>시작/종료</span>
+                  <span><span style="display:inline-block;width:7px;height:7px;border-radius:2px;background:#FAEEDA;border:1px solid #EF9F27;margin-right:3px;vertical-align:middle"></span>기간</span>
+                  <span><span style="display:inline-block;width:7px;height:7px;border-radius:50%;border:1.5px solid var(--orange);margin-right:3px;vertical-align:middle"></span>오늘</span>
                 </div>
               </div>
-            </div>
 
-            <!-- 시간 & 신청마감일 & 셀러수 -->
-            <div class="form-grid">
-              <div class="form-group">
-                <label class="form-label">시작 시간</label>
-                <select id="gb-start-time" class="form-input">
-                  <option>00:00</option><option>06:00</option><option>07:00</option><option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option><option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option><option>19:00</option><option>20:00</option><option>21:00</option><option>22:00</option><option>23:00</option><option>23:59</option>
-                </select>
+              <!-- 시간 + 신청마감 + 셀러수 -->
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                <div class="form-group">
+                  <label class="form-label">시작 시간</label>
+                  <select id="gb-start-time" class="form-input" style="font-size:12px">
+                    <option>00:00</option><option>06:00</option><option>07:00</option><option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option><option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option><option>19:00</option><option>20:00</option><option>21:00</option><option>22:00</option><option>23:00</option><option>23:59</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">종료 시간</label>
+                  <select id="gb-end-time" class="form-input" style="font-size:12px">
+                    <option>00:00</option><option>06:00</option><option>07:00</option><option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option><option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option><option>19:00</option><option>20:00</option><option>21:00</option><option>22:00</option><option>23:00</option><option selected>23:59</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">신청 마감일</label>
+                  <input class="form-input" type="date" style="font-size:12px">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">최대 셀러 수</label>
+                  <input class="form-input" type="number" placeholder="예) 20" style="font-size:12px">
+                </div>
               </div>
-              <div class="form-group">
-                <label class="form-label">종료 시간</label>
-                <select id="gb-end-time" class="form-input">
-                  <option>00:00</option><option>06:00</option><option>07:00</option><option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option><option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option><option>19:00</option><option>20:00</option><option>21:00</option><option>22:00</option><option>23:00</option><option selected>23:59</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label class="form-label">신청 마감일</label>
-                <input class="form-input" type="date">
-              </div>
-              <div class="form-group">
-                <label class="form-label">최대 셀러 수</label>
-                <input class="form-input" type="number" placeholder="예) 20">
-              </div>
-            </div>
 
-            <!-- 숨겨진 date inputs (data collection 호환) -->
-            <input type="date" id="gb-start-date" style="display:none">
-            <input type="date" id="gb-end-date" style="display:none">
+              <!-- 숨겨진 date inputs -->
+              <input type="date" id="gb-start-date" style="display:none">
+              <input type="date" id="gb-end-date" style="display:none">
+            </div>
           </div>
 
-          <div style="display:flex;justify-content:flex-end;padding-top:20px;border-top:0.5px solid var(--border)">
+          <div style="display:flex;justify-content:flex-end;padding-top:20px;margin-top:24px;border-top:0.5px solid var(--border)">
             <button class="btn btn-primary" onclick="gbNextStep(2)">다음 · 공구 스킴 설정 →</button>
           </div>
         </div>
