@@ -596,11 +596,11 @@ textarea.form-input{resize:vertical;min-height:80px}
               <div class="form-group">
                 <label class="form-label">관심 카테고리 <span style="font-size:10px;font-weight:400;color:var(--text3)">(복수 선택 가능)</span></label>
                 <div style="display:flex;gap:6px;flex-wrap:wrap;padding:10px 12px;background:var(--bg);border:1px solid var(--border2);border-radius:8px">
-                  <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--orange)"> 뷰티</label>
-                  <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> 푸드</label>
-                  <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--orange)"> 라이프</label>
+                  <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--orange)"> 식품</label>
+                  <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> 의류</label>
+                  <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--orange)"> 장난감</label>
                   <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> 패션</label>
-                  <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> 반려동물</label>
+                  <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> 용품</label>
                   <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> 여행</label>
                   <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> 육아</label>
                   <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> 스포츠/헬스</label>
@@ -710,7 +710,7 @@ textarea.form-input{resize:vertical;min-height:80px}
                 <div style="margin-bottom:6px"><strong>브랜드:</strong> <span id="rv3-brand">바잇미 코스메틱</span></div>
                 <div style="margin-bottom:6px"><strong>협찬가:</strong> <span id="rv3-price">₩32,000</span></div>
                 <div style="margin-bottom:6px"><strong>게시 마감:</strong> <span id="rv3-deadline">5월 10일</span></div>
-                <div style="margin-bottom:8px"><strong>조건:</strong> <span id="rv3-conditions">팔로워 3,000+명 · 뷰티</span></div>
+                <div style="margin-bottom:8px"><strong>조건:</strong> <span id="rv3-conditions">팔로워 3,000+명 · 식품</span></div>
                 <div style="border-top:0.5px solid var(--border);padding-top:8px;font-size:11px;color:var(--text3)">
                   #바잇미 #립밤체험 #뷰티리뷰 #봄뷰티
                 </div>
@@ -762,7 +762,7 @@ textarea.form-input{resize:vertical;min-height:80px}
       <div class="page-header">
         <div>
           <div class="page-title">봄 신상 스킨케어 세트</div>
-          <div class="page-sub">바잇미 코스메틱 · 뷰티 · 단순협찬 · 마감 5월 10일</div>
+          <div class="page-sub">바잇미 코스메틱 · 식품 · 단순협찬 · 마감 5월 10일</div>
         </div>
         <div style="display:flex;gap:8px">
           <button class="btn btn-secondary" onclick="goPage('page-campaigns')">← 목록으로</button>
@@ -1635,7 +1635,7 @@ textarea.form-input{resize:vertical;min-height:80px}
                 </div>
                 <div class="form-group">
                   <label class="form-label">선호 카테고리</label>
-                  <input class="form-input" placeholder="예) 반려동물, 라이프">
+                  <input class="form-input" placeholder="예) 용품, 장난감">
                 </div>
                 <div class="form-group">
                   <label class="form-label">캠페인 접근 등급 <span style="font-size:10px;font-weight:400;color:var(--orange)">익스클루시브 설정</span></label>
@@ -2093,7 +2093,7 @@ textarea.form-input{resize:vertical;min-height:80px}
           <option>전체 플랫폼</option><option>인스타그램</option><option>유튜브</option><option>틱톡</option><option>네이버 블로그</option>
         </select>
         <select style="padding:7px 12px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);background:var(--bg);outline:none">
-          <option>전체 카테고리</option><option>뷰티</option><option>라이프</option><option>반려동물</option><option>푸드</option><option>패션</option>
+          <option>전체 카테고리</option><option>식품</option><option>장난감</option><option>용품</option><option>의류</option><option>패션</option>
         </select>
         <select style="padding:7px 12px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);background:var(--bg);outline:none">
           <option>전체 팔로워</option><option>1K ~ 10K</option><option>10K ~ 100K</option><option>100K+</option>
@@ -3059,7 +3059,7 @@ function updateStep3Preview() {
   const price    = parseFloat(document.getElementById('camp-price')?.value) || 0;
   const deadline = document.getElementById('camp-deadline')?.value || '';
   const followers= document.getElementById('camp-followers')?.value || '';
-  const cat      = document.getElementById('camp-cat')?.value || '뷰티';
+  const cat      = document.getElementById('camp-cat')?.value || '식품';
   const set = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t; };
   set('rv3-name', name);
   set('rv3-brand', brand);
@@ -3117,7 +3117,7 @@ function resetCampaignForm() {
 function createCampaign() {
   const name     = document.getElementById('camp-name')?.value || '새 캠페인';
   const brand    = document.getElementById('camp-brand')?.value || '';
-  const cat      = document.getElementById('camp-cat')?.value || '뷰티';
+  const cat      = document.getElementById('camp-cat')?.value || '식품';
   const count    = document.getElementById('camp-count')?.value || '0';
   const deadline = document.getElementById('camp-deadline')?.value || '';
   const applyDeadline = document.getElementById('camp-apply-deadline')?.value || '';
