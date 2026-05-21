@@ -20,9 +20,7 @@ jobs:
           ACTOR="${{ github.actor }}"
           BRANCH_URL="https://github.com/${{ github.repository }}/tree/${{ github.event.ref }}"
 
-          MESSAGE="🌱 브랜치 생성 — ${REPO} / ${BRANCH}
-👤 @${ACTOR}
-🔗 ${BRANCH_URL}"
+          MESSAGE="$(printf '🌱 브랜치 생성 — %s / %s\n👤 @%s\n🔗 %s' "$REPO" "$BRANCH" "$ACTOR" "$BRANCH_URL")"
 
           PAYLOAD=$(jq -n --arg text "$MESSAGE" '{text: $text}')
           curl -s -X POST -H 'Content-type: application/json' \
