@@ -431,7 +431,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
     </div>
     <!-- 상세 콘텐츠 -->
     <div class="scroll-area" id="detail-content" style="padding:0 0 100px">
-      <div style="aspect-ratio:4/3;max-height:280px;background:linear-gradient(135deg,#F5E6D3,#E8D5C0);position:relative">
+      <div id="detail-camp-thumb" style="aspect-ratio:4/3;max-height:280px;background:linear-gradient(135deg,#F5E6D3,#E8D5C0);position:relative;overflow:hidden">
         <div style="position:absolute;bottom:14px;left:20px">
           <div class="camp-tags"><span class="chip chip-teal">단순협찬</span><span class="chip chip-gray">뷰티</span></div>
         </div>
@@ -440,8 +440,8 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
         <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:16px">
           <div style="width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,#F5E6D3,#E8D5C0);flex-shrink:0"></div>
           <div>
-            <div style="font-size:18px;font-weight:700;color:var(--text)">봄 신상 스킨케어 세트</div>
-            <div style="font-size:13px;color:var(--text3);margin-top:3px">바잇미 코스메틱</div>
+            <div id="detail-camp-title" style="font-size:18px;font-weight:700;color:var(--text)">봄 신상 스킨케어 세트</div>
+            <div id="detail-camp-brand" style="font-size:13px;color:var(--text3);margin-top:3px">바잇미 코스메틱</div>
           </div>
         </div>
         <div class="summary-card" style="margin-bottom:14px">
@@ -1835,8 +1835,7 @@ function submitApply() {
     const recruit = document.getElementById('detail-recruit');
     if (recruit) recruit.textContent = '9 / 10명';
     // 어드민 화면과 공유 (localStorage)
-    const campName = document.querySelector('#screen-detail .camp-name')?.textContent
-      || document.querySelector('.camp-name')?.textContent || '캠페인';
+    const campName = _currentCampName || '캠페인';
     const apps = JSON.parse(localStorage.getItem('biteme_applications') || '[]');
     apps.unshift({ name: '나', handle: 'my.account', campaign: campName, followers: '12,400',
       date: new Date().toLocaleDateString('ko-KR', {month:'long', day:'numeric'}) });
@@ -1846,6 +1845,35 @@ function submitApply() {
     if (!appliedList.includes(campName)) appliedList.push(campName);
     localStorage.setItem('biteme_applied_camps', JSON.stringify(appliedList));
   }, 320);
+}
+
+let _currentCampName = '';
+
+function openCampDetail(c) {
+  _currentCampName = c.name || '';
+  const titleEl = document.getElementById('detail-camp-title');
+  if (titleEl) titleEl.textContent = c.name || '';
+  const brandEl = document.getElementById('detail-camp-brand');
+  if (brandEl) brandEl.textContent = c.brand || '';
+  const thumbEl = document.getElementById('detail-camp-thumb');
+  if (thumbEl) {
+    const existing = thumbEl.querySelector('img.detail-thumb-img');
+    if (c.thumb) {
+      thumbEl.style.background = 'none';
+      if (existing) { existing.src = c.thumb; }
+      else {
+        const img = document.createElement('img');
+        img.className = 'detail-thumb-img';
+        img.src = c.thumb;
+        img.style.cssText = 'width:100%;height:100%;object-fit:cover;position:absolute;inset:0';
+        thumbEl.insertBefore(img, thumbEl.firstChild);
+      }
+    } else {
+      thumbEl.style.background = 'linear-gradient(135deg,#F5E6D3,#E8D5C0)';
+      if (existing) existing.remove();
+    }
+  }
+  goScreen('screen-detail');
 }
 
 function goScreen(id) {
@@ -1868,9 +1896,8 @@ function goScreen(id) {
     const overlay = document.getElementById('apply-overlay');
     if (sheet) { sheet.style.display = 'none'; sheet.style.transform = 'translateY(100%)'; }
     if (overlay) overlay.style.display = 'none';
-    const campName = document.querySelector('#screen-detail .camp-name')?.textContent || '';
     const appliedList = JSON.parse(localStorage.getItem('biteme_applied_camps') || '[]');
-    const isApplied = campName && appliedList.includes(campName);
+    const isApplied = _currentCampName && appliedList.includes(_currentCampName);
     if (cta) cta.style.display = isApplied ? 'none' : 'block';
     if (applied) applied.style.display = isApplied ? 'block' : 'none';
     const recruit = document.getElementById('detail-recruit');
@@ -2054,7 +2081,7 @@ function renderNewCampaigns() {
       const div = document.createElement('div');
       div.className = 'camp-card';
       div.style.marginBottom = '0';
-      div.setAttribute('onclick', "goScreen('screen-detail')");
+      div.setAttribute('onclick', "openCampDetail(" + JSON.stringify(c) + ")");
       div.innerHTML =
         '<div class="camp-thumb" style="background:linear-gradient(135deg,#FFE5D6,#F5C9A8);position:relative">'
         + '<span style="position:absolute;top:8px;left:8px;background:var(--orange);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px">NEW</span>'
