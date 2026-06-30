@@ -566,6 +566,21 @@ textarea.form-input{resize:vertical;min-height:80px}
               <label class="form-label">캠페인 설명</label>
               <textarea class="form-input" rows="3">봄 시즌 신제품 립밤 3종 세트를 체험하고 콘텐츠를 제작해주세요.</textarea>
             </div>
+            <div class="form-group" style="grid-column:1/-1">
+              <label class="form-label">상품 이미지 <span style="font-size:10px;font-weight:400;color:var(--text3)">(캠페인 썸네일로 표시됩니다)</span></label>
+              <input type="file" id="camp-img-input" accept="image/*" style="display:none" onchange="previewCampImage(this)">
+              <div id="camp-img-upload" onclick="document.getElementById('camp-img-input').click()" style="border:2px dashed var(--border2);border-radius:10px;padding:28px 20px;text-align:center;cursor:pointer;background:var(--bg2);transition:.15s" onmouseenter="this.style.borderColor='var(--orange)'" onmouseleave="this.style.borderColor='var(--border2)'">
+                <div id="camp-img-placeholder">
+                  <div style="font-size:32px;margin-bottom:8px">🖼️</div>
+                  <div style="font-size:13px;font-weight:500;color:var(--text2)">클릭하여 이미지 업로드</div>
+                  <div style="font-size:11px;color:var(--text3);margin-top:4px">JPG · PNG · WEBP · 최대 10MB</div>
+                </div>
+                <div id="camp-img-preview" style="display:none;flex-direction:column;align-items:center;gap:10px">
+                  <img id="camp-img-thumb" src="" alt="상품 이미지" style="width:120px;height:120px;object-fit:cover;border-radius:10px;border:0.5px solid var(--border)">
+                  <button onclick="event.stopPropagation();removeCampImage()" class="btn btn-secondary btn-sm" style="font-size:11px">이미지 삭제</button>
+                </div>
+              </div>
+            </div>
           </div>
           <div style="display:flex;justify-content:flex-end;padding-top:20px;border-top:0.5px solid var(--border);margin-top:20px">
             <button class="btn btn-primary" onclick="nextStep(2)">다음 단계 →</button>
@@ -598,7 +613,7 @@ textarea.form-input{resize:vertical;min-height:80px}
                 <div style="display:flex;gap:6px;flex-wrap:wrap;padding:10px 12px;background:var(--bg);border:1px solid var(--border2);border-radius:8px">
                   <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--orange)"> 식품</label>
                   <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> 의류</label>
-                  <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--orange)"> 장난감</label>
+                  <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--orange)"> 장난감</label>
                   <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> 용품</label>
                   <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> 여행</label>
                   <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> 육아</label>
@@ -705,6 +720,7 @@ textarea.form-input{resize:vertical;min-height:80px}
             <div style="padding:20px;display:flex;flex-direction:column;gap:12px">
               <div style="font-size:13px;font-weight:600;color:var(--text3);letter-spacing:.04em">미리보기</div>
               <div style="background:var(--bg2);border-radius:10px;padding:14px;font-size:12px;line-height:1.8;color:var(--text2)">
+                <img id="rv3-thumb" src="" alt="상품 이미지" style="display:none;width:100%;height:110px;object-fit:cover;border-radius:8px;margin-bottom:10px;border:0.5px solid var(--border)">
                 <div id="rv3-name" style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px">봄 신상 스킨케어 세트 체험단</div>
                 <div style="margin-bottom:6px"><strong>브랜드:</strong> <span id="rv3-brand">바잇미 코스메틱</span></div>
                 <div style="margin-bottom:6px"><strong>협찬가:</strong> <span id="rv3-price">₩32,000</span></div>
@@ -728,6 +744,7 @@ textarea.form-input{resize:vertical;min-height:80px}
             <div>
               <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px">기본 정보</div>
               <div style="background:var(--bg2);border-radius:10px;overflow:hidden">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">상품 이미지</span><div id="rv-img-wrap" style="display:flex;align-items:center;gap:8px"><img id="rv-thumb" src="" alt="" style="display:none;width:48px;height:48px;object-fit:cover;border-radius:6px;border:0.5px solid var(--border)"><span id="rv-no-img" style="font-size:12px;color:var(--text3)">미등록</span></div></div>
                 <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">캠페인명</span><span id="rv-name" style="font-size:12px;font-weight:500;color:var(--text)">봄 신상 스킨케어 세트</span></div>
                 <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">브랜드</span><span id="rv-brand" style="font-size:12px;font-weight:500;color:var(--text)">바잇미 코스메틱</span></div>
                 <div style="display:flex;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;color:var(--text3)">유형</span><span id="rv-type" class="chip chip-blue" style="font-size:11px">단순협찬</span></div>
@@ -3065,6 +3082,9 @@ function updateStep3Preview() {
   set('rv3-price', price ? '₩' + price.toLocaleString() : '');
   set('rv3-deadline', _fmtDate(deadline));
   set('rv3-conditions', '팔로워 ' + followers + '+명 · ' + cat);
+  const thumbSrc = document.getElementById('camp-img-thumb')?.src;
+  const rv3Thumb = document.getElementById('rv3-thumb');
+  if (rv3Thumb) { rv3Thumb.src = thumbSrc || ''; rv3Thumb.style.display = thumbSrc ? 'block' : 'none'; }
 }
 
 function campaignUpdateReview() {
@@ -3089,9 +3109,45 @@ function campaignUpdateReview() {
     rvType.style.fontSize = '11px';
     rvType.textContent = isSimple ? '단순협찬' : '유가협찬';
   }
+  const thumbSrc = document.getElementById('camp-img-thumb')?.src;
+  const rvThumb = document.getElementById('rv-thumb');
+  const rvNoImg = document.getElementById('rv-no-img');
+  if (rvThumb && rvNoImg) {
+    if (thumbSrc && document.getElementById('camp-img-thumb')?.style.display !== 'none' && document.getElementById('camp-img-preview')?.style.display !== 'none') {
+      rvThumb.src = thumbSrc; rvThumb.style.display = 'block'; rvNoImg.style.display = 'none';
+    } else {
+      rvThumb.src = ''; rvThumb.style.display = 'none'; rvNoImg.style.display = 'inline';
+    }
+  }
+}
+
+function previewCampImage(input) {
+  if (!input.files || !input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById('camp-img-thumb').src = e.target.result;
+    document.getElementById('camp-img-placeholder').style.display = 'none';
+    document.getElementById('camp-img-preview').style.display = 'flex';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function removeCampImage() {
+  document.getElementById('camp-img-input').value = '';
+  document.getElementById('camp-img-thumb').src = '';
+  document.getElementById('camp-img-placeholder').style.display = 'block';
+  document.getElementById('camp-img-preview').style.display = 'none';
 }
 
 function resetCampaignForm() {
+  const imgInput = document.getElementById('camp-img-input');
+  if (imgInput) imgInput.value = '';
+  const campThumb = document.getElementById('camp-img-thumb');
+  if (campThumb) campThumb.src = '';
+  const placeholder = document.getElementById('camp-img-placeholder');
+  if (placeholder) placeholder.style.display = 'block';
+  const preview = document.getElementById('camp-img-preview');
+  if (preview) preview.style.display = 'none';
   currentStep = 1;
   for (let i = 1; i <= 4; i++) {
     const step = document.getElementById('step-' + i);
@@ -3126,10 +3182,16 @@ function createCampaign() {
   const deadlineFmt  = _fmtDate(deadline) || '-';
   const price     = document.getElementById('camp-price')?.value || '0';
   const followers = document.getElementById('camp-followers')?.value || '';
+  const imgPreview = document.getElementById('camp-img-preview');
+  const thumbEl   = document.getElementById('camp-img-thumb');
+  const thumb = (imgPreview?.style.display !== 'none' && thumbEl?.src) ? thumbEl.src : '';
+  const thumbHtml = thumb
+    ? `<img src="${thumb}" style="width:40px;height:40px;object-fit:cover;border-radius:6px;border:0.5px solid var(--border);flex-shrink:0">`
+    : `<div style="width:40px;height:40px;border-radius:6px;background:var(--bg3);border:0.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px">🖼️</div>`;
   const tbody = document.querySelector('#page-campaigns table tbody');
   if (tbody) {
     const tr = document.createElement('tr');
-    tr.innerHTML = '<td><div class="td-name">' + name + '</div><div class="td-sub">' + brand + ' · ' + cat + '</div></td>'
+    tr.innerHTML = '<td><div style="display:flex;align-items:center;gap:10px">' + thumbHtml + '<div><div class="td-name">' + name + '</div><div class="td-sub">' + brand + ' · ' + cat + '</div></div></div></td>'
       + '<td><span class="' + typeChipCls + '">' + typeLabel + '</span></td>'
       + '<td><div style="font-size:12px;margin-bottom:4px;font-weight:500">0 / ' + count + '명</div><div class="prog-bar"><div class="prog-fill" style="width:0%"></div></div></td>'
       + '<td><div style="font-size:13px">' + deadlineFmt + '</div></td>'
@@ -3141,7 +3203,7 @@ function createCampaign() {
   // 사용자 화면과 공유 (localStorage)
   const saved = JSON.parse(localStorage.getItem('biteme_new_campaigns') || '[]');
   saved.unshift({ name, brand, cat, count, price, deadline: deadlineFmt,
-    applyDeadline: _fmtDate(applyDeadline), followers,
+    applyDeadline: _fmtDate(applyDeadline), followers, thumb,
     type: typeLabel, typeChip: isSimple ? 'chip-teal' : 'chip-amber' });
   localStorage.setItem('biteme_new_campaigns', JSON.stringify(saved));
   showToast(name + ' 캠페인이 개설되었습니다');
@@ -4086,8 +4148,11 @@ function initSeedCampaigns() {
     tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text3);font-size:13px;padding:24px">등록된 시딩 캠페인이 없습니다</td></tr>';
   } else {
     camps.forEach(c => {
+      const thumbHtml = c.thumb
+        ? `<img src="${c.thumb}" style="width:40px;height:40px;object-fit:cover;border-radius:6px;border:0.5px solid var(--border);flex-shrink:0">`
+        : `<div style="width:40px;height:40px;border-radius:6px;background:var(--bg3);border:0.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px">🖼️</div>`;
       const tr = document.createElement('tr');
-      tr.innerHTML = `<td><div class="td-name">${c.name}</div><div class="td-sub">${c.brand || ''} · ${c.cat || ''}</div></td>`
+      tr.innerHTML = `<td><div style="display:flex;align-items:center;gap:10px">${thumbHtml}<div><div class="td-name">${c.name}</div><div class="td-sub">${c.brand || ''} · ${c.cat || ''}</div></div></div></td>`
         + `<td><span class="chip ${c.typeChip || 'chip-blue'}">${c.type || '단순협찬'}</span></td>`
         + `<td><div style="font-size:12px">0 / ${c.count || 0}명</div><div class="prog-bar"><div class="prog-fill" style="width:0%"></div></div></td>`
         + `<td><div style="font-size:12px">${c.deadline || '—'}</div></td>`
