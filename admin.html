@@ -598,7 +598,7 @@ textarea.form-input{resize:vertical;min-height:80px}
                 <div style="display:flex;gap:6px;flex-wrap:wrap;padding:10px 12px;background:var(--bg);border:1px solid var(--border2);border-radius:8px">
                   <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--orange)"> 식품</label>
                   <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> 의류</label>
-                  <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--orange)"> 장난감</label>
+                  <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--orange)"> 장난감</label>
                   <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> 용품</label>
                   <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> 여행</label>
                   <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--orange)"> 육아</label>
@@ -610,6 +610,10 @@ textarea.form-input{resize:vertical;min-height:80px}
                 <div class="toggle-group">
                   <div id="camp-order-first" class="toggle-opt on" onclick="toggleCampOrder('first')">선착순</div>
                   <div id="camp-order-random" class="toggle-opt" onclick="toggleCampOrder('random')">랜덤</div>
+                  <div id="camp-order-category" class="toggle-opt" onclick="toggleCampOrder('category')">관심 카테고리 우선</div>
+                </div>
+                <div id="camp-order-category-desc" style="display:none;margin-top:8px;padding:8px 12px;background:#FFF4EC;border:1px solid #FFD6B0;border-radius:8px;font-size:11px;color:#854F0B;line-height:1.6">
+                  가입 시 선택한 관심 카테고리가 캠페인 카테고리와 일치하는 셀러를 우선 선정하며, 동일 조건 내에서는 팔로워 수 높은 순으로 자동 선정합니다.
                 </div>
               </div>
             </div>
@@ -3044,6 +3048,9 @@ function toggleCampMethod(type) {
 function toggleCampOrder(type) {
   document.getElementById('camp-order-first').classList.toggle('on', type === 'first');
   document.getElementById('camp-order-random').classList.toggle('on', type === 'random');
+  document.getElementById('camp-order-category').classList.toggle('on', type === 'category');
+  const desc = document.getElementById('camp-order-category-desc');
+  if (desc) desc.style.display = type === 'category' ? 'block' : 'none';
 }
 
 function _fmtDate(v) {
@@ -3074,14 +3081,16 @@ function campaignUpdateReview() {
   const deadline = document.getElementById('camp-deadline')?.value || '';
   const followers= document.getElementById('camp-followers')?.value || '';
   const isSimple = document.getElementById('camp-type-simple')?.classList.contains('on');
-  const isAuto   = document.getElementById('camp-method-auto')?.classList.contains('on');
-  const isFirst  = document.getElementById('camp-order-first')?.classList.contains('on');
+  const isAuto     = document.getElementById('camp-method-auto')?.classList.contains('on');
+  const isFirst    = document.getElementById('camp-order-first')?.classList.contains('on');
+  const isCategory = document.getElementById('camp-order-category')?.classList.contains('on');
   const set = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t; };
   set('rv-name', name);
   set('rv-brand', brand);
   set('rv-count', count + '명');
   set('rv-deadline', _fmtDate(deadline));
-  set('rv-method', isAuto ? '자동 선정 (' + (isFirst ? '선착순' : '랜덤') + ')' : '수동 선정');
+  const orderLabel = isFirst ? '선착순' : isCategory ? '관심 카테고리 우선' : '랜덤';
+  set('rv-method', isAuto ? '자동 선정 (' + orderLabel + ')' : '수동 선정');
   set('rv-followers', followers + '명');
   const rvType = document.getElementById('rv-type');
   if (rvType) {
