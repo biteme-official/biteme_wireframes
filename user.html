@@ -1849,7 +1849,8 @@ function submitApply() {
 
 let _currentCampName = '';
 
-function openCampDetail(c) {
+function openCampDetail(idx) {
+  const c = _campList[idx] || {};
   _currentCampName = c.name || '';
   const titleEl = document.getElementById('detail-camp-title');
   if (titleEl) titleEl.textContent = c.name || '';
@@ -2066,8 +2067,11 @@ function addIgLink() {
   wrap.appendChild(row);
 }
 
+let _campList = [];
+
 function renderNewCampaigns() {
   const camps = JSON.parse(localStorage.getItem('biteme_new_campaigns') || '[]');
+  _campList = camps;
   ['home', 'explore'].forEach(function(ctx) {
     const container = document.getElementById('new-camps-' + ctx);
     if (!container) return;
@@ -2076,12 +2080,12 @@ function renderNewCampaigns() {
       container.innerHTML = '<div style="text-align:center;padding:32px 0;color:var(--text3);font-size:13px">현재 신청 가능한 캠페인이 없어요</div>';
       return;
     }
-    camps.forEach(function(c) {
+    camps.forEach(function(c, idx) {
       const priceNum = parseFloat(c.price) || 0;
       const div = document.createElement('div');
       div.className = 'camp-card';
       div.style.marginBottom = '0';
-      div.setAttribute('onclick', "openCampDetail(" + JSON.stringify(c) + ")");
+      div.setAttribute('onclick', "openCampDetail(" + idx + ")");
       div.innerHTML =
         '<div class="camp-thumb" style="background:linear-gradient(135deg,#FFE5D6,#F5C9A8);position:relative">'
         + '<span style="position:absolute;top:8px;left:8px;background:var(--orange);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px">NEW</span>'
