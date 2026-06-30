@@ -537,7 +537,10 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
               <div style="font-size:15px;font-weight:700;color:var(--text)">봄 신상 스킨케어 세트</div>
               <div style="font-size:11px;color:var(--text3);margin-top:2px">바잇미 코스메틱 · 단순협찬</div>
             </div>
-            <span class="chip chip-amber">제출 대기</span>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+              <span class="chip chip-amber">제출 대기</span>
+              <button disabled style="font-size:11px;font-weight:600;color:#C0C0C0;background:#F4F4F4;border:1px solid #E0E0E0;border-radius:20px;padding:3px 10px;cursor:not-allowed">신청 취소</button>
+            </div>
           </div>
           <div style="padding:14px 16px;display:flex;flex-direction:column;gap:0">
             <div class="tracker-step"><div class="tracker-dot dot-done"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div><div class="tracker-content"><div class="tracker-title">협찬 신청</div><div class="tracker-sub">4월 10일</div></div></div>
@@ -554,7 +557,10 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
               <div style="font-size:15px;font-weight:700;color:var(--text)">여름 선크림 체험단</div>
               <div style="font-size:11px;color:var(--text3);margin-top:2px">선케어랩 · 유가협찬</div>
             </div>
-            <span class="chip chip-blue">승인 대기</span>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+              <span class="chip chip-blue">승인 대기</span>
+              <button onclick="cancelApplication(this,'여름 선크림 체험단')" style="font-size:11px;font-weight:600;color:#C94B00;background:#FFF2EC;border:1px solid #FFD0B0;border-radius:20px;padding:3px 10px;cursor:pointer">신청 취소</button>
+            </div>
           </div>
           <div style="padding:14px 16px">
             <div class="tracker-step" style="padding-top:0"><div class="tracker-dot dot-done"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div><div class="tracker-content"><div class="tracker-title">협찬 신청</div><div class="tracker-sub">4월 18일</div></div></div>
@@ -599,7 +605,10 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
               <div style="font-size:15px;font-weight:700;color:var(--text)">BAS 칼취채 핑크에디션</div>
               <div style="font-size:11px;color:var(--text3);margin-top:2px">BAS펫푸드 · 공동구매</div>
             </div>
-            <span class="chip chip-amber">승인 대기</span>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+              <span class="chip chip-amber">승인 대기</span>
+              <button disabled style="font-size:11px;font-weight:600;color:#C0C0C0;background:#F4F4F4;border:1px solid #E0E0E0;border-radius:20px;padding:3px 10px;cursor:not-allowed">신청 취소</button>
+            </div>
           </div>
           <div style="padding:14px 16px;display:flex;flex-direction:column;gap:0">
             <div class="tracker-step" style="padding-top:0"><div class="tracker-dot dot-done"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div><div class="tracker-content"><div class="tracker-title">공구 신청</div><div class="tracker-sub">4월 18일 · 5/13~16 일정 (09:00~23:59)</div></div></div>
@@ -1769,6 +1778,16 @@ function switchExploreTab(type) {
     const el = document.getElementById('explore-' + t);
     el.style.display = t === type ? 'flex' : 'none';
   });
+}
+
+function cancelApplication(btn, campName) {
+  const card = btn.closest('div[style*="border-radius:16px"]');
+  showToast('"' + campName + '" 신청이 취소되었습니다');
+  if (card) {
+    card.style.transition = 'opacity 0.35s';
+    card.style.opacity = '0';
+    setTimeout(() => { card.remove(); }, 380);
+  }
 }
 
 function switchStatusTab(type) {
