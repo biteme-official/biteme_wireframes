@@ -1841,6 +1841,10 @@ function submitApply() {
     apps.unshift({ name: '나', handle: 'my.account', campaign: campName, followers: '12,400',
       date: new Date().toLocaleDateString('ko-KR', {month:'long', day:'numeric'}) });
     localStorage.setItem('biteme_applications', JSON.stringify(apps));
+    // 신청 완료 상태 영구 저장
+    const appliedList = JSON.parse(localStorage.getItem('biteme_applied_camps') || '[]');
+    if (!appliedList.includes(campName)) appliedList.push(campName);
+    localStorage.setItem('biteme_applied_camps', JSON.stringify(appliedList));
   }, 320);
 }
 
@@ -1856,18 +1860,21 @@ function goScreen(id) {
     target.querySelector('.scroll-area')?.scrollTo(0, 0);
   }
   if (id === 'screen-home' || id === 'screen-explore') renderNewCampaigns();
-  // 상세 화면 진입 시 신청 상태 초기화
+  // 상세 화면 진입 시 신청 상태 복원
   if (id === 'screen-detail') {
     const cta = document.getElementById('detail-cta');
     const applied = document.getElementById('detail-applied');
     const sheet = document.getElementById('apply-sheet');
     const overlay = document.getElementById('apply-overlay');
-    if (cta) cta.style.display = 'block';
-    if (applied) applied.style.display = 'none';
     if (sheet) { sheet.style.display = 'none'; sheet.style.transform = 'translateY(100%)'; }
     if (overlay) overlay.style.display = 'none';
+    const campName = document.querySelector('#screen-detail .camp-name')?.textContent || '';
+    const appliedList = JSON.parse(localStorage.getItem('biteme_applied_camps') || '[]');
+    const isApplied = campName && appliedList.includes(campName);
+    if (cta) cta.style.display = isApplied ? 'none' : 'block';
+    if (applied) applied.style.display = isApplied ? 'block' : 'none';
     const recruit = document.getElementById('detail-recruit');
-    if (recruit) recruit.textContent = '8 / 10명';
+    if (recruit) recruit.textContent = isApplied ? '9 / 10명' : '8 / 10명';
   }
 }
 
