@@ -505,7 +505,7 @@ textarea.form-input{resize:vertical;min-height:80px}
           <div class="form-grid">
             <div class="form-group" style="grid-column:1/-1">
               <label class="form-label">캠페인명</label>
-              <input id="camp-name" class="form-input" value="봄 신상 스킨케어 세트 체험단">
+              <input id="camp-name" class="form-input" placeholder="캠페인명을 입력하세요">
             </div>
             <div class="form-group">
               <label class="form-label">브랜드명</label>
@@ -556,15 +556,15 @@ textarea.form-input{resize:vertical;min-height:80px}
             </div>
             <div class="form-group">
               <label class="form-label">신청 마감일</label>
-              <input id="camp-apply-deadline" class="form-input" type="date" value="2026-04-25">
+              <input id="camp-apply-deadline" class="form-input" type="date">
             </div>
             <div class="form-group">
               <label class="form-label">게시 마감일</label>
-              <input id="camp-deadline" class="form-input" type="date" value="2026-05-10">
+              <input id="camp-deadline" class="form-input" type="date">
             </div>
             <div class="form-group" style="grid-column:1/-1">
               <label class="form-label">캠페인 설명</label>
-              <textarea class="form-input" rows="3">봄 시즌 신제품 립밤 3종 세트를 체험하고 콘텐츠를 제작해주세요.</textarea>
+              <textarea id="camp-desc" class="form-input" rows="3" placeholder="캠페인 설명을 입력하세요"></textarea>
             </div>
             <div class="form-group" style="grid-column:1/-1">
               <label class="form-label">상품 이미지 <span style="font-size:10px;font-weight:400;color:var(--text3)">(캠페인 썸네일로 표시됩니다)</span></label>
@@ -3140,6 +3140,16 @@ function removeCampImage() {
 }
 
 function resetCampaignForm() {
+  const nameEl = document.getElementById('camp-name');
+  if (nameEl) nameEl.value = '';
+  const descEl = document.getElementById('camp-desc');
+  if (descEl) descEl.value = '';
+  const _addDays = (d, n) => { const r = new Date(d); r.setDate(r.getDate() + n); return r.toISOString().slice(0, 10); };
+  const today = new Date();
+  const applyEl = document.getElementById('camp-apply-deadline');
+  if (applyEl) applyEl.value = _addDays(today, 7);
+  const deadlineEl = document.getElementById('camp-deadline');
+  if (deadlineEl) deadlineEl.value = _addDays(today, 14);
   const imgInput = document.getElementById('camp-img-input');
   if (imgInput) imgInput.value = '';
   const campThumb = document.getElementById('camp-img-thumb');
