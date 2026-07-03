@@ -433,7 +433,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
     <div class="scroll-area" id="detail-content" style="padding:0 0 100px">
       <div id="detail-camp-thumb" style="aspect-ratio:4/3;max-height:280px;background:linear-gradient(135deg,#F5E6D3,#E8D5C0);position:relative;overflow:hidden">
         <div style="position:absolute;bottom:14px;left:20px">
-          <div class="camp-tags"><span class="chip chip-teal">단순협찬</span><span class="chip chip-gray">뷰티</span></div>
+          <div class="camp-tags"><span id="detail-type-chip" class="chip chip-teal">단순협찬</span><span id="detail-cat-chip" class="chip chip-gray">—</span></div>
         </div>
       </div>
       <div style="padding:20px">
@@ -445,13 +445,13 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
           </div>
         </div>
         <div class="summary-card" style="margin-bottom:14px">
-          <div class="summary-row"><span class="summary-label">협찬 상품가</span><span class="summary-value">₩32,000</span></div>
-          <div class="summary-row"><span class="summary-label">게시 마감</span><span class="summary-value">5월 10일</span></div>
+          <div class="summary-row"><span class="summary-label">협찬 상품가</span><span class="summary-value" id="detail-price-value">—</span></div>
+          <div class="summary-row"><span class="summary-label">게시 마감</span><span class="summary-value" id="detail-deadline-value">—</span></div>
           <div class="summary-row"><span class="summary-label">모집 현황</span><span class="summary-value" id="detail-recruit">8 / 10명</span></div>
-          <div class="summary-row"><span class="summary-label">조건</span><span class="summary-value">팔로워 3,000명+ · 뷰티</span></div>
+          <div class="summary-row"><span class="summary-label">조건</span><span class="summary-value" id="detail-followers-value">—</span></div>
           <div class="summary-row"><span class="summary-label">플랫폼</span><span class="summary-value">인스타그램</span></div>
-          <div class="summary-row"><span class="summary-label">리워드</span><span class="summary-value" style="color:var(--orange);font-weight:600">원고료 ₩50,000</span></div>
-          <div class="summary-row"><span class="summary-label">리워드 조건</span><span class="summary-value" style="font-size:12px">게시 후 7일 기준 조회수 달성 시 지급</span></div>
+          <div id="detail-reward-row" class="summary-row"><span class="summary-label">리워드</span><span class="summary-value" id="detail-reward-value" style="color:var(--orange);font-weight:600">—</span></div>
+          <div id="detail-reward-cond-row" class="summary-row"><span class="summary-label">리워드 조건</span><span class="summary-value" style="font-size:12px">게시 후 7일 기준 조회수 달성 시 지급</span></div>
         </div>
         <div class="alert alert-green" style="margin-bottom:14px">
           내 팔로워 <strong>12,400명</strong> — 조건 충족 ✓
@@ -1871,10 +1871,36 @@ let _currentCampName = '';
 function openCampDetail(idx) {
   const c = _campList[idx] || {};
   _currentCampName = c.name || '';
+
   const titleEl = document.getElementById('detail-camp-title');
   if (titleEl) titleEl.textContent = c.name || '';
   const brandEl = document.getElementById('detail-camp-brand');
   if (brandEl) brandEl.textContent = c.brand || '';
+
+  const isSimple = !c.type || c.type === '단순협찬';
+  const typeChip = document.getElementById('detail-type-chip');
+  if (typeChip) {
+    typeChip.textContent = c.type || '단순협찬';
+    typeChip.className = 'chip ' + (isSimple ? 'chip-teal' : 'chip-amber');
+  }
+  const catChip = document.getElementById('detail-cat-chip');
+  if (catChip) catChip.textContent = c.cat || '—';
+
+  const priceEl = document.getElementById('detail-price-value');
+  if (priceEl) {
+    const priceNum = parseFloat(c.price) || 0;
+    priceEl.textContent = priceNum > 0 ? '₩' + priceNum.toLocaleString() : '—';
+  }
+  const deadlineEl = document.getElementById('detail-deadline-value');
+  if (deadlineEl) deadlineEl.textContent = c.deadline || '—';
+  const followersEl = document.getElementById('detail-followers-value');
+  if (followersEl) followersEl.textContent = c.followers ? '팔로워 ' + c.followers + '명+ · ' + (c.cat || '') : (c.cat || '—');
+
+  const rewardRow = document.getElementById('detail-reward-row');
+  const rewardCondRow = document.getElementById('detail-reward-cond-row');
+  if (rewardRow) rewardRow.style.display = isSimple ? 'none' : '';
+  if (rewardCondRow) rewardCondRow.style.display = isSimple ? 'none' : '';
+
   const thumbEl = document.getElementById('detail-camp-thumb');
   if (thumbEl) {
     const existing = thumbEl.querySelector('img.detail-thumb-img');
