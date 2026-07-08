@@ -522,6 +522,16 @@ textarea.form-input{resize:vertical;min-height:80px}
                 <div class="toggle-opt" id="camp-type-paid" onclick="toggleCampType('paid')">유가 협찬</div>
               </div>
             </div>
+            <div class="form-group">
+              <label class="form-label">플랫폼</label>
+              <select id="camp-platform" class="form-input">
+                <option>인스타그램</option>
+                <option>유튜브</option>
+                <option>틱톡</option>
+                <option>네이버 블로그</option>
+                <option>엑스</option>
+              </select>
+            </div>
             <!-- 유가협찬 리워드 설정 (유가 협찬 선택 시 표시) -->
             <div class="form-group" id="reward-section" style="display:none;grid-column:1/-1">
               <label class="form-label">리워드(원고료) 설정</label>
@@ -3201,6 +3211,7 @@ function createCampaign() {
   const price     = document.getElementById('camp-price')?.value || '0';
   const followers = document.getElementById('camp-followers')?.value || '';
   const desc      = document.getElementById('camp-desc')?.value || '';
+  const platform  = document.getElementById('camp-platform')?.value || '인스타그램';
   const imgPreview = document.getElementById('camp-img-preview');
   const thumbEl   = document.getElementById('camp-img-thumb');
   const thumb = (imgPreview?.style.display !== 'none' && thumbEl?.src) ? thumbEl.src : '';
@@ -3222,7 +3233,7 @@ function createCampaign() {
   // 사용자 화면과 공유 (localStorage)
   const saved = JSON.parse(localStorage.getItem('biteme_new_campaigns') || '[]');
   saved.unshift({ name, brand, cat, count, price, deadline: deadlineFmt,
-    applyDeadline: _fmtDate(applyDeadline), followers, thumb, desc,
+    applyDeadline: _fmtDate(applyDeadline), followers, thumb, desc, platform,
     type: typeLabel, typeChip: isSimple ? 'chip-teal' : 'chip-amber' });
   localStorage.setItem('biteme_new_campaigns', JSON.stringify(saved));
   showToast(name + ' 캠페인이 개설되었습니다');
