@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>바잇미 — 미리보기</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+:root{
+  --orange:#E85D24;--text:#1a1a18;--text2:#6b6b66;--text3:#9b9b96;
+  --border:rgba(0,0,0,.1);--bg:#fff;--bg2:#f5f5f3;--bg3:#eeece8;
+  --green:#1D9E75;--red:#A32D2D;
+}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg2);display:flex;flex-direction:column}
+
+/* 헤더 */
+.header{
+  height:52px;background:var(--bg);border-bottom:0.5px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;flex-shrink:0;gap:12px
+}
+.header-left{display:flex;align-items:center;gap:10px}
+.logo{font-size:15px;font-weight:700;color:var(--text)}
+.logo span{color:var(--orange)}
+.divider{width:1px;height:16px;background:var(--border)}
+.header-desc{font-size:12px;color:var(--text3)}
+.header-right{display:flex;align-items:center;gap:8px}
+.btn{height:30px;padding:0 12px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:5px;text-decoration:none}
+.btn-secondary{background:var(--bg2);color:var(--text2);border:0.5px solid var(--border)}
+.btn-secondary:hover{background:var(--bg3)}
+.btn-primary{background:var(--orange);color:#fff}
+.btn-primary:hover{opacity:.9}
+.sync-badge{font-size:11px;padding:2px 8px;border-radius:20px;background:#EAF3DE;color:var(--green);font-weight:500}
+
+/* 뷰 전환 탭 */
+.view-tabs{display:flex;gap:2px;background:var(--bg3);padding:3px;border-radius:9px}
+.view-tab{padding:3px 10px;font-size:11px;font-weight:500;color:var(--text3);cursor:pointer;border-radius:6px;transition:all .15s}
+.view-tab.on{background:var(--bg);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+
+/* 메인 레이아웃 */
+.main{flex:1;display:flex;min-height:0;gap:0}
+
+/* 패널 */
+.panel{display:flex;flex-direction:column;border-right:0.5px solid var(--border);min-width:0}
+.panel:last-child{border-right:none}
+.panel-admin{flex:1.6}
+.panel-user{flex:1;max-width:480px}
+
+.panel-header{
+  height:40px;background:var(--bg);border-bottom:0.5px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 14px;flex-shrink:0
+}
+.panel-title{font-size:12px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px}
+.panel-dot{width:7px;height:7px;border-radius:50%}
+.dot-admin{background:#1a1a18}
+.dot-user{background:var(--orange)}
+.panel-actions{display:flex;align-items:center;gap:6px}
+.panel-url{font-size:10px;color:var(--text3);background:var(--bg2);padding:2px 8px;border-radius:4px;border:0.5px solid var(--border)}
+.reload-btn{width:24px;height:24px;border-radius:6px;border:0.5px solid var(--border);background:var(--bg2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text2)}
+.reload-btn:hover{background:var(--bg3)}
+
+.iframe-wrap{flex:1;position:relative;min-height:0}
+.iframe-wrap iframe{width:100%;height:100%;border:none;display:block}
+
+/* 모바일 프레임 */
+.phone-wrap{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  background:var(--bg3);padding:16px;min-height:0
+}
+.phone-frame{
+  width:100%;max-width:360px;height:100%;max-height:720px;
+  border:2px solid #2a2a28;border-radius:32px;overflow:hidden;
+  box-shadow:0 8px 32px rgba(0,0,0,.18);display:flex;flex-direction:column;
+  background:var(--bg)
+}
+.phone-notch{
+  height:28px;background:#1a1a18;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0
+}
+.phone-notch-inner{width:80px;height:10px;background:#111;border-radius:5px}
+.phone-frame iframe{flex:1;border:none;width:100%;display:block}
+
+/* 세로 구분선 핸들 */
+.resize-handle{
+  width:4px;background:var(--border);cursor:col-resize;flex-shrink:0;
+  transition:background .15s;position:relative;z-index:10
+}
+.resize-handle:hover,.resize-handle.dragging{background:var(--orange)}
+.resize-handle::after{
+  content:'⋮';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-size:14px;color:var(--text3);line-height:1
+}
+
+/* 토스트 */
+.toast{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);
+  background:#1a1a18;color:#fff;font-size:12px;padding:8px 16px;border-radius:20px;
+  opacity:0;transition:all .3s;z-index:999;white-space:nowrap
+}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo">BITE <span>ME</span></div>
+    <div class="divider"></div>
+    <div class="header-desc">어드민 · 유저 화면 비교 미리보기</div>
+    <span class="sync-badge">localStorage 연동</span>
+  </div>
+  <div class="header-right">
+    <div class="view-tabs">
+      <div class="view-tab on" onclick="setView('split')">나란히</div>
+      <div class="view-tab" onclick="setView('admin')">어드민만</div>
+      <div class="view-tab" onclick="setView('user')">유저만</div>
+    </div>
+    <button class="btn btn-secondary" onclick="reloadAll()">↺ 새로고침</button>
+    <a class="btn btn-secondary" href="index.html">홈</a>
+  </div>
+</div>
+
+<div class="main" id="main">
+
+  <!-- 어드민 패널 -->
+  <div class="panel panel-admin" id="panel-admin">
+    <div class="panel-header">
+      <div class="panel-title">
+        <div class="panel-dot dot-admin"></div>
+        관리자 화면
+      </div>
+      <div class="panel-actions">
+        <span class="panel-url">admin.html</span>
+        <button class="reload-btn" onclick="reloadFrame('frame-admin')" title="새로고침">↺</button>
+      </div>
+    </div>
+    <div class="iframe-wrap">
+      <iframe id="frame-admin" src="admin.html" title="관리자 화면"></iframe>
+    </div>
+  </div>
+
+  <div class="resize-handle" id="resize-handle"></div>
+
+  <!-- 유저 패널 -->
+  <div class="panel panel-user" id="panel-user">
+    <div class="panel-header">
+      <div class="panel-title">
+        <div class="panel-dot dot-user"></div>
+        사용자 화면 (인플루언서)
+      </div>
+      <div class="panel-actions">
+        <span class="panel-url">user.html</span>
+        <button class="reload-btn" onclick="reloadFrame('frame-user')" title="새로고침">↺</button>
+      </div>
+    </div>
+    <div class="phone-wrap">
+      <div class="phone-frame">
+        <div class="phone-notch"><div class="phone-notch-inner"></div></div>
+        <iframe id="frame-user" src="user.html" title="사용자 화면"></iframe>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let currentView = 'split';
+
+function setView(view) {
+  currentView = view;
+  const adminPanel = document.getElementById('panel-admin');
+  const userPanel = document.getElementById('panel-user');
+  const handle = document.getElementById('resize-handle');
+  document.querySelectorAll('.view-tab').forEach((t, i) => {
+    t.classList.toggle('on', ['split','admin','user'][i] === view);
+  });
+  if (view === 'split') {
+    adminPanel.style.display = '';
+    userPanel.style.display = '';
+    handle.style.display = '';
+    adminPanel.style.flex = '';
+  } else if (view === 'admin') {
+    adminPanel.style.display = '';
+    adminPanel.style.flex = '1';
+    userPanel.style.display = 'none';
+    handle.style.display = 'none';
+  } else {
+    adminPanel.style.display = 'none';
+    userPanel.style.display = '';
+    userPanel.style.maxWidth = '';
+    handle.style.display = 'none';
+  }
+}
+
+function reloadFrame(id) {
+  const f = document.getElementById(id);
+  f.src = f.src;
+  showToast('새로고침 완료');
+}
+
+function reloadAll() {
+  reloadFrame('frame-admin');
+  reloadFrame('frame-user');
+  showToast('전체 새로고침 완료');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+/* 드래그로 패널 너비 조절 */
+(function() {
+  const handle = document.getElementById('resize-handle');
+  const main = document.getElementById('main');
+  const adminPanel = document.getElementById('panel-admin');
+  let dragging = false, startX = 0, startW = 0;
+
+  handle.addEventListener('mousedown', e => {
+    if (currentView !== 'split') return;
+    dragging = true;
+    startX = e.clientX;
+    startW = adminPanel.getBoundingClientRect().width;
+    handle.classList.add('dragging');
+    document.body.style.userSelect = 'none';
+    document.body.style.cursor = 'col-resize';
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const delta = e.clientX - startX;
+    const totalW = main.getBoundingClientRect().width - 4;
+    const newW = Math.max(300, Math.min(startW + delta, totalW - 300));
+    adminPanel.style.flex = 'none';
+    adminPanel.style.width = newW + 'px';
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (!dragging) return;
+    dragging = false;
+    handle.classList.remove('dragging');
+    document.body.style.userSelect = '';
+    document.body.style.cursor = '';
+  });
+})();
+</script>
+</body>
+</html>
