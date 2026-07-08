@@ -454,8 +454,8 @@ textarea.form-input{resize:vertical;min-height:80px}
         <div class="table-header">
           <div class="table-title">캠페인 목록</div>
           <div style="display:flex;gap:8px">
-            <input style="padding:7px 12px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);outline:none;width:200px" placeholder="캠페인명 검색...">
-            <select style="padding:7px 12px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);background:var(--bg);outline:none">
+            <input id="seed-search-input" oninput="filterSeedCampaigns()" style="padding:7px 12px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);outline:none;width:200px" placeholder="캠페인명 검색...">
+            <select id="seed-status-filter" onchange="filterSeedCampaigns()" style="padding:7px 12px;border-radius:8px;border:1px solid var(--border2);font-size:12px;color:var(--text);background:var(--bg);outline:none">
               <option>전체 상태</option><option>진행중</option><option>모집중</option><option>완료</option>
             </select>
           </div>
@@ -4182,6 +4182,8 @@ function initSeedCampaigns() {
         ? `<img src="${c.thumb}" style="width:40px;height:40px;object-fit:cover;border-radius:6px;border:0.5px solid var(--border);flex-shrink:0">`
         : `<div style="width:40px;height:40px;border-radius:6px;background:var(--bg3);border:0.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px">🖼️</div>`;
       const tr = document.createElement('tr');
+      tr.dataset.camp = c.name;
+      tr.dataset.status = '모집중';
       tr.innerHTML = `<td><div style="display:flex;align-items:center;gap:10px">${thumbHtml}<div><div class="td-name">${c.name}</div><div class="td-sub">${c.brand || ''} · ${c.cat || ''}</div></div></div></td>`
         + `<td><span class="chip ${c.typeChip || 'chip-blue'}">${c.type || '단순협찬'}</span></td>`
         + `<td><div style="font-size:12px">0 / ${c.count || 0}명</div><div class="prog-bar"><div class="prog-fill" style="width:0%"></div></div></td>`
@@ -4198,6 +4200,35 @@ function initSeedCampaigns() {
   set('seed-stat-active', total);
   set('seed-stat-pending', 0);
   set('seed-stat-done', 0);
+}
+
+function filterSeedCampaigns() {
+  const keyword = (document.getElementById('seed-search-input')?.value || '').trim().toLowerCase();
+  const status = document.getElementById('seed-status-filter')?.value || '전체 상태';
+  const tbody = document.querySelector('#page-campaigns table tbody');
+  if (!tbody) return;
+  const rows = Array.from(tbody.querySelectorAll('tr[data-camp]'));
+  if (rows.length === 0) return;
+  let visibleCount = 0;
+  rows.forEach(tr => {
+    const nameMatch = !keyword || tr.dataset.camp.toLowerCase().includes(keyword);
+    const statusMatch = status === '전체 상태' || tr.dataset.status === status;
+    const show = nameMatch && statusMatch;
+    tr.style.display = show ? '' : 'none';
+    if (show) visibleCount++;
+  });
+  let emptyRow = tbody.querySelector('tr[data-empty]');
+  if (visibleCount === 0) {
+    if (!emptyRow) {
+      emptyRow = document.createElement('tr');
+      emptyRow.dataset.empty = '1';
+      emptyRow.innerHTML = '<td colspan="7" style="text-align:center;color:var(--text3);font-size:13px;padding:24px">검색 결과가 없습니다</td>';
+      tbody.appendChild(emptyRow);
+    }
+    emptyRow.style.display = '';
+  } else if (emptyRow) {
+    emptyRow.style.display = 'none';
+  }
 }
 
 function deleteSeedCampaign(idx) {
