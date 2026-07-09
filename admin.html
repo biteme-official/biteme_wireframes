@@ -2776,55 +2776,33 @@ textarea.form-input{resize:vertical;min-height:80px}
       <div class="page-header">
         <div>
           <div class="page-title">홈 배너 설정</div>
-          <div class="page-sub">사용자 홈 화면 상단 배너 텍스트와 이미지를 수정합니다</div>
+          <div class="page-sub">협찬 탭 상단 배너 텍스트와 이미지를 수정합니다</div>
         </div>
         <button class="btn btn-primary" onclick="saveBannerSettings()">저장하기</button>
       </div>
-
-      <div style="display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start">
-        <!-- 폼 -->
-        <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:24px;display:flex;flex-direction:column;gap:18px">
-          <div class="form-group">
-            <label class="form-label">레이블 텍스트 <span style="font-size:11px;color:var(--text3);font-weight:400">(상단 작은 주황 텍스트)</span></label>
-            <input id="banner-input-label" class="form-input" placeholder="예: NEW CAMPAIGN">
-          </div>
-          <div class="form-group">
-            <label class="form-label">메인 텍스트 <span style="font-size:11px;color:var(--text3);font-weight:400">(줄바꿈: Enter)</span></label>
-            <textarea id="banner-input-title" class="form-input" rows="3" placeholder="예: 뷰티·라이프 인플루언서&#10;맞춤 캠페인 오픈" style="resize:vertical"></textarea>
-          </div>
-          <div class="form-group">
-            <label class="form-label">서브 텍스트</label>
-            <input id="banner-input-sub" class="form-input" placeholder="예: 팔로워 3,000명+ 신청 가능">
-          </div>
-          <div class="form-group">
-            <label class="form-label">배너 이미지 <span style="font-size:11px;color:var(--text3);font-weight:400">(우측 원형 영역 · 권장 1:1)</span></label>
-            <div style="display:flex;align-items:center;gap:12px">
-              <div id="banner-img-preview" style="width:60px;height:60px;border-radius:16px;background:linear-gradient(135deg,var(--orange),#F0A070);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:6px">
-                <label style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:var(--bg2);border:1px solid var(--border2);border-radius:8px;font-size:12px;color:var(--text2)">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                  이미지 업로드
-                  <input type="file" accept="image/*" style="display:none" onchange="previewBannerImg(this)">
-                </label>
-                <button class="btn btn-secondary btn-sm" onclick="clearBannerImg()" style="font-size:12px">이미지 제거 (기본 아이콘)</button>
-              </div>
-            </div>
-          </div>
+      <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:24px;max-width:600px;display:flex;flex-direction:column;gap:18px">
+        <div class="form-group">
+          <label class="form-label">레이블 (작은 주황 텍스트)</label>
+          <input id="bn-label" class="form-input" placeholder="예: NEW CAMPAIGN">
         </div>
-
-        <!-- 미리보기 -->
-        <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:20px">
-          <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:14px">미리보기</div>
-          <div style="background:linear-gradient(135deg,#FFF3EE,#FAEEDA);border-radius:16px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between">
-            <div>
-              <div id="banner-preview-label" style="font-size:11px;font-weight:600;color:var(--orange);letter-spacing:.06em;margin-bottom:4px">NEW CAMPAIGN</div>
-              <div id="banner-preview-title" style="font-size:15px;font-weight:700;color:var(--text);line-height:1.35">뷰티·라이프 인플루언서<br>맞춤 캠페인 오픈</div>
-              <div id="banner-preview-sub" style="font-size:12px;color:var(--text2);margin-top:6px">팔로워 3,000명+ 신청 가능</div>
-            </div>
-            <div id="banner-preview-img" style="width:60px;height:60px;border-radius:16px;background:linear-gradient(135deg,var(--orange),#F0A070);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <div class="form-group">
+          <label class="form-label">메인 텍스트 (줄바꿈은 Enter)</label>
+          <textarea id="bn-title" class="form-input" rows="3" style="resize:vertical" placeholder="뷰티·라이프 인플루언서&#10;맞춤 캠페인 오픈"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">서브 텍스트</label>
+          <input id="bn-sub" class="form-input" placeholder="예: 팔로워 3,000명+ 신청 가능">
+        </div>
+        <div class="form-group">
+          <label class="form-label">이미지 (우측 원형 아이콘)</label>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div id="bn-img-thumb" style="width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--orange),#F0A070);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;overflow:hidden">🌟</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <label style="cursor:pointer;padding:7px 14px;background:var(--bg2);border:1px solid var(--border2);border-radius:8px;font-size:12px;color:var(--text2);display:inline-block">
+                이미지 업로드
+                <input type="file" accept="image/*" style="display:none" onchange="bnUploadImg(this)">
+              </label>
+              <button class="btn btn-secondary btn-sm" onclick="bnClearImg()">이미지 제거</button>
             </div>
           </div>
         </div>
@@ -4577,96 +4555,42 @@ function processSalesSettle(btn, settleAmt, campName) {
   showToast('정산 처리 완료: ₩' + settleAmt.toLocaleString());
 }
 
-// ===================== 홈 배너 설정 =====================
-const BANNER_DEFAULT_SVG = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-const BANNER_DEFAULT_WRAP_STYLE = 'width:60px;height:60px;border-radius:16px;background:linear-gradient(135deg,var(--orange),#F0A070);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden';
-
 function loadBannerSettings() {
-  const saved = JSON.parse(localStorage.getItem('biteme_home_banner') || 'null');
-  const label = saved?.label ?? 'NEW CAMPAIGN';
-  const title = saved?.title ?? '뷰티·라이프 인플루언서\n맞춤 캠페인 오픈';
-  const sub   = saved?.sub   ?? '팔로워 3,000명+ 신청 가능';
-  const img   = saved?.img   ?? null;
-
-  document.getElementById('banner-input-label').value = label;
-  document.getElementById('banner-input-title').value = title;
-  document.getElementById('banner-input-sub').value   = sub;
-
-  _applyBannerPreview(label, title, sub, img);
+  var saved = JSON.parse(localStorage.getItem('biteme_home_banner') || 'null') || {};
+  document.getElementById('bn-label').value = saved.label || 'NEW CAMPAIGN';
+  document.getElementById('bn-title').value = saved.title || '뷰티·라이프 인플루언서\n맞춤 캠페인 오픈';
+  document.getElementById('bn-sub').value   = saved.sub   || '팔로워 3,000명+ 신청 가능';
+  var thumb = document.getElementById('bn-img-thumb');
+  if (saved.img) { thumb.innerHTML = '<img src="' + saved.img + '" style="width:100%;height:100%;object-fit:cover;border-radius:12px">'; }
+  else { thumb.innerHTML = '🌟'; }
 }
 
-function _applyBannerPreview(label, title, sub, img) {
-  document.getElementById('banner-preview-label').textContent = label;
-  const titleEl = document.getElementById('banner-preview-title');
-  titleEl.innerHTML = title.replace(/\n/g, '<br>');
-  document.getElementById('banner-preview-sub').textContent = sub;
-
-  const previewImg  = document.getElementById('banner-preview-img');
-  const uploadThumb = document.getElementById('banner-img-preview');
-  if (img) {
-    const imgTag = '<img src="' + img + '" style="width:100%;height:100%;object-fit:cover">';
-    previewImg.style.cssText  = BANNER_DEFAULT_WRAP_STYLE;
-    previewImg.innerHTML  = imgTag;
-    uploadThumb.style.cssText = BANNER_DEFAULT_WRAP_STYLE;
-    uploadThumb.innerHTML = imgTag;
-  } else {
-    previewImg.style.cssText  = BANNER_DEFAULT_WRAP_STYLE;
-    previewImg.innerHTML  = BANNER_DEFAULT_SVG;
-    uploadThumb.style.cssText = BANNER_DEFAULT_WRAP_STYLE;
-    uploadThumb.innerHTML = BANNER_DEFAULT_SVG;
-  }
+function saveBannerSettings() {
+  var saved = JSON.parse(localStorage.getItem('biteme_home_banner') || 'null') || {};
+  saved.label = document.getElementById('bn-label').value.trim() || 'NEW CAMPAIGN';
+  saved.title = document.getElementById('bn-title').value.trim() || '뷰티·라이프 인플루언서\n맞춤 캠페인 오픈';
+  saved.sub   = document.getElementById('bn-sub').value.trim()   || '팔로워 3,000명+ 신청 가능';
+  localStorage.setItem('biteme_home_banner', JSON.stringify(saved));
+  showToast('배너가 저장되었습니다');
 }
 
-document.addEventListener('input', function(e) {
-  const ids = ['banner-input-label', 'banner-input-title', 'banner-input-sub'];
-  if (!ids.includes(e.target.id)) return;
-  const saved = JSON.parse(localStorage.getItem('biteme_home_banner') || 'null');
-  _applyBannerPreview(
-    document.getElementById('banner-input-label').value,
-    document.getElementById('banner-input-title').value,
-    document.getElementById('banner-input-sub').value,
-    saved?.img ?? null
-  );
-});
-
-function previewBannerImg(input) {
+function bnUploadImg(input) {
   if (!input.files || !input.files[0]) return;
-  const reader = new FileReader();
+  var reader = new FileReader();
   reader.onload = function(e) {
-    const saved = JSON.parse(localStorage.getItem('biteme_home_banner') || 'null') || {};
+    var saved = JSON.parse(localStorage.getItem('biteme_home_banner') || 'null') || {};
     saved.img = e.target.result;
     localStorage.setItem('biteme_home_banner', JSON.stringify(saved));
-    _applyBannerPreview(
-      document.getElementById('banner-input-label').value,
-      document.getElementById('banner-input-title').value,
-      document.getElementById('banner-input-sub').value,
-      e.target.result
-    );
+    document.getElementById('bn-img-thumb').innerHTML = '<img src="' + e.target.result + '" style="width:100%;height:100%;object-fit:cover;border-radius:12px">';
   };
   reader.readAsDataURL(input.files[0]);
 }
 
-function clearBannerImg() {
-  const saved = JSON.parse(localStorage.getItem('biteme_home_banner') || 'null') || {};
+function bnClearImg() {
+  var saved = JSON.parse(localStorage.getItem('biteme_home_banner') || 'null') || {};
   saved.img = null;
   localStorage.setItem('biteme_home_banner', JSON.stringify(saved));
-  _applyBannerPreview(
-    document.getElementById('banner-input-label').value,
-    document.getElementById('banner-input-title').value,
-    document.getElementById('banner-input-sub').value,
-    null
-  );
-}
-
-function saveBannerSettings() {
-  const data = {
-    label: document.getElementById('banner-input-label').value.trim() || 'NEW CAMPAIGN',
-    title: document.getElementById('banner-input-title').value.trim() || '뷰티·라이프 인플루언서\n맞춤 캠페인 오픈',
-    sub:   document.getElementById('banner-input-sub').value.trim()   || '팔로워 3,000명+ 신청 가능',
-    img:   (JSON.parse(localStorage.getItem('biteme_home_banner') || 'null') || {}).img ?? null
-  };
-  localStorage.setItem('biteme_home_banner', JSON.stringify(data));
-  showToast('배너가 저장되었습니다');
+  document.getElementById('bn-img-thumb').innerHTML = '🌟';
 }
 </script>
 
