@@ -2262,8 +2262,10 @@ function renderHomeBanner() {
     titleEl.style.color = '#fff';
     subEl.style.color   = 'rgba(255,255,255,0.75)';
   } else {
-    bannerEl.style.background = 'linear-gradient(135deg,#FFF3EE,#FAEEDA)';
-    bannerEl.style.backgroundImage = '';
+    bannerEl.style.backgroundImage = 'linear-gradient(135deg,#FFF3EE,#FAEEDA)';
+    bannerEl.style.backgroundSize = '';
+    bannerEl.style.backgroundPosition = '';
+    bannerEl.style.backgroundColor = '';
     dimEl.style.display = 'none';
     labelEl.style.color = 'var(--orange)';
     titleEl.style.color = 'var(--text)';
