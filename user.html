@@ -2126,7 +2126,7 @@ function renderNewCampaigns() {
         + '</div>'
         + '<div class="camp-body">'
         + '<div class="camp-name">' + c.name + '</div>'
-        + '<div class="camp-meta">' + c.brand + ' · 협찬가 ₩' + priceNum.toLocaleString() + ' · 마감 ' + c.deadline + ' · ' + c.count + '명 모집</div>'
+        + '<div class="camp-meta">' + c.brand + (c.platform ? ' · ' + c.platform : '') + ' · 마감 ' + c.deadline + ' · ' + c.count + '명 모집</div>'
         + '<div class="camp-tags"><span class="chip ' + c.typeChip + '">' + c.type + '</span><span class="chip chip-gray">' + c.cat + '</span>'
         + (c.followers ? '<span class="chip chip-blue">' + c.followers + '+명</span>' : '') + '</div>'
         + '</div>'
