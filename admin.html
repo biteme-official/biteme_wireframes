@@ -260,7 +260,7 @@ textarea.form-input{resize:vertical;min-height:80px}
       협의 게시판
       <span class="nav-badge red">3</span>
     </div>
-    <div class="nav-item" onclick="goPage('page-banner-settings')">
+    <div class="nav-item" onclick="openBannerModal()">
       <div class="nav-dot"></div>
       홈 배너 설정
     </div>
@@ -2771,46 +2771,50 @@ textarea.form-input{resize:vertical;min-height:80px}
       </div>
     </div>
 
-    <!-- ===================== 홈 배너 설정 ===================== -->
-    <div class="page" id="page-banner-settings">
-      <div class="page-header">
-        <div>
-          <div class="page-title">홈 배너 설정</div>
-          <div class="page-sub">협찬 탭 상단 배너 텍스트와 이미지를 수정합니다</div>
-        </div>
-        <button class="btn btn-primary" onclick="saveBannerSettings()">저장하기</button>
+
+  </div><!-- .content -->
+</div><!-- .main -->
+
+<!-- 홈 배너 설정 모달 -->
+<div id="banner-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:999;align-items:center;justify-content:center">
+  <div style="background:var(--bg);border-radius:20px;width:520px;max-width:90vw;padding:28px;box-shadow:0 24px 60px rgba(0,0,0,.25)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div style="font-size:17px;font-weight:700;color:var(--text)">홈 배너 설정</div>
+      <button onclick="closeBannerModal()" style="width:32px;height:32px;border-radius:8px;border:1px solid var(--border2);background:var(--bg2);cursor:pointer;font-size:16px;color:var(--text2)">×</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:20px">
+      <div class="form-group">
+        <label class="form-label">레이블 (작은 주황 텍스트)</label>
+        <input id="bn-label" class="form-input" placeholder="예: NEW CAMPAIGN">
       </div>
-      <div style="background:var(--bg);border-radius:14px;border:0.5px solid var(--border);padding:24px;max-width:600px;display:flex;flex-direction:column;gap:18px">
-        <div class="form-group">
-          <label class="form-label">레이블 (작은 주황 텍스트)</label>
-          <input id="bn-label" class="form-input" placeholder="예: NEW CAMPAIGN">
-        </div>
-        <div class="form-group">
-          <label class="form-label">메인 텍스트 (줄바꿈은 Enter)</label>
-          <textarea id="bn-title" class="form-input" rows="3" style="resize:vertical" placeholder="뷰티·라이프 인플루언서&#10;맞춤 캠페인 오픈"></textarea>
-        </div>
-        <div class="form-group">
-          <label class="form-label">서브 텍스트</label>
-          <input id="bn-sub" class="form-input" placeholder="예: 팔로워 3,000명+ 신청 가능">
-        </div>
-        <div class="form-group">
-          <label class="form-label">이미지 (우측 원형 아이콘)</label>
-          <div style="display:flex;align-items:center;gap:12px">
-            <div id="bn-img-thumb" style="width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--orange),#F0A070);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;overflow:hidden">🌟</div>
-            <div style="display:flex;flex-direction:column;gap:6px">
-              <label style="cursor:pointer;padding:7px 14px;background:var(--bg2);border:1px solid var(--border2);border-radius:8px;font-size:12px;color:var(--text2);display:inline-block">
-                이미지 업로드
-                <input type="file" accept="image/*" style="display:none" onchange="bnUploadImg(this)">
-              </label>
-              <button class="btn btn-secondary btn-sm" onclick="bnClearImg()">이미지 제거</button>
-            </div>
+      <div class="form-group">
+        <label class="form-label">메인 텍스트 (줄바꿈은 Enter)</label>
+        <textarea id="bn-title" class="form-input" rows="3" style="resize:vertical" placeholder="뷰티·라이프 인플루언서&#10;맞춤 캠페인 오픈"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">서브 텍스트</label>
+        <input id="bn-sub" class="form-input" placeholder="예: 팔로워 3,000명+ 신청 가능">
+      </div>
+      <div class="form-group">
+        <label class="form-label">이미지 (우측 원형 아이콘)</label>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div id="bn-img-thumb" style="width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--orange),#F0A070);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;overflow:hidden">🌟</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <label style="cursor:pointer;padding:7px 14px;background:var(--bg2);border:1px solid var(--border2);border-radius:8px;font-size:12px;color:var(--text2);display:inline-block">
+              이미지 업로드
+              <input type="file" accept="image/*" style="display:none" onchange="bnUploadImg(this)">
+            </label>
+            <button class="btn btn-secondary btn-sm" onclick="bnClearImg()">이미지 제거</button>
           </div>
         </div>
       </div>
     </div>
-
-  </div><!-- .content -->
-</div><!-- .main -->
+    <div style="display:flex;gap:8px">
+      <button onclick="closeBannerModal()" class="btn btn-secondary" style="flex:1">취소</button>
+      <button onclick="saveBannerSettings()" class="btn btn-primary" style="flex:1">저장하기</button>
+    </div>
+  </div>
+</div>
 
 <!-- 독촉 알림톡 모달 -->
 <div id="chase-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:999;display:none;align-items:center;justify-content:center">
@@ -3000,7 +3004,7 @@ function goPage(id) {
     'page-grade-mgmt': 10, 'page-grade-criteria': 10,
     'page-deposit': 11,
     'page-influencers': 12,
-    'page-notifications': 13, 'page-messages': 14, 'page-banner-settings': 15,
+    'page-notifications': 13, 'page-messages': 14,
     'page-seller-profile': 10
   };
   const navItems = document.querySelectorAll('.nav-item');
@@ -3014,7 +3018,6 @@ function goPage(id) {
   if (id === 'page-gb-pipeline') initPipelinePage();
   if (id === 'page-campaigns') initSeedCampaigns();
   if (id === 'page-applications') initApplicationsPage();
-  if (id === 'page-banner-settings') loadBannerSettings();
 }
 
 const pipelineData = [
@@ -4555,7 +4558,7 @@ function processSalesSettle(btn, settleAmt, campName) {
   showToast('정산 처리 완료: ₩' + settleAmt.toLocaleString());
 }
 
-function loadBannerSettings() {
+function openBannerModal() {
   var saved = JSON.parse(localStorage.getItem('biteme_home_banner') || 'null') || {};
   document.getElementById('bn-label').value = saved.label || 'NEW CAMPAIGN';
   document.getElementById('bn-title').value = saved.title || '뷰티·라이프 인플루언서\n맞춤 캠페인 오픈';
@@ -4563,7 +4566,12 @@ function loadBannerSettings() {
   var thumb = document.getElementById('bn-img-thumb');
   if (saved.img) { thumb.innerHTML = '<img src="' + saved.img + '" style="width:100%;height:100%;object-fit:cover;border-radius:12px">'; }
   else { thumb.innerHTML = '🌟'; }
+  document.getElementById('banner-modal').style.display = 'flex';
 }
+function closeBannerModal() {
+  document.getElementById('banner-modal').style.display = 'none';
+}
+function loadBannerSettings() {}
 
 function saveBannerSettings() {
   var saved = JSON.parse(localStorage.getItem('biteme_home_banner') || 'null') || {};
