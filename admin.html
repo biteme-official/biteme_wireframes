@@ -3234,7 +3234,8 @@ function createCampaign() {
   const saved = JSON.parse(localStorage.getItem('biteme_new_campaigns') || '[]');
   saved.unshift({ name, brand, cat, count, price, deadline: deadlineFmt,
     applyDeadline: _fmtDate(applyDeadline), followers, thumb, desc, platform,
-    type: typeLabel, typeChip: isSimple ? 'chip-teal' : 'chip-amber' });
+    type: typeLabel, typeChip: isSimple ? 'chip-teal' : 'chip-amber',
+    createdAt: new Date().toISOString() });
   localStorage.setItem('biteme_new_campaigns', JSON.stringify(saved));
   showToast(name + ' 캠페인이 개설되었습니다');
   goPage('page-campaigns');
