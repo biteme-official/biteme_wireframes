@@ -2796,16 +2796,14 @@ textarea.form-input{resize:vertical;min-height:80px}
         <input id="bn-sub" class="form-input" placeholder="예: 팔로워 3,000명+ 신청 가능">
       </div>
       <div class="form-group">
-        <label class="form-label">이미지 (우측 원형 아이콘)</label>
-        <div style="display:flex;align-items:center;gap:12px">
-          <div id="bn-img-thumb" style="width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--orange),#F0A070);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;overflow:hidden">🌟</div>
-          <div style="display:flex;flex-direction:column;gap:6px">
-            <label style="cursor:pointer;padding:7px 14px;background:var(--bg2);border:1px solid var(--border2);border-radius:8px;font-size:12px;color:var(--text2);display:inline-block">
-              이미지 업로드
-              <input type="file" accept="image/*" style="display:none" onchange="bnUploadImg(this)">
-            </label>
-            <button class="btn btn-secondary btn-sm" onclick="bnClearImg()">이미지 제거</button>
-          </div>
+        <label class="form-label">배너 배경 이미지</label>
+        <div id="bn-img-thumb" style="width:100%;height:90px;border-radius:12px;background:linear-gradient(135deg,#FFF3EE,#FAEEDA);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text3);overflow:hidden;margin-bottom:8px">이미지 없음 (기본 그라디언트 사용)</div>
+        <div style="display:flex;gap:8px">
+          <label style="cursor:pointer;flex:1;text-align:center;padding:7px 14px;background:var(--bg2);border:1px solid var(--border2);border-radius:8px;font-size:12px;color:var(--text2);display:inline-block">
+            이미지 업로드
+            <input type="file" accept="image/*" style="display:none" onchange="bnUploadImg(this)">
+          </label>
+          <button class="btn btn-secondary btn-sm" onclick="bnClearImg()">이미지 제거</button>
         </div>
       </div>
     </div>
@@ -4564,8 +4562,8 @@ function openBannerModal() {
   document.getElementById('bn-title').value = saved.title || '뷰티·라이프 인플루언서\n맞춤 캠페인 오픈';
   document.getElementById('bn-sub').value   = saved.sub   || '팔로워 3,000명+ 신청 가능';
   var thumb = document.getElementById('bn-img-thumb');
-  if (saved.img) { thumb.innerHTML = '<img src="' + saved.img + '" style="width:100%;height:100%;object-fit:cover;border-radius:12px">'; }
-  else { thumb.innerHTML = '🌟'; }
+  if (saved.img) { thumb.innerHTML = '<img src="' + saved.img + '" style="width:100%;height:100%;object-fit:cover">'; thumb.style.color = 'transparent'; }
+  else { thumb.innerHTML = '이미지 없음 (기본 그라디언트 사용)'; thumb.style.color = 'var(--text3)'; }
   document.getElementById('banner-modal').style.display = 'flex';
 }
 function closeBannerModal() {
@@ -4589,7 +4587,7 @@ function bnUploadImg(input) {
     var saved = JSON.parse(localStorage.getItem('biteme_home_banner') || 'null') || {};
     saved.img = e.target.result;
     localStorage.setItem('biteme_home_banner', JSON.stringify(saved));
-    document.getElementById('bn-img-thumb').innerHTML = '<img src="' + e.target.result + '" style="width:100%;height:100%;object-fit:cover;border-radius:12px">';
+    var t = document.getElementById('bn-img-thumb'); t.innerHTML = '<img src="' + e.target.result + '" style="width:100%;height:100%;object-fit:cover">'; t.style.color = 'transparent';
   };
   reader.readAsDataURL(input.files[0]);
 }
@@ -4598,7 +4596,7 @@ function bnClearImg() {
   var saved = JSON.parse(localStorage.getItem('biteme_home_banner') || 'null') || {};
   saved.img = null;
   localStorage.setItem('biteme_home_banner', JSON.stringify(saved));
-  document.getElementById('bn-img-thumb').innerHTML = '🌟';
+  var t = document.getElementById('bn-img-thumb'); t.innerHTML = '이미지 없음 (기본 그라디언트 사용)'; t.style.color = 'var(--text3)';
 }
 </script>
 

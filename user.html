@@ -246,17 +246,13 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
     <!-- 협찬 탭 -->
     <div id="home-tab-sponsor" style="display:flex;flex-direction:column;flex:1;overflow:hidden">
 
-      <!-- 추천 배너 (고정) -->
-      <div style="padding:14px 20px 0;flex-shrink:0">
-        <div style="background:linear-gradient(135deg,#FFF3EE,#FAEEDA);border-radius:16px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between">
-          <div>
-            <div id="home-banner-label" style="font-size:11px;font-weight:600;color:var(--orange);letter-spacing:.06em;margin-bottom:4px">NEW CAMPAIGN</div>
-            <div id="home-banner-title" style="font-size:15px;font-weight:700;color:var(--text);line-height:1.35">뷰티·라이프 인플루언서<br>맞춤 캠페인 오픈</div>
-            <div id="home-banner-sub" style="font-size:12px;color:var(--text2);margin-top:6px">팔로워 3,000명+ 신청 가능</div>
-          </div>
-          <div id="home-banner-img" style="width:60px;height:60px;border-radius:16px;background:linear-gradient(135deg,var(--orange),#F0A070);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          </div>
+      <!-- 추천 배너 -->
+      <div id="home-banner" style="background:linear-gradient(135deg,#FFF3EE,#FAEEDA);border-radius:16px;position:relative;overflow:hidden;min-height:96px">
+        <div id="home-banner-dim" style="display:none;position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,0.55) 0%,rgba(0,0,0,0.15) 70%,transparent 100%)"></div>
+        <div style="position:relative;z-index:1;padding:16px 18px">
+          <div id="home-banner-label" style="font-size:11px;font-weight:600;color:var(--orange);letter-spacing:.06em;margin-bottom:4px">NEW CAMPAIGN</div>
+          <div id="home-banner-title" style="font-size:15px;font-weight:700;color:var(--text);line-height:1.35">뷰티·라이프 인플루언서<br>맞춤 캠페인 오픈</div>
+          <div id="home-banner-sub" style="font-size:12px;color:var(--text2);margin-top:6px">팔로워 3,000명+ 신청 가능</div>
         </div>
       </div>
 
@@ -278,6 +274,7 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
           </div>
           <div id="new-camps-home" style="display:flex;flex-direction:column;gap:10px"></div>
         </div>
+      </div>
     </div>
 
     <!-- 공동구매 탭 -->
@@ -2245,17 +2242,33 @@ function handleStatusUpdate(statuses) {
 
 // 다른 탭(admin)에서 변경 시 자동 반영
 function renderHomeBanner() {
-  const saved = JSON.parse(localStorage.getItem('biteme_home_banner') || 'null');
-  const labelEl = document.getElementById('home-banner-label');
-  const titleEl = document.getElementById('home-banner-title');
-  const subEl   = document.getElementById('home-banner-sub');
-  const imgEl   = document.getElementById('home-banner-img');
-  if (!labelEl) return;
-  const DEFAULT_SVG = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-  labelEl.textContent = saved?.label ?? 'NEW CAMPAIGN';
-  titleEl.innerHTML   = (saved?.title ?? '뷰티·라이프 인플루언서\n맞춤 캠페인 오픈').replace(/\n/g, '<br>');
-  subEl.textContent   = saved?.sub   ?? '팔로워 3,000명+ 신청 가능';
-  imgEl.innerHTML     = saved?.img ? '<img src="' + saved.img + '" style="width:100%;height:100%;object-fit:cover">' : DEFAULT_SVG;
+  var saved = JSON.parse(localStorage.getItem('biteme_home_banner') || 'null') || {};
+  var bannerEl = document.getElementById('home-banner');
+  var labelEl  = document.getElementById('home-banner-label');
+  var titleEl  = document.getElementById('home-banner-title');
+  var subEl    = document.getElementById('home-banner-sub');
+  var dimEl    = document.getElementById('home-banner-dim');
+  if (!bannerEl) return;
+  labelEl.textContent = saved.label || 'NEW CAMPAIGN';
+  titleEl.innerHTML   = (saved.title || '뷰티·라이프 인플루언서\n맞춤 캠페인 오픈').replace(/\n/g, '<br>');
+  subEl.textContent   = saved.sub   || '팔로워 3,000명+ 신청 가능';
+  if (saved.img) {
+    bannerEl.style.background = 'none';
+    bannerEl.style.backgroundImage = 'url(' + saved.img + ')';
+    bannerEl.style.backgroundSize = 'cover';
+    bannerEl.style.backgroundPosition = 'center';
+    dimEl.style.display = 'block';
+    labelEl.style.color = 'rgba(255,255,255,0.85)';
+    titleEl.style.color = '#fff';
+    subEl.style.color   = 'rgba(255,255,255,0.75)';
+  } else {
+    bannerEl.style.background = 'linear-gradient(135deg,#FFF3EE,#FAEEDA)';
+    bannerEl.style.backgroundImage = '';
+    dimEl.style.display = 'none';
+    labelEl.style.color = 'var(--orange)';
+    titleEl.style.color = 'var(--text)';
+    subEl.style.color   = 'var(--text2)';
+  }
 }
 
 window.addEventListener('storage', function(e) {
