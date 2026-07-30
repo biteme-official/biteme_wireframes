@@ -244,56 +244,64 @@ body{background:#f0ede8;display:flex;justify-content:center;align-items:flex-sta
     </div>
 
     <!-- 협찬 탭 -->
-    <div id="home-tab-sponsor" class="scroll-area" style="padding:14px 16px;display:flex;flex-direction:column;gap:14px">
+    <div id="home-tab-sponsor" style="display:flex;flex-direction:column;flex:1;overflow:hidden">
 
-      <!-- 추천 배너 -->
-      <div style="background:linear-gradient(135deg,#FFF3EE,#FAEEDA);border-radius:16px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between">
+      <!-- 추천 배너 (고정) -->
+      <div style="padding:14px 20px 0;flex-shrink:0">
+        <div style="background:linear-gradient(135deg,#FFF3EE,#FAEEDA);border-radius:16px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <div style="font-size:11px;font-weight:600;color:var(--orange);letter-spacing:.06em;margin-bottom:4px">NEW CAMPAIGN</div>
+            <div style="font-size:15px;font-weight:700;color:var(--text);line-height:1.35">뷰티·라이프 인플루언서<br>맞춤 캠페인 오픈</div>
+            <div style="font-size:12px;color:var(--text2);margin-top:6px">팔로워 3,000명+ 신청 가능</div>
+          </div>
+          <div style="width:60px;height:60px;border-radius:16px;background:linear-gradient(135deg,var(--orange),#F0A070);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- 카테고리 (탐색 탭과 동일한 scroll-cats 스타일, 고정) -->
+      <div class="scroll-cats" style="padding-top:12px">
+        <div class="scroll-cat on" onclick="filterCat(this,'home-tab-sponsor')">전체</div>
+        <div class="scroll-cat" onclick="filterCat(this,'home-tab-sponsor')">식품</div>
+        <div class="scroll-cat" onclick="filterCat(this,'home-tab-sponsor')">의류</div>
+        <div class="scroll-cat" onclick="filterCat(this,'home-tab-sponsor')">장난감</div>
+        <div class="scroll-cat" onclick="filterCat(this,'home-tab-sponsor')">용품</div>
+      </div>
+
+      <!-- 캠페인 목록 (스크롤) -->
+      <div class="scroll-area" style="padding:0 20px 20px;display:flex;flex-direction:column;gap:14px">
         <div>
-          <div style="font-size:11px;font-weight:600;color:var(--orange);letter-spacing:.06em;margin-bottom:4px">NEW CAMPAIGN</div>
-          <div style="font-size:15px;font-weight:700;color:var(--text);line-height:1.35">뷰티·라이프 인플루언서<br>맞춤 캠페인 오픈</div>
-          <div style="font-size:12px;color:var(--text2);margin-top:6px">팔로워 3,000명+ 신청 가능</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+            <div style="font-size:15px;font-weight:700;color:var(--text)">지금 신청 가능한 캠페인</div>
+            <div style="font-size:13px;color:var(--orange);font-weight:600;cursor:pointer" onclick="goScreen('screen-explore')">전체보기</div>
+          </div>
+          <div id="new-camps-home" style="display:flex;flex-direction:column;gap:10px"></div>
         </div>
-        <div style="width:60px;height:60px;border-radius:16px;background:linear-gradient(135deg,var(--orange),#F0A070);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        </div>
-      </div>
-
-      <!-- 카테고리 칩 -->
-      <div style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;flex-shrink:0;padding-bottom:2px">
-        <div style="flex-shrink:0;padding:7px 16px;border-radius:20px;font-size:13px;font-weight:600;background:var(--text);color:#fff">전체</div>
-        <div style="flex-shrink:0;padding:7px 16px;border-radius:20px;font-size:13px;background:var(--bg2);color:var(--text2);border:0.5px solid var(--border2)">식품</div>
-        <div style="flex-shrink:0;padding:7px 16px;border-radius:20px;font-size:13px;background:var(--bg2);color:var(--text2);border:0.5px solid var(--border2)">의류</div>
-        <div style="flex-shrink:0;padding:7px 16px;border-radius:20px;font-size:13px;background:var(--bg2);color:var(--text2);border:0.5px solid var(--border2)">장난감</div>
-        <div style="flex-shrink:0;padding:7px 16px;border-radius:20px;font-size:13px;background:var(--bg2);color:var(--text2);border:0.5px solid var(--border2)">용품</div>
-      </div>
-
-      <!-- 캠페인 목록 -->
-      <div>
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-          <div style="font-size:15px;font-weight:700;color:var(--text)">지금 신청 가능한 캠페인</div>
-          <div style="font-size:13px;color:var(--orange);font-weight:600;cursor:pointer" onclick="goScreen('screen-explore')">전체보기</div>
-        </div>
-        <div id="new-camps-home" style="display:flex;flex-direction:column;gap:10px"></div>
       </div>
     </div>
 
     <!-- 공동구매 탭 -->
-    <div id="home-tab-gb" class="scroll-area" style="padding:14px 16px;display:none;flex-direction:column;gap:14px">
-      <div id="gb-home-cats" style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;flex-shrink:0;padding-bottom:2px">
-        <div style="flex-shrink:0;padding:7px 16px;border-radius:20px;font-size:13px;font-weight:600;background:var(--text);color:#fff;cursor:pointer" onclick="switchGbHomeCat(this)">전체</div>
-        <div style="flex-shrink:0;padding:7px 16px;border-radius:20px;font-size:13px;font-weight:500;background:var(--bg2);color:var(--text2);border:0.5px solid var(--border2);cursor:pointer" onclick="switchGbHomeCat(this)">식품</div>
-        <div style="flex-shrink:0;padding:7px 16px;border-radius:20px;font-size:13px;font-weight:500;background:var(--bg2);color:var(--text2);border:0.5px solid var(--border2);cursor:pointer" onclick="switchGbHomeCat(this)">의류</div>
-        <div style="flex-shrink:0;padding:7px 16px;border-radius:20px;font-size:13px;font-weight:500;background:var(--bg2);color:var(--text2);border:0.5px solid var(--border2);cursor:pointer" onclick="switchGbHomeCat(this)">장난감</div>
-        <div style="flex-shrink:0;padding:7px 16px;border-radius:20px;font-size:13px;font-weight:500;background:var(--bg2);color:var(--text2);border:0.5px solid var(--border2);cursor:pointer" onclick="switchGbHomeCat(this)">용품</div>
+    <div id="home-tab-gb" style="display:none;flex-direction:column;flex:1;overflow:hidden">
+      <!-- 카테고리 (탐색 탭과 동일한 scroll-cats 스타일, 고정) -->
+      <div id="gb-home-cats" class="scroll-cats" style="padding-top:12px">
+        <div class="scroll-cat on" onclick="filterCat(this,'home-tab-gb')">전체</div>
+        <div class="scroll-cat" onclick="filterCat(this,'home-tab-gb')">식품</div>
+        <div class="scroll-cat" onclick="filterCat(this,'home-tab-gb')">의류</div>
+        <div class="scroll-cat" onclick="filterCat(this,'home-tab-gb')">장난감</div>
+        <div class="scroll-cat" onclick="filterCat(this,'home-tab-gb')">용품</div>
       </div>
-      <div class="collab-banner">
-        <div>
-          <div style="font-size:13px;font-weight:700;color:#412402">바잇미 X 산리오 콜라보</div>
-          <div style="font-size:12px;color:#633806;margin-top:2px">한정 특가 진행중</div>
+      <!-- 콘텐츠 (스크롤) -->
+      <div class="scroll-area" style="padding:0 20px 20px;display:flex;flex-direction:column;gap:14px">
+        <div class="collab-banner">
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#412402">바잇미 X 산리오 콜라보</div>
+            <div style="font-size:12px;color:#633806;margin-top:2px">한정 특가 진행중</div>
+          </div>
+          <span style="background:var(--orange);color:#fff;font-size:12px;font-weight:700;padding:4px 10px;border-radius:10px">특가</span>
         </div>
-        <span style="background:var(--orange);color:#fff;font-size:12px;font-weight:700;padding:4px 10px;border-radius:10px">특가</span>
+        <div id="new-gb-camps"></div>
       </div>
-      <div id="new-gb-camps"></div>
     </div>
 
     <div class="nav-bar">
