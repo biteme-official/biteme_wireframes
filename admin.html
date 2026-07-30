@@ -260,7 +260,7 @@ textarea.form-input{resize:vertical;min-height:80px}
       협의 게시판
       <span class="nav-badge red">3</span>
     </div>
-    <div class="nav-item" onclick="openBannerModal()">
+    <div class="nav-item" onclick="goPage('page-banner-settings')">
       <div class="nav-dot"></div>
       홈 배너 설정
     </div>
@@ -2772,47 +2772,46 @@ textarea.form-input{resize:vertical;min-height:80px}
     </div>
 
 
-  </div><!-- .content -->
-</div><!-- .main -->
-
-<!-- 홈 배너 설정 모달 -->
-<div id="banner-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:999;align-items:center;justify-content:center">
-  <div style="background:var(--bg);border-radius:20px;width:520px;max-width:90vw;padding:28px;box-shadow:0 24px 60px rgba(0,0,0,.25)">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
-      <div style="font-size:17px;font-weight:700;color:var(--text)">홈 배너 설정</div>
-      <button onclick="closeBannerModal()" style="width:32px;height:32px;border-radius:8px;border:1px solid var(--border2);background:var(--bg2);cursor:pointer;font-size:16px;color:var(--text2)">×</button>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:20px">
-      <div class="form-group">
-        <label class="form-label">레이블 (작은 주황 텍스트)</label>
-        <input id="bn-label" class="form-input" placeholder="예: NEW CAMPAIGN">
-      </div>
-      <div class="form-group">
-        <label class="form-label">메인 텍스트 (줄바꿈은 Enter)</label>
-        <textarea id="bn-title" class="form-input" rows="3" style="resize:vertical" placeholder="뷰티·라이프 인플루언서&#10;맞춤 캠페인 오픈"></textarea>
-      </div>
-      <div class="form-group">
-        <label class="form-label">서브 텍스트</label>
-        <input id="bn-sub" class="form-input" placeholder="예: 팔로워 3,000명+ 신청 가능">
-      </div>
-      <div class="form-group">
-        <label class="form-label">배너 배경 이미지</label>
-        <div id="bn-img-thumb" style="width:100%;height:90px;border-radius:12px;background:linear-gradient(135deg,#FFF3EE,#FAEEDA);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text3);overflow:hidden;margin-bottom:8px">이미지 없음 (기본 그라디언트 사용)</div>
-        <div style="display:flex;gap:8px">
-          <label style="cursor:pointer;flex:1;text-align:center;padding:7px 14px;background:var(--bg2);border:1px solid var(--border2);border-radius:8px;font-size:12px;color:var(--text2);display:inline-block">
-            이미지 업로드
-            <input type="file" accept="image/*" style="display:none" onchange="bnUploadImg(this)">
-          </label>
-          <button class="btn btn-secondary btn-sm" onclick="bnClearImg()">이미지 제거</button>
+    <div class="page" id="page-banner-settings">
+      <div class="page-header">
+        <div>
+          <div class="page-title">홈 배너 설정</div>
+          <div class="page-sub">유저 앱 홈 화면 상단 배너 텍스트와 이미지를 수정합니다</div>
         </div>
       </div>
+      <div style="max-width:520px;display:flex;flex-direction:column;gap:14px;margin-bottom:20px">
+        <div class="form-group">
+          <label class="form-label">레이블 (작은 주황 텍스트)</label>
+          <input id="bn-label" class="form-input" placeholder="예: NEW CAMPAIGN">
+        </div>
+        <div class="form-group">
+          <label class="form-label">메인 텍스트 (줄바꿈은 Enter)</label>
+          <textarea id="bn-title" class="form-input" rows="3" style="resize:vertical" placeholder="뷰티·라이프 인플루언서&#10;맞춤 캠페인 오픈"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">서브 텍스트</label>
+          <input id="bn-sub" class="form-input" placeholder="예: 팔로워 3,000명+ 신청 가능">
+        </div>
+        <div class="form-group">
+          <label class="form-label">배너 배경 이미지</label>
+          <div id="bn-img-thumb" style="width:100%;height:90px;border-radius:12px;background:linear-gradient(135deg,#FFF3EE,#FAEEDA);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text3);overflow:hidden;margin-bottom:8px">이미지 없음 (기본 그라디언트 사용)</div>
+          <div style="display:flex;gap:8px">
+            <label style="cursor:pointer;flex:1;text-align:center;padding:7px 14px;background:var(--bg2);border:1px solid var(--border2);border-radius:8px;font-size:12px;color:var(--text2);display:inline-block">
+              이미지 업로드
+              <input type="file" accept="image/*" style="display:none" onchange="bnUploadImg(this)">
+            </label>
+            <button class="btn btn-secondary btn-sm" onclick="bnClearImg()">이미지 제거</button>
+          </div>
+        </div>
+      </div>
+      <div style="max-width:520px;display:flex;gap:8px">
+        <button onclick="goPage('page-campaigns')" class="btn btn-secondary" style="flex:1">취소</button>
+        <button onclick="saveBannerSettings()" class="btn btn-primary" style="flex:1">저장하기</button>
+      </div>
     </div>
-    <div style="display:flex;gap:8px">
-      <button onclick="closeBannerModal()" class="btn btn-secondary" style="flex:1">취소</button>
-      <button onclick="saveBannerSettings()" class="btn btn-primary" style="flex:1">저장하기</button>
-    </div>
-  </div>
-</div>
+
+  </div><!-- .content -->
+</div><!-- .main -->
 
 <!-- 독촉 알림톡 모달 -->
 <div id="chase-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:999;display:none;align-items:center;justify-content:center">
@@ -2983,6 +2982,7 @@ const breadcrumbs = {
   'page-influencers': '인플루언서 › <strong>목록</strong>',
   'page-notifications': '운영 › <strong>알림 자동화</strong>',
   'page-messages': '운영 › <strong>협의 게시판</strong>',
+  'page-banner-settings': '운영 › <strong>홈 배너 설정</strong>',
 };
 
 function goPage(id) {
@@ -2994,6 +2994,7 @@ function goPage(id) {
   document.getElementById('breadcrumb').innerHTML = breadcrumbs[id] || '';
   localStorage.setItem('biteme_admin_page', id);
   // nav 동기화
+  // ⚠️ navMap은 DOM 순서(0-based 인덱스) 기반 — 사이드바 중간에 nav-item 삽입 시 이하 모든 인덱스가 밀림. 끝에 추가할 것.
   const navMap = {
     'page-home': 0,
     'page-campaigns': 1, 'page-campaign-new': 2, 'page-campaign-detail': 1, 'page-applications': 3,
@@ -3003,10 +3004,12 @@ function goPage(id) {
     'page-deposit': 11,
     'page-influencers': 12,
     'page-notifications': 13, 'page-messages': 14,
-    'page-seller-profile': 10
+    'page-seller-profile': 10,
+    'page-banner-settings': 15
   };
   const navItems = document.querySelectorAll('.nav-item');
   if (navMap[id] !== undefined) navItems[navMap[id]].classList.add('on');
+  if (id === 'page-banner-settings') loadBannerSettings();
   if (id === 'page-campaign-new') resetCampaignForm();
   if (id === 'page-gb-new') gbCalInit();
   if (id === 'page-grade-criteria') initGradeCriteria();
@@ -4556,47 +4559,62 @@ function processSalesSettle(btn, settleAmt, campName) {
   showToast('정산 처리 완료: ₩' + settleAmt.toLocaleString());
 }
 
-function openBannerModal() {
+var _bnImgPending = undefined;
+
+function loadBannerSettings() {
   var saved = JSON.parse(localStorage.getItem('biteme_home_banner') || 'null') || {};
+  _bnImgPending = undefined;
   document.getElementById('bn-label').value = saved.label || 'NEW CAMPAIGN';
   document.getElementById('bn-title').value = saved.title || '뷰티·라이프 인플루언서\n맞춤 캠페인 오픈';
   document.getElementById('bn-sub').value   = saved.sub   || '팔로워 3,000명+ 신청 가능';
   var thumb = document.getElementById('bn-img-thumb');
   if (saved.img) { thumb.innerHTML = '<img src="' + saved.img + '" style="width:100%;height:100%;object-fit:cover">'; thumb.style.color = 'transparent'; }
   else { thumb.innerHTML = '이미지 없음 (기본 그라디언트 사용)'; thumb.style.color = 'var(--text3)'; }
-  document.getElementById('banner-modal').style.display = 'flex';
 }
-function closeBannerModal() {
-  document.getElementById('banner-modal').style.display = 'none';
-}
-function loadBannerSettings() {}
 
 function saveBannerSettings() {
   var saved = JSON.parse(localStorage.getItem('biteme_home_banner') || 'null') || {};
   saved.label = document.getElementById('bn-label').value.trim() || 'NEW CAMPAIGN';
   saved.title = document.getElementById('bn-title').value.trim() || '뷰티·라이프 인플루언서\n맞춤 캠페인 오픈';
   saved.sub   = document.getElementById('bn-sub').value.trim()   || '팔로워 3,000명+ 신청 가능';
-  localStorage.setItem('biteme_home_banner', JSON.stringify(saved));
-  showToast('배너가 저장되었습니다');
+  if (_bnImgPending !== undefined) saved.img = _bnImgPending;
+  try {
+    localStorage.setItem('biteme_home_banner', JSON.stringify(saved));
+    _bnImgPending = undefined;
+    showToast('배너가 저장되었습니다');
+  } catch(e) {
+    showToast('이미지가 너무 큽니다. 더 작은 이미지를 사용해 주세요.');
+  }
 }
 
 function bnUploadImg(input) {
   if (!input.files || !input.files[0]) return;
   var reader = new FileReader();
   reader.onload = function(e) {
-    var saved = JSON.parse(localStorage.getItem('biteme_home_banner') || 'null') || {};
-    saved.img = e.target.result;
-    localStorage.setItem('biteme_home_banner', JSON.stringify(saved));
-    var t = document.getElementById('bn-img-thumb'); t.innerHTML = '<img src="' + e.target.result + '" style="width:100%;height:100%;object-fit:cover">'; t.style.color = 'transparent';
+    var img = new Image();
+    img.onload = function() {
+      var MAX = 800;
+      var canvas = document.createElement('canvas');
+      var scale = Math.min(1, MAX / Math.max(img.width, img.height));
+      canvas.width  = Math.round(img.width  * scale);
+      canvas.height = Math.round(img.height * scale);
+      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+      var dataUrl = canvas.toDataURL('image/jpeg', 0.82);
+      _bnImgPending = dataUrl;
+      var t = document.getElementById('bn-img-thumb');
+      t.innerHTML = '<img src="' + dataUrl + '" style="width:100%;height:100%;object-fit:cover">';
+      t.style.color = 'transparent';
+    };
+    img.src = e.target.result;
   };
   reader.readAsDataURL(input.files[0]);
 }
 
 function bnClearImg() {
-  var saved = JSON.parse(localStorage.getItem('biteme_home_banner') || 'null') || {};
-  saved.img = null;
-  localStorage.setItem('biteme_home_banner', JSON.stringify(saved));
-  var t = document.getElementById('bn-img-thumb'); t.innerHTML = '이미지 없음 (기본 그라디언트 사용)'; t.style.color = 'var(--text3)';
+  _bnImgPending = null;
+  var t = document.getElementById('bn-img-thumb');
+  t.innerHTML = '이미지 없음 (기본 그라디언트 사용)';
+  t.style.color = 'var(--text3)';
 }
 </script>
 
